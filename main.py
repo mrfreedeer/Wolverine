@@ -23,12 +23,35 @@ def main():
     fac.display_bkg()
     mouseclick = False
     fac.display_menu()
+    fac.loadmodifiers('gamemodifiers.png')
+    modi = 0
 
+    modifiers = pygame.sprite.Group()
+    everyone = pygame.sprite.Group()
+    m = fac.getModifier(modi)
+    modifiers.add(m)
+    everyone.add(m)
     while not end:
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 end = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    modi -= 1
+                if event.key == pygame.K_RIGHT:
+                    modi += 1
+                if modi < 0:
+                    modi = 3
+                elif modi > 3:
+                    modi = 0
+                if modifiers:
+                    for x in modifiers:
+                        x.kill()                     
+                m = fac.getModifier(modi)
+                modifiers.add(m)
+                everyone.add(m)
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
                     mouseclick = True
@@ -47,16 +70,10 @@ def main():
             newrender = bob.buildtxtrender(txt, 0, white)
             fac.popmenurenders(mouseonoption)
             fac.insertmenurenders(mouseonoption, newrender)
-            screen.fill(black)
-            fac.display_bkg()
-            fac.display_menu()
         elif fac.getTurned() != [] and mouseonoption == -1:
             #Returns all text to normal colors
             fac.emptyTurned()
             fac.resetmenurenders()
-            screen.fill(black)
-            fac.display_bkg()
-            fac.display_menu()
         elif len(fac.getTurned()) > 1:
             fac.emptyTurned()
             fac.resetmenurenders()
@@ -65,9 +82,18 @@ def main():
             newrender = bob.buildtxtrender(txt, 0, white)
             fac.popmenurenders(mouseonoption)
             fac.insertmenurenders(mouseonoption, newrender)
-            screen.fill(black)
-            fac.display_bkg()
-            fac.display_menu()
+        screen.fill(black)
+        fac.display_bkg()
+        fac.display_menu()
+        mousepos = pygame.mouse.get_pos()
+        for x in modifiers:
+            x.rect.x, x.rect.y = 200,150
+            if x.rect.collidepoint(mousepos):
+                print "collision"
+            else:
+                print "no collision"
+        everyone.draw(screen)
+
     pygame.quit()
 
 if __name__ == '__main__':

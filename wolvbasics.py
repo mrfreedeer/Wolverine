@@ -9,6 +9,12 @@ white = (255,255,255)   #rgb(255,255,255)
 black = (0,0,0)         #rgb(0,0,0)
 pink = (255,200,200) #rgb(255,200,200)c
 
+class Modifier(pygame.sprite.Sprite):
+    def __init__(self, image):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = image
+        self.rect = self.image.get_rect()
+
 class Facade(object):
     def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos):
         self._normalrenders = menurenders[:]
@@ -20,6 +26,24 @@ class Facade(object):
         self._turnedoptions = []
         self._bckg = bckg
         self._bckgpos = bckgpos
+        self._modifiers = []
+    def loadmodifiers(self, path, quantity = 4):
+        image = pygame.image.load(path).convert_alpha()
+        imageinfo = image.get_rect()
+        xwidth = imageinfo[2]/quantity
+        self._modifiers = []
+        for x in range(quantity):
+            subsquare = image.subsurface(x * xwidth, 0, xwidth, imageinfo[3])
+            subsquare = pygame.transform.scale(subsquare,[75,75])
+            self._modifiers.append(subsquare)
+    def getModifier(self, i):
+        if i < len(self._modifiers):
+            m = Modifier(self._modifiers[i])
+            return m
+        else:
+            return -1
+    def getModifiers(self):
+        return self._modifiers
     def getTurned(self):
         return self._turnedoptions
     def appendTurned(self,objt):
