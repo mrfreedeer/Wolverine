@@ -44,7 +44,7 @@ def main():
             #Turns blue the option the mouse is on
             txt = menuoptions[mouseonoption]
             fac.appendTurned(mouseonoption)
-            newrender = bob.buildtxtrender(txt, 0, darkBlue)
+            newrender = bob.buildtxtrender(txt, 0, white)
             fac.popmenurenders(mouseonoption)
             fac.insertmenurenders(mouseonoption, newrender)
             screen.fill(black)
@@ -62,7 +62,7 @@ def main():
             fac.resetmenurenders()
             txt = menuoptions[mouseonoption]
             fac.appendTurned(mouseonoption)
-            newrender = bob.buildtxtrender(txt, 0, darkBlue)
+            newrender = bob.buildtxtrender(txt, 0, white)
             fac.popmenurenders(mouseonoption)
             fac.insertmenurenders(mouseonoption, newrender)
             screen.fill(black)
