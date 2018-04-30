@@ -19,7 +19,7 @@ def main():
     menurenders = bob.buildtxtrenders(menuoptions)
     WolverineTitle = bob.buildtxtrender("Wolverine", 1)
     end = False
-    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-651,0])
+    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0])
     fac.display_bkg()
     mouseclick = False
     fac.display_menu()
@@ -40,22 +40,33 @@ def main():
         if mouseonoption != -1 and mouseclick: #Detecting Option Clicked
             print "Menu Option Clicked: ", menuoptions[mouseonoption]
             mouseclick = False
-        if mouseonoption != -1 and mouseonoption not in fac.turnedoptions:
+        if mouseonoption != -1 and mouseonoption not in fac.getTurned():
             #Turns blue the option the mouse is on
             txt = menuoptions[mouseonoption]
-            fac.turnedoptions.append(mouseonoption)
+            fac.appendTurned(mouseonoption)
             newrender = bob.buildtxtrender(txt, 0, darkBlue)
-            fac.menurenders.pop(mouseonoption)
-            fac.menurenders.insert(mouseonoption, newrender)
+            fac.popmenurenders(mouseonoption)
+            fac.insertmenurenders(mouseonoption, newrender)
             screen.fill(black)
-            screen.blit(menubckg,[-651,0])
+            fac.display_bkg()
             fac.display_menu()
-        elif fac.turnedoptions != [] and mouseonoption == -1:
+        elif fac.getTurned() != [] and mouseonoption == -1:
             #Returns all text to normal colors
-            fac.turnedoptions = []
-            fac.menurenders = fac.normalrenders[:]
+            fac.emptyTurned()
+            fac.resetmenurenders()
             screen.fill(black)
-            screen.blit(menubckg,[-651,0])
+            fac.display_bkg()
+            fac.display_menu()
+        elif len(fac.getTurned()) > 1:
+            fac.emptyTurned()
+            fac.resetmenurenders()
+            txt = menuoptions[mouseonoption]
+            fac.appendTurned(mouseonoption)
+            newrender = bob.buildtxtrender(txt, 0, darkBlue)
+            fac.popmenurenders(mouseonoption)
+            fac.insertmenurenders(mouseonoption, newrender)
+            screen.fill(black)
+            fac.display_bkg()
             fac.display_menu()
     pygame.quit()
 

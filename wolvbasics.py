@@ -11,56 +11,69 @@ pink = (255,200,200) #rgb(255,200,200)c
 
 class Facade(object):
     def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos):
-        self.normalrenders = menurenders[:]
-        self.menurenders = menurenders
-        self.Wolverine = Wolverine
-        self.screen = screen
-        self.initialposition = initialposition
-        self.display_info = []
-        self.turnedoptions = []
-        self.bckg = bckg
-        self.bckgpos = bckgpos
-
+        self._normalrenders = menurenders[:]
+        self._menurenders = menurenders
+        self._Wolverine = Wolverine
+        self._screen = screen
+        self._initialposition = initialposition
+        self._display_info = []
+        self._turnedoptions = []
+        self._bckg = bckg
+        self._bckgpos = bckgpos
+    def getTurned(self):
+        return self._turnedoptions
+    def appendTurned(self,objt):
+        self._turnedoptions.append(objt)
+    def popmenurenders(self, popindex):
+        self._menurenders.pop(popindex)
+    def insertmenurenders(self,insertindex, element):
+        self._menurenders.insert(insertindex, element)
+    def emptyTurned(self):
+        self._turnedoptions = []
+    def resetmenurenders(self):
+        self._menurenders = self._normalrenders[:]
     def display_menu(self):
         self.display_Wolverine()
         i = 0
-        info = self.menurenders[0].get_rect()
+        info = self._menurenders[0].get_rect()
         space = info.height + 10
-        for x in self.menurenders:
-            self.screen.blit(x,[self.initialposition[0], self.initialposition[1] + i * space])
+        for x in self._menurenders:
+            self._screen.blit(x,[self._initialposition[0], self._initialposition[1] + i * space])
             info = x.get_rect()
-            xinfo = [self.initialposition[0], self.initialposition[1] + i * space, x.get_width(), x.get_height()]
+            xinfo = [self._initialposition[0], self._initialposition[1] + i * space, x.get_width(), x.get_height()]
             i += 1
-            if xinfo not in self.display_info:
-                self.display_info.append(xinfo)
+            if xinfo not in self._display_info:
+                self._display_info.append(xinfo)
 
     def display_Wolverine(self):
-        self.screen.blit(self.Wolverine, [self.initialposition[0], self.initialposition[1] - 100])
+        self._screen.blit(self._Wolverine, [self._initialposition[0], self._initialposition[1] - 100])
     def checkmouse(self, mousepos):
-        for x in self.display_info:
+        for x in self._display_info:
             if mousepos[0] >= x[0] and mousepos[0]<= x[0]+x[2] and mousepos[1] >= x[1] and mousepos[1] <= x[1]+x[3]:
-                return self.display_info.index(x)
+                return self._display_info.index(x)
         return -1
     def display_bkg(self):
-        self.screen.blit(self.bckg, self.bckgpos)
+        self._screen.blit(self._bckg, self._bckgpos)
 
 class Builder(object):
     def __init__(self, normalfont, titlefont):
-        self.normalfont = normalfont
-        self.titlefont = titlefont
+        self._normalfont = normalfont
+        self._titlefont = titlefont
     def buildscreen(self):
-        return pygame.display.set_mode()
+        self._screensize = pygame.display.Info()
+        screen = pygame.display.set_mode([self._screensize.current_w,self._screensize.current_h])
+        return screen
     def buildtxtrenders(self, txtlist, fonttype = 0, colour = black):
         renders = []
         if fonttype == 0:
             for x in txtlist:
-                renders.append(self.normalfont.render(x, True, colour))
+                renders.append(self._normalfont.render(x, True, colour))
         else:
             for x in txtlist:
-                renders.append(self.titlefont.render(x, True, colour))
+                renders.append(self._titlefont.render(x, True, colour))
         return renders
     def buildtxtrender(self,txt, fonttype = 0, colour = black):
         if fonttype == 0:
-            return self.normalfont.render(txt, True, colour)
+            return self._normalfont.render(txt, True, colour)
         else:
-            return self.titlefont.render(txt, True, colour)
+            return self._titlefont.render(txt, True, colour)
