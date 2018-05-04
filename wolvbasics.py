@@ -27,6 +27,7 @@ class Facade(object):
         self._bckg = bckg
         self._bckgpos = bckgpos
         self._modifiers = []
+        self.pause = False
     def loadmodifiers(self, path, quantity = 4):
         image = pygame.image.load(path).convert_alpha()
         imageinfo = image.get_rect()
