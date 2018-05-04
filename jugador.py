@@ -107,6 +107,7 @@ class Jugador(pygame.sprite.Sprite):
         self.vel_y=0
         self.accion=0
         self.salto=False
+        self.dir = 'R'
 
     def gravedad(self, v):
         if self.vel_y==0:
@@ -115,6 +116,9 @@ class Jugador(pygame.sprite.Sprite):
             self.vel_y+=v
 
     def update(self):
+        if self.salto:
+            self.vel_y=-15
+            self.salto=False
 
         #Idle R
         if self.accion==0:
@@ -132,9 +136,10 @@ class Jugador(pygame.sprite.Sprite):
                 self.indice=0
         #Walk R
         if self.accion==2:
+            print "hi"
             self.image = self.f[self.accion][self.indice]
             self.indice += 1
-
+            print self.indice
             if self.indice > 5:
                 self.indice=0
 
@@ -210,128 +215,59 @@ class Jugador(pygame.sprite.Sprite):
         #print self.indice
 
         self.rect.x += self.vel_x
-if __name__ == '__main__':
-    pygame.init()
-    pantalla=pygame.display.set_mode([ANCHO, ALTO])
-    #fondo=pygame.image.load('mapa01.png')
-    wolverine=pygame.image.load('wolverine_sprites.png')
-    infoWolverine=wolverine.get_rect()
+    def derecha(self):
+        if self.accion==4:
+            pass
+        else:
+            self.indice=0
+            self.vel_y=0
+            self.salto=False
+            self.dir='R'
+            self.accion=2
+            self.vel_x=10
+    def izquierda(self):
+        if self.accion==5:
+            pass
+        else:
+            self.indice=0
+            self.vel_y=0
+            self.salto=False
+            self.dir='L'
+            self.accion=3
+            self.vel_x=-10
+    def saltar(self):
+        self.salto=True
+        self.indice=0
+        self.rect.y+=-20
+        if self.dir=='R':
+            self.accion=4
+        if self.dir=='L':
+            self.accion=5
+        self.salto=True
+    def teclaq(self):
+        self.indice=0
+        if self.dir=='R':
+            self.accion=6
+        if self.dir=='L':
+            self.accion=7
+    def teclaw(self):
+        self.indice=0
+        if self.dir=='R':
+            self.accion=8
+        if self.dir=='L':
+            self.accion=9
+    def soltartecla(self):
+        self.indice=0
+        if self.accion==2 or self.accion==3:
+            if self.dir=='R':
+                self.accion=0
+            if self.dir=='L':
+                self.accion=1
+            self.vel_x=0
 
-    wolverine2=pygame.image.load('wolverine_sprites2.png')
-    infoWolverine2=wolverine2.get_rect()
-
-    todos=pygame.sprite.Group()
-    jugadores=pygame.sprite.Group()
-    enemigos=pygame.sprite.Group()
-    matrizJugador=[]
-    #matrizJugador2=[]
-    matrizJugador=recortar('wolverine_sprites.png')
-    #matrizJugador2=recortar('wolverine_sprites2.png')
-
-
-    jugador=Jugador(matrizJugador)
-    #jugador2=Jugador(matrizJugador2)
-
-    jugadores.add(jugador)
-    todos.add(jugador)
-
-    #jugadores.add(jugador2)
-    #todos.add(jugador2)
-
-    reloj=pygame.time.Clock()
-    dir='R'
-
-
-    pantalla.blit(jugador.f[0][0], [jugador.rect.x, jugador.rect.y])
-    #pantalla.blit(jugador2.f[0][0], [jugador2.rect.x, jugador2.rect.y])
-    pygame.draw.polygon(pantalla, [255,255,255], [[0,400], [ANCHO, 400]],2)
-    pygame.display.flip()
-
-    fin=False
-    while not fin:
-        for event in pygame.event.get():
-
-            if event.type == pygame.QUIT:
-                fin=True
-
-            if event.type == pygame.KEYDOWN:
-
-
-
-                if event.key==pygame.K_RIGHT:
-                    if jugador.accion==4:
-                        pass
-                    else:
-                        jugador.indice=0
-                        jugador.vel_y=0
-                        jugador.salto=False
-                        dir='R'
-                        jugador.accion=2
-                        jugador.vel_x=10
-
-
-                if event.key==pygame.K_LEFT:
-                    if jugador.accion==5:
-                        pass
-                    else:
-                        jugador.indice=0
-                        jugador.vel_y=0
-                        jugador.salto=False
-                        dir='L'
-                        jugador.accion=3
-                        jugador.vel_x=-10
-
-                if event.key==pygame.K_SPACE:
-                    jugador.salto=True
-                    jugador.indice=0
-                    jugador.rect.y+=-20
-                    if dir=='R':
-                        jugador.accion=4
-                    if dir=='L':
-                        jugador.accion=5
-                    jugador.salto=True
-
-                if event.key==pygame.K_q:
-                    jugador.indice=0
-                    if dir=='R':
-                        jugador.accion=6
-                    if dir=='L':
-                        jugador.accion=7
-
-                if event.key==pygame.K_w:
-                    jugador.indice=0
-                    if dir=='R':
-                        jugador.accion=8
-                    if dir=='L':
-                        jugador.accion=9
-
-
-            if event.type == pygame.KEYUP:
-                jugador.indice=0
-                if jugador.accion==2 or jugador.accion==3:
-                    if dir=='R':
-                        jugador.accion=0
-                    if dir=='L':
-                        jugador.accion=1
-                    jugador.vel_x=0
-
-                if jugador.accion==4 or jugador.accion==5 or jugador.accion==6 or jugador.accion==7 or jugador.accion==8 or jugador.accion==9:
-                    if dir=='R':
-                        jugador.accion=0
-                    if dir=='L':
-                        jugador.accion=1
-                    jugador.vel_x=0
-
-            if jugador.salto:
-                jugador.vel_y=-15
-                jugador.salto=False
-
-
-
-
-        todos.update()
-        pantalla.fill([0,0,0])
-        pygame.draw.polygon(pantalla, [255,255,255], [[0,320], [ANCHO, 320]],2)
-        todos.draw(pantalla)
-        pygame.display.flip()
-        reloj.tick(10)
+        if self.accion==4 or self.accion==5 or self.accion==6 or self.accion==7 or self.accion==8 or self.accion==9:
+            if self.dir=='R':
+                self.accion=0
+            if self.dir=='L':
+                self.accion=1
+            self.vel_x=0
