@@ -116,10 +116,11 @@ class Jugador(pygame.sprite.Sprite):
             self.vel_y+=v
 
     def update(self):
+        '''
         if self.salto:
             self.vel_y=-15
             self.salto=False
-
+        '''
         #Idle R
         if self.accion==0:
             self.image = self.f[self.accion][self.indice]
@@ -206,7 +207,7 @@ class Jugador(pygame.sprite.Sprite):
             if self.indice > 2:
                 self.indice=0
 
-        self.gravedad(1)
+        #self.gravedad(1)
         self.rect.y+=self.vel_y
         if self.rect.y > (255):
             self.rect.y=250
