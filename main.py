@@ -13,6 +13,8 @@ pink = (255,200,200) #rgb(255,200,200)
 def main():
     pygame.init()
     pygame.font.init()
+    screensize = pygame.display.Info()
+    RESOLUTION = [screensize.current_w,screensize.current_h]
     bob = Builder(pygame.font.Font('WolverineFont.ttf', 40), pygame.font.Font('WolverineFont.ttf', 60))
     screen = bob.buildscreen()
     menubckg = pygame.image.load('menu.png')
@@ -161,7 +163,9 @@ def main():
                 pygame.display.flip()
                 reloj.tick(10)
             else:
-                screen.blit(pauserender, [250,250])
+                xwidth = pauserender.get_width()/2
+                ywidth = pauserender.get_height()/2
+                screen.blit(pauserender, [RESOLUTION[0]/2 - xwidth,RESOLUTION[1]/2 - ywidth])
                 pygame.display.flip()
 
     pygame.quit()
