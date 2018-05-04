@@ -17,6 +17,7 @@ def main():
     screen = bob.buildscreen()
     menubckg = pygame.image.load('menu.png')
     menuoptions = ["Opcion 1", "Opcion 2", "Opcion 3", "Opcion 4"]
+    pauserender =bob.buildtxtrender("PAUSE", 1, white)
     menurenders = bob.buildtxtrenders(menuoptions)
     WolverineTitle = bob.buildtxtrender("Wolverine", 1)
     end = False
@@ -100,6 +101,8 @@ def main():
                         mouseclick = False
             elif state == 'opcion1':
                 if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_p:
+                        fac.pause = not fac.pause
                     if event.key in allowedmoves:
                         moves.insert(0,event.key)
                     if moves != []:
@@ -150,12 +153,17 @@ def main():
 
             everyone.draw(screen)
         if state == 'opcion1':
-            todos.update()
-            screen.fill([0,0,0])
-            pygame.draw.polygon(screen, [255,255,255], [[0,320], [ANCHO, 320]],2)
-            todos.draw(screen)
-            pygame.display.flip()
-            reloj.tick(10)
+            if not fac.pause:
+                todos.update()
+                screen.fill([0,0,0])
+                pygame.draw.polygon(screen, [255,255,255], [[0,320], [ANCHO, 320]],2)
+                todos.draw(screen)
+                pygame.display.flip()
+                reloj.tick(10)
+            else:
+                screen.blit(pauserender, [250,250])
+                pygame.display.flip()
+
     pygame.quit()
 
 if __name__ == '__main__':

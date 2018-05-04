@@ -137,10 +137,8 @@ class Jugador(pygame.sprite.Sprite):
                 self.indice=0
         #Walk R
         if self.accion==2:
-            print "hi"
             self.image = self.f[self.accion][self.indice]
             self.indice += 1
-            print self.indice
             if self.indice > 5:
                 self.indice=0
 
