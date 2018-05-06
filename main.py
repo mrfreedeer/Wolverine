@@ -9,7 +9,11 @@ yellow =(255,255,51)    #rgb(255,255,51)
 white = (255,255,255)   #rgb(255,255,255)
 black = (0,0,0)         #rgb(0,0,0)
 pink = (255,200,200) #rgb(255,200,200)
-
+def printkey(key):
+    if key == pygame.K_LEFT:
+        print "Left"
+    elif key == pygame.K_RIGHT:
+        print "Left"
 def main():
     pygame.init()
     pygame.font.init()
@@ -19,7 +23,9 @@ def main():
     screen = bob.buildscreen()
     menubckg = pygame.image.load('menu.png')
     menuoptions = ["Opcion 1", "Opcion 2", "Opcion 3", "Opcion 4"]
-    pauserender =bob.buildtxtrender("PAUSE", 1, white)
+    pauseoptions = ["Back to Menu"]
+    pauserender = bob.buildtxtrender("PAUSE", 1, white)
+    pauseoptionrenders = bob.buildtxtrenders(pauseoptions, 0, white)
     menurenders = bob.buildtxtrenders(menuoptions)
     WolverineTitle = bob.buildtxtrender("Wolverine", 1)
     end = False
@@ -29,6 +35,8 @@ def main():
     fac.display_menu()
     fac.loadmodifiers('gamemodifiers.png')
     modi = 0
+
+    fac.setPauserenders(pauseoptionrenders)
 
     modifiers = pygame.sprite.Group()
     everyone = pygame.sprite.Group()
@@ -73,13 +81,30 @@ def main():
     fin=False
     allowedmoves = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_w, pygame.K_q, pygame.K_SPACE]
     moves = []
+    pausewidth = pauserender.get_width()/2
+    pauseheight = pauserender.get_height()/2
+    for x in pauseoptionrenders:
+        pauseheight += x.get_height()/2 + 10
+    pausepositions = []
 
-
+    pausexpos = RESOLUTION[0]/2
+    pauseypos = RESOLUTION[1]/2 - pauseheight
+    xpos = pausexpos
+    ypos = pauseypos + pauserender.get_height() + 10
+    for x in pauseoptionrenders:
+        pausepositions.append((pausexpos-x.get_width()/2, ypos))
+        ypos += x.get_height() + 10
+    fac.pausepositions = pausepositions
     while not end:
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 end = True
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pressed()[0]:
+                    mouseclick = True
+            if event.type == pygame.MOUSEBUTTONUP:
+                    mouseclick = False
             if state == 'menu':
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
@@ -96,11 +121,6 @@ def main():
                     m = fac.getModifier(modi)
                     modifiers.add(m)
                     everyone.add(m)
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if pygame.mouse.get_pressed()[0]:
-                        mouseclick = True
-                if event.type == pygame.MOUSEBUTTONUP:
-                        mouseclick = False
             elif state == 'opcion1':
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
@@ -108,20 +128,13 @@ def main():
                     if event.key in allowedmoves:
                         moves.insert(0,event.key)
                     if moves != []:
-                        if moves[0] ==pygame.K_RIGHT:
-                            jugador.derecha()
-                        if moves[0] == pygame.K_LEFT:
-                            jugador.izquierda()
-                        if moves[0] == pygame.K_SPACE:
-                            jugador.saltar()
-                        if moves[0] == pygame.K_q:
-                            jugador.teclaq()
-                        if moves[0] == pygame.K_w:
-                            jugador.teclaw()
+                        jugador.move(moves[0])
                 if event.type == pygame.KEYUP:
                     if event.key in allowedmoves:
                         moves.remove(event.key)
                     jugador.soltartecla()
+                    if moves != []:
+                        jugador.move(moves[0])
         mousepos = pygame.mouse.get_pos()
         mouseonoption = fac.checkmouse(mousepos)
         if state == 'menu':
@@ -160,12 +173,37 @@ def main():
                 screen.fill([0,0,0])
                 pygame.draw.polygon(screen, [255,255,255], [[0,320], [ANCHO, 320]],2)
                 todos.draw(screen)
+                fac.drawLife(jugador.getHealth())
                 pygame.display.flip()
                 reloj.tick(10)
             else:
-                xwidth = pauserender.get_width()/2
-                ywidth = pauserender.get_height()/2
-                screen.blit(pauserender, [RESOLUTION[0]/2 - xwidth,RESOLUTION[1]/2 - ywidth])
+                screen.blit(pauserender, [pausexpos- pausewidth,pauseypos])
+                i = 0
+                for x in fac._pauserenders:
+                    screen.blit(x,fac.pausepositions[i])
+                    i += 1
+                select = fac.checkmousepause(mousepos)
+
+                if select != -1:
+                    txt = pauseoptions[select]
+                    fac._pauserenders.pop(select)
+                    selectedrender = bob.buildtxtrender(txt, 0, red)
+                    fac._pauserenders.insert(select,selectedrender)
+                    fac._turnedoptions.append(select)
+                elif select == -1 and fac.getTurned() != []:
+                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac.emptyTurned()
+                elif len(fac.getTurned())> 1:
+                    txt = pauseoptions[select]
+                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac._pauserenders.pop(select)
+                    selectedrender = bob.buildtxtrender(txt, 0, red)
+                    fac._pauserenders.insert(select,selectedrender)
+                    fac._turnedoptions.append(select)
+                if pauseoptions[select] == "Back to Menu" and mouseclick:
+                    state = 'menu'
+                    mouseclick = False
+                    fac.pause = False
                 pygame.display.flip()
 
     pygame.quit()

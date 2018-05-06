@@ -108,13 +108,25 @@ class Jugador(pygame.sprite.Sprite):
         self.accion=0
         self.salto=False
         self.dir = 'R'
-
+        self._health = 100
+    def getHealth(self):
+        return self._health
     def gravedad(self, v):
         if self.vel_y==0:
             self.vel_y=1
         else:
             self.vel_y+=v
-
+    def move(self, key):
+        if key == pygame.K_RIGHT:
+            self.derecha()
+        elif key == pygame.K_LEFT:
+            self.izquierda()
+        elif key == pygame.K_SPACE:
+            self.saltar()
+        elif key == pygame.K_q:
+            self.teclaq()
+        elif key == pygame.K_w:
+            self.teclaw()
     def update(self):
         '''
         if self.salto:

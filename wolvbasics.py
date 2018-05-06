@@ -28,6 +28,18 @@ class Facade(object):
         self._bckgpos = bckgpos
         self._modifiers = []
         self.pause = False
+        self._screensize = pygame.display.Info()
+        self._lifepos = [self._screensize.current_w - 20, 20]
+        self._healthheight = 40
+        self._pauserenders = []
+        self._normalpauserenders = []
+        self.pausepositions = []
+
+    def drawLife(self, health):
+        rect = [self._lifepos[0] - 301, self._lifepos[1], 302 , self._healthheight]
+        rect2 = [self._lifepos[0] - 300, self._lifepos[1] + 1, health*3, self._healthheight-2]
+        pygame.draw.rect(self._screen, blue,rect, 1)
+        pygame.draw.rect(self._screen, red,rect2)
     def loadmodifiers(self, path, quantity = 4):
         image = pygame.image.load(path).convert_alpha()
         imageinfo = image.get_rect()
@@ -37,6 +49,9 @@ class Facade(object):
             subsquare = image.subsurface(x * xwidth, 0, xwidth, imageinfo[3])
             subsquare = pygame.transform.scale(subsquare,[75,75])
             self._modifiers.append(subsquare)
+    def setPauserenders(self, pauserenders):
+        self._pauserenders = pauserenders
+        self._normalpauserenders = pauserenders[:]
     def getModifier(self, i):
         if i < len(self._modifiers):
             m = Modifier(self._modifiers[i])
@@ -77,6 +92,16 @@ class Facade(object):
             if mousepos[0] >= x[0] and mousepos[0]<= x[0]+x[2] and mousepos[1] >= x[1] and mousepos[1] <= x[1]+x[3]:
                 return self._display_info.index(x)
         return -1
+    def checkmousepause(self,mousepos):
+        i = 0
+        for x in self._pauserenders:
+            rect = x.get_rect()
+            rect.x, rect.y = self.pausepositions[i][0], self.pausepositions[i][1]
+            i += 1
+            if rect.collidepoint(mousepos):
+                return self._pauserenders.index(x)
+        return -1
+
     def display_bkg(self):
         self._screen.blit(self._bckg, self._bckgpos)
 
