@@ -29,15 +29,15 @@ class Facade(object):
         self._modifiers = []
         self.pause = False
         self._screensize = pygame.display.Info()
-        self._lifepos = [self._screensize.current_w - 20, 20]
+        self._lifepos = [70, 20]
         self._healthheight = 40
         self._pauserenders = []
         self._normalpauserenders = []
         self.pausepositions = []
 
     def drawLife(self, health):
-        rect = [self._lifepos[0] - 301, self._lifepos[1], 302 , self._healthheight]
-        rect2 = [self._lifepos[0] - 300, self._lifepos[1] + 1, health*3, self._healthheight-2]
+        rect = [self._lifepos[0], self._lifepos[1], 302 , self._healthheight]
+        rect2 = [self._lifepos[0] + 1, self._lifepos[1] + 1, health*3, self._healthheight-2]
         pygame.draw.rect(self._screen, blue,rect, 1)
         pygame.draw.rect(self._screen, red,rect2)
     def loadmodifiers(self, path, quantity = 4):
