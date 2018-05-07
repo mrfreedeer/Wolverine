@@ -121,7 +121,7 @@ def main():
                     m = fac.getModifier(modi)
                     modifiers.add(m)
                     everyone.add(m)
-            elif state == 'opcion1':
+            elif state == "Opcion 1":
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         fac.pause = not fac.pause
@@ -141,7 +141,7 @@ def main():
             if mouseonoption != -1 and mouseclick: #Detecting Option Clicked
                 print "Menu Option Clicked: ", menuoptions[mouseonoption]
                 mouseclick = False
-                state = 'opcion1'
+                state = menuoptions[mouseonoption]
             if mouseonoption != -1 and mouseonoption not in fac.getTurned():
                 #Turns blue the option the mouse is on
                 txt = menuoptions[mouseonoption]
@@ -167,7 +167,7 @@ def main():
             mousepos = pygame.mouse.get_pos()
 
             everyone.draw(screen)
-        if state == 'opcion1':
+        if state == "Opcion 1":
             if not fac.pause:
                 todos.update()
                 screen.fill([0,0,0])
