@@ -124,7 +124,7 @@ class Jugador(pygame.sprite.Sprite):
         elif key == pygame.K_UP:
             self.arriba()
         elif key == pygame.K_DOWN:
-            self.abajo()    
+            self.abajo()
         #elif key == pygame.K_SPACE:
         #    self.saltar()
         elif key == pygame.K_q:
@@ -223,13 +223,24 @@ class Jugador(pygame.sprite.Sprite):
 
         #self.gravedad(1)
         self.rect.y+=self.vel_y
-        '''
-        if self.rect.y > (255):
-            self.rect.y=250
+
+        if self.rect.y <=450:
+            self.rect.y=450
             self.vel_y=0
-        '''
+
+        if self.rect.y>ALTO-self.rect.height:
+            self.rect.y=ALTO-self.rect.height
+            self.vel_y=0
+
+        if self.rect.x>1100:
+            self.rect.x=1100
+            self.vel_x=0
+
+        if self.rect.x<0:
+            self.rect.x=0
+            self.vel_x=0
+
         self.rect.x += self.vel_x
-        #print self.indice
         self.rect.x += self.vel_x
 
     def derecha(self):
@@ -242,6 +253,11 @@ class Jugador(pygame.sprite.Sprite):
             self.dir='R'
             self.accion=2
             self.vel_x=10
+        '''
+        if self.rect.x>=1050:
+            self.rect.x=1050
+            self.vel_x=0
+        '''
     def izquierda(self):
         if self.accion==5:
             pass
