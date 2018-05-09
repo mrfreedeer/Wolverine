@@ -145,6 +145,14 @@ def main():
                         posbg[1]=posbg[1]
                     else:
                         posbg[1]-=12
+                #ACOMODAR ESTE
+                '''
+                if posbg[1]<=-432:
+                    if jugador.rect.y<=342:
+                        jugador.downlimit_y+=6
+
+                        posbg[1]+=12
+                '''        
 
 
 
