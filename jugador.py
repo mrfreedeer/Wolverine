@@ -48,9 +48,9 @@ def recortar(archivo):
     #Idle R-L
     for x in range(3):
         cuadro=fondo.subsurface(idle[x])
-        cuadro=pygame.transform.scale(cuadro, (95, 95))
+        cuadro=pygame.transform.scale(cuadro, (125, 125))
         cuadro2=pygame.transform.flip(cuadro, True, False)
-        cuadro2=pygame.transform.scale(cuadro2, (95, 95))
+        cuadro2=pygame.transform.scale(cuadro2, (125, 125))
         idleR.append(cuadro)
         idleL.append(cuadro2)
 
@@ -58,9 +58,9 @@ def recortar(archivo):
     #Walk R-L
     for x in range(6):
         cuadro=fondo.subsurface(walkRight[x])
-        cuadro=pygame.transform.scale(cuadro, (95, 95))
+        cuadro=pygame.transform.scale(cuadro, (125, 125))
         cuadro2=pygame.transform.flip(cuadro, True, False)
-        cuadro2=pygame.transform.scale(cuadro2, (95, 95))
+        cuadro2=pygame.transform.scale(cuadro2, (125, 125))
         walkR.append(cuadro)
         walkL.append(cuadro2)
 
@@ -76,18 +76,18 @@ def recortar(archivo):
     #Attack 1 R-L
     for x in range(3):
         cuadro=fondo.subsurface(attack1[x])
-        cuadro=pygame.transform.scale(cuadro, (95, 95))
+        cuadro=pygame.transform.scale(cuadro, (125, 125))
         cuadro2=pygame.transform.flip(cuadro, True, False)
-        cuadro2=pygame.transform.scale(cuadro2, (95, 95))
+        cuadro2=pygame.transform.scale(cuadro2, (125, 125))
         attack1R.append(cuadro)
         attack1L.append(cuadro2)
 
-    #Attack 1 R-L
+    #Attack 2 R-L
     for x in range(3):
         cuadro=fondo.subsurface(attack2[x])
-        cuadro=pygame.transform.scale(cuadro, (95, 95))
+        cuadro=pygame.transform.scale(cuadro, (125, 125))
         cuadro2=pygame.transform.flip(cuadro, True, False)
-        cuadro2=pygame.transform.scale(cuadro2, (95, 95))
+        cuadro2=pygame.transform.scale(cuadro2, (125, 125))
         attack2R.append(cuadro)
         attack2L.append(cuadro2)
 
@@ -102,7 +102,7 @@ class Jugador(pygame.sprite.Sprite):
         self.rect=self.image.get_rect()
         self.indice=0
         self.rect.x=50
-        self.rect.y=250
+        self.rect.y=450
         self.vel_x=0
         self.vel_y=0
         self.accion=0
@@ -121,8 +121,12 @@ class Jugador(pygame.sprite.Sprite):
             self.derecha()
         elif key == pygame.K_LEFT:
             self.izquierda()
-        elif key == pygame.K_SPACE:
-            self.saltar()
+        elif key == pygame.K_UP:
+            self.arriba()
+        elif key == pygame.K_DOWN:
+            self.abajo()    
+        #elif key == pygame.K_SPACE:
+        #    self.saltar()
         elif key == pygame.K_q:
             self.teclaq()
         elif key == pygame.K_w:
@@ -219,13 +223,15 @@ class Jugador(pygame.sprite.Sprite):
 
         #self.gravedad(1)
         self.rect.y+=self.vel_y
+        '''
         if self.rect.y > (255):
             self.rect.y=250
             self.vel_y=0
+        '''
         self.rect.x += self.vel_x
         #print self.indice
-
         self.rect.x += self.vel_x
+
     def derecha(self):
         if self.accion==4:
             pass
@@ -246,6 +252,29 @@ class Jugador(pygame.sprite.Sprite):
             self.dir='L'
             self.accion=3
             self.vel_x=-10
+
+    def arriba(self):
+        self.vel_y=-10
+        if self.dir=='R':
+            self.indice=0
+            self.accion=2
+            self.vel_x=0
+        else:
+            self.indice=0
+            self.accion=3
+            self.vel_x=0
+
+    def abajo(self):
+        self.vel_y=10
+        if self.dir=='R':
+            self.indice=0
+            self.accion=2
+            self.vel_x=0
+        else:
+            self.indice=0
+            self.accion=3
+            self.vel_x=0
+
     def saltar(self):
         self.salto=True
         self.indice=0
@@ -255,18 +284,21 @@ class Jugador(pygame.sprite.Sprite):
         if self.dir=='L':
             self.accion=5
         self.salto=True
+
     def teclaq(self):
         self.indice=0
         if self.dir=='R':
             self.accion=6
         if self.dir=='L':
             self.accion=7
+
     def teclaw(self):
         self.indice=0
         if self.dir=='R':
             self.accion=8
         if self.dir=='L':
             self.accion=9
+
     def soltartecla(self):
         self.indice=0
         if self.accion==2 or self.accion==3:
@@ -275,6 +307,7 @@ class Jugador(pygame.sprite.Sprite):
             if self.dir=='L':
                 self.accion=1
             self.vel_x=0
+            self.vel_y=0
 
         if self.accion==4 or self.accion==5 or self.accion==6 or self.accion==7 or self.accion==8 or self.accion==9:
             if self.dir=='R':

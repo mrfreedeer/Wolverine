@@ -13,7 +13,7 @@ def printkey(key):
     if key == pygame.K_LEFT:
         print "Left"
     elif key == pygame.K_RIGHT:
-        print "Left"
+        print "Right"
 def main():
     pygame.init()
     pygame.font.init()
@@ -22,6 +22,7 @@ def main():
     bob = Builder(pygame.font.Font('WolverineFont.ttf', 40), pygame.font.Font('WolverineFont.ttf', 60))
     screen = bob.buildscreen()
     menubckg = pygame.image.load('menu.png')
+    gamebckg = pygame.image.load('bg.png')
     menuoptions = ["Opcion 1", "Opcion 2", "Opcion 3", "Opcion 4"]
     pauseoptions = ["Back to Menu"]
     pauserender = bob.buildtxtrender("PAUSE", 1, white)
@@ -75,11 +76,12 @@ def main():
 
     screen.blit(jugador.f[0][0], [jugador.rect.x, jugador.rect.y])
     #screen.blit(jugador2.f[0][0], [jugador2.rect.x, jugador2.rect.y])
+    #screen.blit(gamebckg, [0,0])
     pygame.draw.polygon(screen, [255,255,255], [[0,400], [ANCHO, 400]],2)
     pygame.display.flip()
 
     fin=False
-    allowedmoves = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_w, pygame.K_q, pygame.K_SPACE]
+    allowedmoves = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_w, pygame.K_q, pygame.K_UP, pygame.K_DOWN]
     moves = []
     pausewidth = pauserender.get_width()/2
     pauseheight = pauserender.get_height()/2
@@ -122,10 +124,16 @@ def main():
                     modifiers.add(m)
                     everyone.add(m)
             elif state == "Opcion 1":
+                print jugador.rect.x
                 if event.type == pygame.KEYDOWN:
+
+
                     if event.key == pygame.K_p:
                         fac.pause = not fac.pause
+
+
                     if event.key in allowedmoves:
+
                         moves.insert(0,event.key)
                     if moves != []:
                         jugador.move(moves[0])
@@ -171,6 +179,7 @@ def main():
             if not fac.pause:
                 todos.update()
                 screen.fill([0,0,0])
+                screen.blit(gamebckg, [0,-300])
                 pygame.draw.polygon(screen, [255,255,255], [[0,320], [ANCHO, 320]],2)
                 todos.draw(screen)
                 fac.drawLife(jugador.getHealth())
