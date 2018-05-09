@@ -9,6 +9,7 @@ yellow =(255,255,51)    #rgb(255,255,51)
 white = (255,255,255)   #rgb(255,255,255)
 black = (0,0,0)         #rgb(0,0,0)
 pink = (255,200,200) #rgb(255,200,200)
+posbg = [0, -300]
 def printkey(key):
     if key == pygame.K_LEFT:
         print "Left"
@@ -124,19 +125,39 @@ def main():
                     modifiers.add(m)
                     everyone.add(m)
             elif state == "Opcion 1":
-                print jugador.rect.x
+
+                print 'Jugador:', jugador.rect.x, jugador.rect.y
+                print 'Fondo:',posbg
+                if jugador.rect.x>=1100:
+                    if posbg[0]==0:
+                        posbg[0]=posbg[0]
+                    if posbg[0]==-1000:
+                        posbg[0]=posbg[0]
+                    else:
+                        posbg[0]-=12
+                #Acomodar limite jugador 2, aplica rangos iguales. Aun no se como volver a subir el fondo
+                if jugador.rect.y>=610:
+                    if jugador.rect.y<=330:
+                        jugador.uplimit_y=jugador.uplimit_y
+                    else:
+                        jugador.uplimit_y+=-6
+                    if posbg[1]<=-430:
+                        posbg[1]=posbg[1]
+                    else:
+                        posbg[1]-=12
+
+
+
                 if event.type == pygame.KEYDOWN:
-
-
                     if event.key == pygame.K_p:
                         fac.pause = not fac.pause
 
 
                     if event.key in allowedmoves:
-
                         moves.insert(0,event.key)
                     if moves != []:
                         jugador.move(moves[0])
+
                 if event.type == pygame.KEYUP:
                     if event.key in allowedmoves:
                         moves.remove(event.key)
@@ -179,8 +200,8 @@ def main():
             if not fac.pause:
                 todos.update()
                 screen.fill([0,0,0])
-                screen.blit(gamebckg, [0,-300])
-                pygame.draw.polygon(screen, [255,255,255], [[0,320], [ANCHO, 320]],2)
+                screen.blit(gamebckg, posbg)
+
                 todos.draw(screen)
                 fac.drawLife(jugador.getHealth())
                 pygame.display.flip()
