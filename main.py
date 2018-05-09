@@ -128,6 +128,7 @@ def main():
 
                 print 'Jugador:', jugador.rect.x, jugador.rect.y
                 print 'Fondo:',posbg
+                #Gestion de limites------------------------------------------------------
                 if jugador.rect.x>=1100:
                     if posbg[0]==0:
                         posbg[0]=posbg[0]
@@ -152,7 +153,7 @@ def main():
                         jugador.downlimit_y+=6
 
                         posbg[1]+=12
-                '''        
+                '''
 
 
 
