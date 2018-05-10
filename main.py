@@ -134,56 +134,57 @@ def main():
                 print 'Jugador:', jugador.rect.x, jugador.rect.y
                 print 'Fondo:',posbg
                 #Gestion de limites------------------------------------------------------
-                if jugador.rect.x>=1100:
-                    if posbg[0]==0:
-                        posbg[0]=posbg[0]
-                    if posbg[0]==-1000:
-                        posbg[0]=posbg[0]
-                    else:
-                        posbg[0]-=12
-                #Acomodar limite jugador 2, aplica rangos iguales. Aun no se como volver a subir el fondo
-                if jugador.rect.y>=610:
-                    if jugador.rect.y<=330:
-                        jugador.uplimit_y=jugador.uplimit_y
-                    else:
-                        jugador.uplimit_y+=-6
-                    if posbg[1]<=-430:
-                        posbg[1]=posbg[1]
-                    else:
-                        posbg[1]-=12
-                #ACOMODAR ESTE
-                '''
-                if posbg[1]<=-432:
-                    if jugador.rect.y<=342:
-                        jugador.downlimit_y+=6
+                if event.type == pygame.KEYDOWN:
+                    if jugador.rect.x>=1100 and event.key==pygame.K_RIGHT:
+                        if posbg[0]==0:
+                            posbg[0]=posbg[0]
+                        if posbg[0]<=-1110:
+                            posbg[0]=posbg[0]
+                        else:
+                            posbg[0]-=12
+                    #Acomodar limite jugador 2, aplica rangos iguales. Aun no se como volver a subir el fondo
+                    if jugador.rect.y>=610 and event.key==pygame.K_DOWN:
+                        if jugador.rect.y<=330:
+                            jugador.uplimit_y=jugador.uplimit_y
+                        else:
+                            jugador.uplimit_y+=-6
+                        if posbg[1]<=-430:
+                            posbg[1]=posbg[1]
+                        else:
+                            posbg[1]-=12
+                    #ACOMODAR ESTE
+                    '''
+                    if posbg[1]<=-432:
+                        if jugador.rect.y<=342:
+                            jugador.downlimit_y+=6
 
-                        posbg[1]+=12
-                '''
-                if jugador2.rect.x>=1100:
-                    if posbg[0]==0:
-                        posbg[0]=posbg[0]
-                    if posbg[0]==-1000:
-                        posbg[0]=posbg[0]
-                    else:
-                        posbg[0]-=12
-                #Acomodar limite jugador 2, aplica rangos iguales. Aun no se como volver a subir el fondo
-                if jugador2.rect.y>=610:
-                    if jugador2.rect.y<=330:
-                        jugador2.uplimit_y=jugador2.uplimit_y
-                    else:
-                        jugador2.uplimit_y+=-6
-                    if posbg[1]<=-430:
-                        posbg[1]=posbg[1]
-                    else:
-                        posbg[1]-=12
-                #ACOMODAR ESTE
-                '''
-                if posbg[1]<=-432:
-                    if jugador2.rect.y<=342:
-                        jugador2.downlimit_y+=6
+                            posbg[1]+=12
+                    '''
+                    if jugador2.rect.x>=1100 and event.key==pygame.K_d:
+                        if posbg[0]==0:
+                            posbg[0]=posbg[0]
+                        if posbg[0]<=-1110:
+                            posbg[0]=posbg[0]
+                        else:
+                            posbg[0]-=12
+                    #Acomodar limite jugador 2, aplica rangos iguales. Aun no se como volver a subir el fondo
+                    if jugador2.rect.y>=610 and event.key==pygame.K_s:
+                        if jugador2.rect.y<=330:
+                            jugador2.uplimit_y=jugador2.uplimit_y
+                        else:
+                            jugador2.uplimit_y+=-6
+                        if posbg[1]<=-430:
+                            posbg[1]=posbg[1]
+                        else:
+                            posbg[1]-=12
+                    #ACOMODAR ESTE
+                    '''
+                    if posbg[1]<=-432:
+                        if jugador2.rect.y<=342:
+                            jugador2.downlimit_y+=6
 
-                        posbg[1]+=12
-                '''
+                            posbg[1]+=12
+                    '''
 
 
 
