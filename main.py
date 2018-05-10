@@ -24,6 +24,7 @@ def main():
     screen = bob.buildscreen()
     menubckg = pygame.image.load('menu.png')
     gamebckg = pygame.image.load('bg.png')
+    fondo = pygame.image.load('fondo.png')
     menuoptions = ["Opcion 1", "Opcion 2", "Opcion 3", "Opcion 4"]
     pauseoptions = ["Back to Menu"]
     pauserender = bob.buildtxtrender("PAUSE", 1, white)
@@ -158,6 +159,31 @@ def main():
 
                         posbg[1]+=12
                 '''
+                if jugador2.rect.x>=1100:
+                    if posbg[0]==0:
+                        posbg[0]=posbg[0]
+                    if posbg[0]==-1000:
+                        posbg[0]=posbg[0]
+                    else:
+                        posbg[0]-=12
+                #Acomodar limite jugador 2, aplica rangos iguales. Aun no se como volver a subir el fondo
+                if jugador2.rect.y>=610:
+                    if jugador2.rect.y<=330:
+                        jugador2.uplimit_y=jugador2.uplimit_y
+                    else:
+                        jugador2.uplimit_y+=-6
+                    if posbg[1]<=-430:
+                        posbg[1]=posbg[1]
+                    else:
+                        posbg[1]-=12
+                #ACOMODAR ESTE
+                '''
+                if posbg[1]<=-432:
+                    if jugador2.rect.y<=342:
+                        jugador2.downlimit_y+=6
+
+                        posbg[1]+=12
+                '''
 
 
 
@@ -223,6 +249,7 @@ def main():
             if not fac.pause:
                 todos.update()
                 screen.fill([0,0,0])
+                screen.blit(fondo,[0,-50])
                 screen.blit(gamebckg, posbg)
 
                 todos.draw(screen)
