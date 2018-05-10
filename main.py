@@ -1,6 +1,8 @@
 import pygame
 from wolvbasics import *
 from jugador import *
+from enemigo import *
+
 red = (255,0,0)         #rgb(255,0,0)
 green = (0,255,0)       #rgb(0,255,0)
 blue = (0,0,255)        #rgb(0,0,255)
@@ -62,6 +64,7 @@ def main():
     #matrizJugador2=[]
     matrizJugador=recortar('wolverine_sprites.png')
     matrizJugador2=recortar('wolverine_sprites2.png')
+    matrizEnemigos1=recortarEne1('enemy.png')
 
 
 
@@ -75,11 +78,17 @@ def main():
     jugadores.add(jugador2)
     todos.add(jugador2)
 
+    enemigo=Enemigo1(matrizEnemigos1)
+    enemigos.add(enemigo)
+    todos.add(enemigo)
+
+
     reloj=pygame.time.Clock()
 
 
     screen.blit(jugador.f[0][0], [jugador.rect.x, jugador.rect.y])
     screen.blit(jugador2.f[0][0], [jugador2.rect.x, jugador2.rect.y])
+    screen.blit(enemigo.f[0][0], [jugador2.rect.x, jugador2.rect.y])
     #screen.blit(gamebckg, [0,0])
     pygame.draw.polygon(screen, [255,255,255], [[0,400], [ANCHO, 400]],2)
     pygame.display.flip()
