@@ -60,30 +60,34 @@ def main():
     matrizJugador=[]
     #matrizJugador2=[]
     matrizJugador=recortar('wolverine_sprites.png')
-    #matrizJugador2=recortar('wolverine_sprites2.png')
+    matrizJugador2=recortar('wolverine_sprites2.png')
+
 
 
     jugador=Jugador(matrizJugador)
-    #jugador2=Jugador(matrizJugador2)
+    jugador2=Jugador2(matrizJugador2)
+
 
     jugadores.add(jugador)
     todos.add(jugador)
 
-    #jugadores.add(jugador2)
-    #todos.add(jugador2)
+    jugadores.add(jugador2)
+    todos.add(jugador2)
 
     reloj=pygame.time.Clock()
 
 
     screen.blit(jugador.f[0][0], [jugador.rect.x, jugador.rect.y])
-    #screen.blit(jugador2.f[0][0], [jugador2.rect.x, jugador2.rect.y])
+    screen.blit(jugador2.f[0][0], [jugador2.rect.x, jugador2.rect.y])
     #screen.blit(gamebckg, [0,0])
     pygame.draw.polygon(screen, [255,255,255], [[0,400], [ANCHO, 400]],2)
     pygame.display.flip()
 
     fin=False
-    allowedmoves = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_w, pygame.K_q, pygame.K_UP, pygame.K_DOWN]
+    allowedmoves = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_k, pygame.K_j, pygame.K_UP, pygame.K_DOWN]
+    allowedmoves2 = [pygame.K_w, pygame.K_d, pygame.K_t, pygame.K_r, pygame.K_a, pygame.K_s]
     moves = []
+    moves2 = []
     pausewidth = pauserender.get_width()/2
     pauseheight = pauserender.get_height()/2
     for x in pauseoptionrenders:
@@ -161,18 +165,28 @@ def main():
                     if event.key == pygame.K_p:
                         fac.pause = not fac.pause
 
-
                     if event.key in allowedmoves:
                         moves.insert(0,event.key)
                     if moves != []:
                         jugador.move(moves[0])
 
+                    if event.key in allowedmoves2:
+                        moves2.insert(0,event.key)
+                    if moves2 != []:
+                        jugador2.move(moves2[0])
+
                 if event.type == pygame.KEYUP:
                     if event.key in allowedmoves:
                         moves.remove(event.key)
+
+                    if event.key in allowedmoves2:
+                        moves2.remove(event.key)
                     jugador.soltartecla()
+                    jugador2.soltartecla()
                     if moves != []:
                         jugador.move(moves[0])
+                    if moves2 != []:
+                        jugador2.move(moves2[0])
         mousepos = pygame.mouse.get_pos()
         mouseonoption = fac.checkmouse(mousepos)
         if state == 'menu':
