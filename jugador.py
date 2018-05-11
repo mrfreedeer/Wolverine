@@ -109,8 +109,7 @@ class Jugador(pygame.sprite.Sprite):
         self.salto=False
         self.dir = 'R'
         self._health = 100
-        self.uplimit_y=450
-        self.downlimit_y=610
+
     def getHealth(self):
         return self._health
     def gravedad(self, v):
@@ -222,23 +221,7 @@ class Jugador(pygame.sprite.Sprite):
                 self.indice=0
 
         #self.gravedad(1)
-        self.rect.y+=self.vel_y
 
-        if self.rect.y <=self.uplimit_y:
-            self.rect.y=self.uplimit_y
-            self.vel_y=0
-
-        if self.rect.y>=610:
-            self.rect.y=610
-            self.vel_y=0
-
-        if self.rect.x>1100:
-            self.rect.x=1100
-            self.vel_x=0
-
-        if self.rect.x<0:
-            self.rect.x=0
-            self.vel_x=0
 
         self.rect.y += self.vel_y
         self.rect.x += self.vel_x
@@ -347,8 +330,7 @@ class Jugador2(pygame.sprite.Sprite):
         self.salto=False
         self.dir = 'R'
         self._health = 100
-        self.uplimit_y=450
-        self.downlimit_y=610
+
     def getHealth(self):
         return self._health
     def gravedad(self, v):
@@ -462,24 +444,7 @@ class Jugador2(pygame.sprite.Sprite):
                 self.indice=0
 
         #self.gravedad(1)
-        self.rect.y+=self.vel_y
-
-        if self.rect.y <=self.uplimit_y:
-            self.rect.y=self.uplimit_y
-            self.vel_y=0
-
-        if self.rect.y>=610:
-            self.rect.y=610
-            self.vel_y=0
-
-        if self.rect.x>1100:
-            self.rect.x=1100
-            self.vel_x=0
-
-        if self.rect.x<0:
-            self.rect.x=0
-            self.vel_x=0
-
+    
         self.rect.y += self.vel_y
         self.rect.x += self.vel_x
 

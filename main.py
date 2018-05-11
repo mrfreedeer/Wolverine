@@ -17,6 +17,8 @@ def printkey(key):
         print "Left"
     elif key == pygame.K_RIGHT:
         print "Right"
+def checklimits(jugador, key, posbg, bckglimits):
+    pass
 def main():
     pygame.init()
     pygame.font.init()
@@ -42,6 +44,9 @@ def main():
     modi = 0
 
     fac.setPauserenders(pauseoptionrenders)
+    #LIMITES FONDO
+    bckglimits = {'x':[0,1100], 'y':[0,610], 'anden': 330}
+
 
     modifiers = pygame.sprite.Group()
     everyone = pygame.sprite.Group()
@@ -128,23 +133,7 @@ def main():
                 print 'Fondo:',posbg
                 #Gestion de limites------------------------------------------------------
                 if event.type == pygame.KEYDOWN:
-                    if jugador.rect.x>=1100 and event.key==pygame.K_RIGHT:
-                        if posbg[0]==0:
-                            posbg[0]=posbg[0]
-                        if posbg[0]<=-1110:
-                            posbg[0]=posbg[0]
-                        else:
-                            posbg[0]-=12
-                    #Acomodar limite jugador 2, aplica rangos iguales. Aun no se como volver a subir el fondo
-                    if jugador.rect.y>=610 and event.key==pygame.K_DOWN:
-                        if jugador.rect.y<=330:
-                            jugador.uplimit_y=jugador.uplimit_y
-                        else:
-                            jugador.uplimit_y+=-6
-                        if posbg[1]<=-430:
-                            posbg[1]=posbg[1]
-                        else:
-                            posbg[1]-=12
+
                     #ACOMODAR ESTE
                     '''
                     if posbg[1]<=-432:
@@ -153,32 +142,15 @@ def main():
 
                             posbg[1]+=12
                     '''
-                    if state == menuoptions[1]:
-                        if jugador2.rect.x>=1100 and event.key==pygame.K_d:
-                            if posbg[0]==0:
-                                posbg[0]=posbg[0]
-                            if posbg[0]<=-1110:
-                                posbg[0]=posbg[0]
-                            else:
-                                posbg[0]-=12
-                        #Acomodar limite jugador 2, aplica rangos iguales. Aun no se como volver a subir el fondo
-                        if jugador2.rect.y>=610 and event.key==pygame.K_s:
-                            if jugador2.rect.y<=330:
-                                jugador2.uplimit_y=jugador2.uplimit_y
-                            else:
-                                jugador2.uplimit_y+=-6
-                            if posbg[1]<=-430:
-                                posbg[1]=posbg[1]
-                            else:
-                                posbg[1]-=12
+
                         #ACOMODAR ESTE
-                        '''
+                    '''
                         if posbg[1]<=-432:
                             if jugador2.rect.y<=342:
                                 jugador2.downlimit_y+=6
 
                                 posbg[1]+=12
-                        '''
+                    '''
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
@@ -252,6 +224,23 @@ def main():
         if state == menuoptions[0] or state ==  menuoptions[1]:
 
             if not fac.pause:
+                if state == menuoptions[0]:
+                    if moves != []:
+                        '''
+                        increase = checklimits(jugador, moves[0], posbg, bckglimits)
+                        posbg[0] += increase
+                        bckglimits['anden'] += increase
+                        '''
+                        pass
+                else:
+                    '''
+                    if moves != []:
+                        increase = checklimits(jugador, moves[0], posbg, bckglimits)
+                        posbg[0] += increase
+                        bckglimits['anden'] += increase
+                    if moves2 != []:
+                        checklimits(jugador2, moves2[0], posbg, bckglimits)
+                    '''
                 todos.update()
                 screen.fill([0,0,0])
                 screen.blit(fondo,[0,-50])
