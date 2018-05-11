@@ -11,7 +11,7 @@ yellow =(255,255,51)    #rgb(255,255,51)
 white = (255,255,255)   #rgb(255,255,255)
 black = (0,0,0)         #rgb(0,0,0)
 pink = (255,200,200) #rgb(255,200,200)
-posbg = [0, -300]
+posbg = [0, 0]
 def printkey(key):
     if key == pygame.K_LEFT:
         print "Left"
@@ -29,6 +29,10 @@ def main():
     menubckg = pygame.image.load('menu.png')
     gamebckg = pygame.image.load('bg.png')
     fondo = pygame.image.load('fondo.png')
+    player1 = pygame.image.load('jugador1.png')
+    player1=pygame.transform.scale(player1, (750, 350))
+    player2 = pygame.image.load('jugador2.png')
+    player2=pygame.transform.scale(player2, (750, 350))
     menuoptions = ["1 Jugador", "2 Jugadores", "Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
     pauserender = bob.buildtxtrender("PAUSE", 1, white)
@@ -221,6 +225,14 @@ def main():
                 jugador2=Jugador2(matrizJugador2)
                 jugadores.add(jugador2)
                 todos.add(jugador2)
+            elif state == menuoptions[2]:
+                screen.blit(menubckg,[0,-0])
+                screen.blit(player1,[10,0])
+                screen.blit(player2,[10,400])
+                #screen.blit(x,[750, 350])
+                #select = fac.checkmousepause(mousepos)
+
+
         if state == menuoptions[0] or state ==  menuoptions[1]:
 
             if not fac.pause:
@@ -250,6 +262,9 @@ def main():
                 fac.drawLife(jugador.getHealth())
                 pygame.display.flip()
                 reloj.tick(10)
+
+            #if state == menuoptions[2]:
+
             else:
                 screen.blit(pauserender, [pausexpos- pausewidth,pauseypos])
                 i = 0
