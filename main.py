@@ -27,7 +27,7 @@ def main():
     menubckg = pygame.image.load('menu.png')
     gamebckg = pygame.image.load('bg.png')
     fondo = pygame.image.load('fondo.png')
-    menuoptions = ["Opcion 1", "Opcion 2", "Opcion 3", "Opcion 4"]
+    menuoptions = ["1 Jugador", "2 Jugadores", "Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
     pauserender = bob.buildtxtrender("PAUSE", 1, white)
     pauseoptionrenders = bob.buildtxtrenders(pauseoptions, 0, white)
@@ -138,7 +138,7 @@ def main():
                     m = fac.getModifier(modi)
                     modifiers.add(m)
                     everyone.add(m)
-            elif state == "Opcion 1":
+            elif state == menuoptions[1]:
 
                 print 'Jugador:', jugador.rect.x, jugador.rect.y
                 print 'Fondo:',posbg
@@ -255,7 +255,7 @@ def main():
             mousepos = pygame.mouse.get_pos()
 
             everyone.draw(screen)
-        if state == "Opcion 1":
+        if state == menuoptions[1]:
             if not fac.pause:
                 todos.update()
                 screen.fill([0,0,0])
