@@ -3,6 +3,14 @@ import pygame
 ALTO=1000
 ANCHO=1000
 limites=[10, 8, 11, 10, 8, 6, 9, 4, 12, 8, 8, 10, 9, 4, 7, 5, 2, 8, 9, 9, 9]
+pygame.mixer.init(44100, -16, 2, 2048)
+step=pygame.mixer.Sound('pasosJugador.ogg')
+step.set_volume(0.05)
+step2=pygame.mixer.Sound('pasosJugador2.ogg')
+step2.set_volume(0.05)
+attack1=pygame.mixer.Sound('ataque1.ogg')
+attack2=pygame.mixer.Sound('ataque2.ogg')
+
 #Funciones
 '''
 def recortarCara(archivo):
@@ -153,13 +161,22 @@ class Jugador(pygame.sprite.Sprite):
         #Walk R
         if self.accion==2:
             self.image = self.f[self.accion][self.indice]
+            if self.indice==0:
+                step.play()
+            if self.indice==4:
+                step2.play()
             self.indice += 1
+
             if self.indice > 5:
                 self.indice=0
 
         #Walk L
         if self.accion==3:
             self.image = self.f[self.accion][self.indice]
+            if self.indice==0:
+                step.play()
+            if self.indice==4:
+                step2.play()
             self.indice += 1
 
             if self.indice > 5:
@@ -188,6 +205,8 @@ class Jugador(pygame.sprite.Sprite):
         if self.accion==6:
             if self.indice <3:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice==2:
+                    attack1.play()
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 2:
@@ -197,6 +216,8 @@ class Jugador(pygame.sprite.Sprite):
         if self.accion==7:
             if self.indice <3:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice==2:
+                    attack1.play()
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 2:
@@ -206,6 +227,8 @@ class Jugador(pygame.sprite.Sprite):
         if self.accion==8:
             if self.indice <3:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice==1:
+                    attack2.play()
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 2:
@@ -215,6 +238,8 @@ class Jugador(pygame.sprite.Sprite):
         if self.accion==9:
             if self.indice <3:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice==1:
+                    attack2.play()
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 2:
@@ -376,6 +401,10 @@ class Jugador2(pygame.sprite.Sprite):
         #Walk R
         if self.accion==2:
             self.image = self.f[self.accion][self.indice]
+            if self.indice==0:
+                step.play()
+            if self.indice==4:
+                step2.play()
             self.indice += 1
             if self.indice > 5:
                 self.indice=0
@@ -383,6 +412,10 @@ class Jugador2(pygame.sprite.Sprite):
         #Walk L
         if self.accion==3:
             self.image = self.f[self.accion][self.indice]
+            if self.indice==0:
+                step.play()
+            if self.indice==4:
+                step2.play()
             self.indice += 1
 
             if self.indice > 5:
@@ -411,6 +444,8 @@ class Jugador2(pygame.sprite.Sprite):
         if self.accion==6:
             if self.indice <3:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice==2:
+                    attack1.play()
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 2:
@@ -420,6 +455,8 @@ class Jugador2(pygame.sprite.Sprite):
         if self.accion==7:
             if self.indice <3:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice==2:
+                    attack1.play()
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 2:
@@ -429,6 +466,8 @@ class Jugador2(pygame.sprite.Sprite):
         if self.accion==8:
             if self.indice <3:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice==1:
+                    attack2.play()
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 2:
@@ -438,13 +477,15 @@ class Jugador2(pygame.sprite.Sprite):
         if self.accion==9:
             if self.indice <3:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice==1:
+                    attack2.play()
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 2:
                 self.indice=0
 
         #self.gravedad(1)
-    
+
         self.rect.y += self.vel_y
         self.rect.x += self.vel_x
 
