@@ -66,18 +66,6 @@ def main():
     matrizJugador2=recortar('wolverine_sprites2.png')
     matrizEnemigos1=recortarEne1('enemy.png')
 
-
-
-    jugador=Jugador(matrizJugador)
-    jugador2=Jugador2(matrizJugador2)
-
-
-    jugadores.add(jugador)
-    todos.add(jugador)
-
-    jugadores.add(jugador2)
-    todos.add(jugador2)
-
     enemigo=Enemigo1(matrizEnemigos1)
     enemigos.add(enemigo)
     todos.add(enemigo)
@@ -85,10 +73,6 @@ def main():
 
     reloj=pygame.time.Clock()
 
-
-    screen.blit(jugador.f[0][0], [jugador.rect.x, jugador.rect.y])
-    screen.blit(jugador2.f[0][0], [jugador2.rect.x, jugador2.rect.y])
-    screen.blit(enemigo.f[0][0], [jugador2.rect.x, jugador2.rect.y])
     #screen.blit(gamebckg, [0,0])
     pygame.draw.polygon(screen, [255,255,255], [[0,400], [ANCHO, 400]],2)
     pygame.display.flip()
@@ -138,7 +122,7 @@ def main():
                     m = fac.getModifier(modi)
                     modifiers.add(m)
                     everyone.add(m)
-            elif state == menuoptions[1]:
+            elif state == menuoptions[1] or state == menuoptions[0]:
 
                 print 'Jugador:', jugador.rect.x, jugador.rect.y
                 print 'Fondo:',posbg
@@ -169,33 +153,32 @@ def main():
 
                             posbg[1]+=12
                     '''
-                    if jugador2.rect.x>=1100 and event.key==pygame.K_d:
-                        if posbg[0]==0:
-                            posbg[0]=posbg[0]
-                        if posbg[0]<=-1110:
-                            posbg[0]=posbg[0]
-                        else:
-                            posbg[0]-=12
-                    #Acomodar limite jugador 2, aplica rangos iguales. Aun no se como volver a subir el fondo
-                    if jugador2.rect.y>=610 and event.key==pygame.K_s:
-                        if jugador2.rect.y<=330:
-                            jugador2.uplimit_y=jugador2.uplimit_y
-                        else:
-                            jugador2.uplimit_y+=-6
-                        if posbg[1]<=-430:
-                            posbg[1]=posbg[1]
-                        else:
-                            posbg[1]-=12
-                    #ACOMODAR ESTE
-                    '''
-                    if posbg[1]<=-432:
-                        if jugador2.rect.y<=342:
-                            jugador2.downlimit_y+=6
+                    if state == menuoptions[1]:
+                        if jugador2.rect.x>=1100 and event.key==pygame.K_d:
+                            if posbg[0]==0:
+                                posbg[0]=posbg[0]
+                            if posbg[0]<=-1110:
+                                posbg[0]=posbg[0]
+                            else:
+                                posbg[0]-=12
+                        #Acomodar limite jugador 2, aplica rangos iguales. Aun no se como volver a subir el fondo
+                        if jugador2.rect.y>=610 and event.key==pygame.K_s:
+                            if jugador2.rect.y<=330:
+                                jugador2.uplimit_y=jugador2.uplimit_y
+                            else:
+                                jugador2.uplimit_y+=-6
+                            if posbg[1]<=-430:
+                                posbg[1]=posbg[1]
+                            else:
+                                posbg[1]-=12
+                        #ACOMODAR ESTE
+                        '''
+                        if posbg[1]<=-432:
+                            if jugador2.rect.y<=342:
+                                jugador2.downlimit_y+=6
 
-                            posbg[1]+=12
-                    '''
-
-
+                                posbg[1]+=12
+                        '''
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
@@ -205,24 +188,24 @@ def main():
                         moves.insert(0,event.key)
                     if moves != []:
                         jugador.move(moves[0])
-
-                    if event.key in allowedmoves2:
-                        moves2.insert(0,event.key)
-                    if moves2 != []:
-                        jugador2.move(moves2[0])
+                    if state == menuoptions[1]:
+                        if event.key in allowedmoves2:
+                            moves2.insert(0,event.key)
+                        if moves2 != []:
+                            jugador2.move(moves2[0])
 
                 if event.type == pygame.KEYUP:
                     if event.key in allowedmoves:
                         moves.remove(event.key)
-
-                    if event.key in allowedmoves2:
-                        moves2.remove(event.key)
                     jugador.soltartecla()
-                    jugador2.soltartecla()
                     if moves != []:
                         jugador.move(moves[0])
-                    if moves2 != []:
-                        jugador2.move(moves2[0])
+                    if state == menuoptions[1]:
+                        if event.key in allowedmoves2:
+                            moves2.remove(event.key)
+                        jugador2.soltartecla()
+                        if moves2 != []:
+                            jugador2.move(moves2[0])
         mousepos = pygame.mouse.get_pos()
         mouseonoption = fac.checkmouse(mousepos)
         if state == 'menu':
@@ -255,7 +238,19 @@ def main():
             mousepos = pygame.mouse.get_pos()
 
             everyone.draw(screen)
-        if state == menuoptions[1]:
+            if state == menuoptions[0]:
+                jugador=Jugador(matrizJugador)
+                jugadores.add(jugador)
+                todos.add(jugador)
+            elif state == menuoptions[1]:
+                jugador=Jugador(matrizJugador)
+                jugadores.add(jugador)
+                todos.add(jugador)
+                jugador2=Jugador2(matrizJugador2)
+                jugadores.add(jugador2)
+                todos.add(jugador2)
+        if state == menuoptions[0] or state ==  menuoptions[1]:
+
             if not fac.pause:
                 todos.update()
                 screen.fill([0,0,0])
@@ -292,6 +287,8 @@ def main():
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick:
                     state = 'menu'
+                    for x in jugadores:
+                        x.kill()
                     mouseclick = False
                     fac.pause = False
                 pygame.display.flip()
