@@ -11,9 +11,13 @@ step2=pygame.mixer.Sound('pasosJugador2.ogg')
 step2.set_volume(0.05)
 attack1=pygame.mixer.Sound('ataque1.ogg')
 attack2=pygame.mixer.Sound('ataque2.ogg')
+<<<<<<< HEAD
 screensize = pygame.display.Info()
 RESOLUTION = [screensize.current_w, screensize.current_h]
 bglimit = 10
+=======
+
+>>>>>>> bc188c8f0036ac66585fd4e484f2a5733e30bad5
 #Funciones
 '''
 def recortarCara(archivo):
