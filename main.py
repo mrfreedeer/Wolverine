@@ -1,4 +1,6 @@
 import pygame
+import time
+import random
 from wolvbasics import *
 from jugador import *
 from enemigo import *
@@ -109,6 +111,12 @@ def main():
         pausepositions.append((pausexpos-x.get_width()/2, ypos))
         ypos += x.get_height() + 10
     fac.pausepositions = pausepositions
+    blink = False
+    time = pygame.time.get_ticks()
+    turn = False
+    modlist = []
+    random.seed(pygame.time.get_ticks())
+    time2 = pygame.time.get_ticks()
     while not end:
         pygame.display.flip()
         for event in pygame.event.get():
@@ -123,8 +131,14 @@ def main():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         modi -= 1
+                        blink = True
+                        time = pygame.time.get_ticks()
+                        lasttime = pygame.time.get_ticks()
                     if event.key == pygame.K_RIGHT:
                         modi += 1
+                        blink = True
+                        time = pygame.time.get_ticks()
+                        lasttime = pygame.time.get_ticks()
                     if modi < 0:
                         modi = 3
                     elif modi > 3:
@@ -135,6 +149,7 @@ def main():
                     m = fac.getModifier(modi)
                     modifiers.add(m)
                     everyone.add(m)
+
             elif state == menuoptions[1] or state == menuoptions[0]:
 
                 #print 'Jugador:', jugador.rect.x, jugador.rect.y
@@ -189,6 +204,19 @@ def main():
         mousepos = pygame.mouse.get_pos()
         mouseonoption = fac.checkmouse(mousepos)
         if state == 'menu':
+            if blink:
+                if pygame.time.get_ticks()-lasttime >= 200:
+                    turn = not turn
+                    lasttime = pygame.time.get_ticks()
+                    if turn:
+                        m.kill()
+                    else:
+                        modifiers.add(m)
+                        everyone.add(m)
+                elif pygame.time.get_ticks() - time >= 2000:
+                    blink = not blink
+                    modifiers.add(m)
+                    everyone.add(m)
             if mouseonoption != -1 and mouseclick: #Detecting Option Clicked
                 print "Menu Option Clicked: ", menuoptions[mouseonoption]
                 mouseclick = False
@@ -235,14 +263,41 @@ def main():
         if state == menuoptions[0] or state ==  menuoptions[1]:
 
             if not fac.pause:
-
+                if pygame.time.get_ticks() - time >= random.randrange(10000,20000) and (len(modlist)<=3):
+                    m = fac.getModifier(random.randrange(0,4))
+                    m.rect.x = random.randrange(0,fac._screensize[0]-100)
+                    m.rect.y = random.randrange((fac.posbg[1] + fac.posbgfixedy), fac._screensize[1]-100)
+                    blink = True
+                    lasttime = pygame.time.get_ticks()
+                    time = pygame.time.get_ticks()
+                    modifiers.add(m)
+                    todos.add(m)
+                    modlist.append(m)
+                elif pygame.time.get_ticks() - time2 >= 20000:
+                    time2 = pygame.time.get_ticks()
+                    if modlist != []:
+                        modlist[0].kill()
+                        modlist.pop(0)
+                if blink:
+                    if pygame.time.get_ticks()-lasttime >= 200:
+                        turn = not turn
+                        lasttime = pygame.time.get_ticks()
+                        if turn:
+                            m.kill()
+                        else:
+                            modifiers.add(m)
+                            todos.add(m)
+                    elif pygame.time.get_ticks() - time >= 2000:
+                        blink = not blink
+                        modifiers.add(m)
+                        todos.add(m)
                 todos.update()
 
                 if jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]:
                     jugador.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador.rect.height
                 if state == menuoptions[1]:
                     if jugador2.rect.y + jugador2.rect.height < fac.posbgfixedy + fac.posbg[1]:
-                        jugador2.rect.y = fac.posbgfixedy + fac.posbg[1] + jugador2.rect.height
+                        jugador2.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador2.rect.height
                 if moves != []:
                     fac.checklimits(moves[0],jugador, bginfo)
                 if moves2 != []:

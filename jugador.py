@@ -120,6 +120,11 @@ class Jugador(pygame.sprite.Sprite):
         self.salto=False
         self.dir = 'R'
         self._health = 100
+        self.finished = False
+        self.updatemove = False
+        self.still = True
+        self.prevkey = None
+        self.interrupt = False
 
     def getHealth(self):
         return self._health
@@ -129,18 +134,31 @@ class Jugador(pygame.sprite.Sprite):
         else:
             self.vel_y+=v
     def move(self, key):
-        if key == pygame.K_RIGHT:
-            self.derecha()
-        elif key == pygame.K_LEFT:
-            self.izquierda()
-        elif key == pygame.K_UP:
-            self.arriba()
-        elif key == pygame.K_DOWN:
-            self.abajo()
-        elif key == pygame.K_j:
-            self.teclaq()
-        elif key == pygame.K_k:
-            self.teclaw()
+        checklist = [pygame.K_RIGHT,pygame.K_LEFT,pygame.K_UP, pygame.K_DOWN]
+        if self.still:
+            self.finished = False
+            self.updatemove = False
+            self.still = False
+
+            if key == pygame.K_RIGHT:
+                self.derecha()
+            elif key == pygame.K_LEFT:
+                self.izquierda()
+            elif key == pygame.K_UP:
+                self.arriba()
+            elif key == pygame.K_DOWN:
+                self.abajo()
+            elif key == pygame.K_j:
+                self.teclaq()
+            elif key == pygame.K_k:
+                self.teclaw()
+        else:
+            if self.prevkey in checklist:
+                self.interrupt = True
+                self.soltartecla()
+                self.move(key)
+        self.prevkey = key
+
     def update(self):
         '''
         if self.salto:
@@ -154,6 +172,7 @@ class Jugador(pygame.sprite.Sprite):
 
             if self.indice > 2:
                 self.indice=0
+                self.finished = True
         #Idle L
         if self.accion==1:
             self.image = self.f[self.accion][self.indice]
@@ -161,6 +180,7 @@ class Jugador(pygame.sprite.Sprite):
 
             if self.indice > 2:
                 self.indice=0
+                self.finished = True
         #Walk R
         if self.accion==2:
             self.image = self.f[self.accion][self.indice]
@@ -172,6 +192,7 @@ class Jugador(pygame.sprite.Sprite):
 
             if self.indice > 5:
                 self.indice=0
+                self.finished = True
 
         #Walk L
         if self.accion==3:
@@ -184,6 +205,7 @@ class Jugador(pygame.sprite.Sprite):
 
             if self.indice > 5:
                 self.indice=0
+                self.finished = True
 
         #Jump R
         if self.accion==4:
@@ -193,6 +215,7 @@ class Jugador(pygame.sprite.Sprite):
             #Es 7 normalmente
             if self.indice == 3:
                 self.indice=3
+                self.finished = True
 
         #Jump L
         if self.accion==5:
@@ -202,6 +225,7 @@ class Jugador(pygame.sprite.Sprite):
             #Es 7 normalmente
             if self.indice == 3:
                 self.indice=3
+                self.finished = True
 
         #1
         #Attack R
@@ -214,6 +238,7 @@ class Jugador(pygame.sprite.Sprite):
             #Es 7 normalmente
             if self.indice > 2:
                 self.indice=0
+                self.finished = True
 
         #Attack L
         if self.accion==7:
@@ -225,6 +250,7 @@ class Jugador(pygame.sprite.Sprite):
             #Es 7 normalmente
             if self.indice > 2:
                 self.indice=0
+                self.finished = True
         #2
         #Attack R
         if self.accion==8:
@@ -236,6 +262,7 @@ class Jugador(pygame.sprite.Sprite):
             #Es 7 normalmente
             if self.indice > 2:
                 self.indice=0
+                self.finished = True
 
         #Attack L
         if self.accion==9:
@@ -247,6 +274,7 @@ class Jugador(pygame.sprite.Sprite):
             #Es 7 normalmente
             if self.indice > 2:
                 self.indice=0
+                self.finished = True
 
         #self.gravedad(1)
 
@@ -261,6 +289,8 @@ class Jugador(pygame.sprite.Sprite):
             self.rect.y = RESOLUTION[1] - bglimit- self.rect.height
         elif self.rect.y < bglimit:
             self.rect.y = bglimit
+        if self.updatemove:
+            self.soltartecla()
 
     def derecha(self):
         if self.accion==4:
@@ -335,21 +365,28 @@ class Jugador(pygame.sprite.Sprite):
             self.accion=9
 
     def soltartecla(self):
-        self.indice=0
-        if self.accion==2 or self.accion==3:
-            if self.dir=='R':
-                self.accion=0
-            if self.dir=='L':
-                self.accion=1
-            self.vel_x=0
-            self.vel_y=0
+        self.still = True
+        if (self.finished and self.updatemove) or self.interrupt:
+            self.indice=0
+            if self.accion==2 or self.accion==3:
+                if self.dir=='R':
+                    self.accion=0
+                if self.dir=='L':
+                    self.accion=1
+                self.vel_x=0
+                self.vel_y=0
 
-        if self.accion==4 or self.accion==5 or self.accion==6 or self.accion==7 or self.accion==8 or self.accion==9:
-            if self.dir=='R':
-                self.accion=0
-            if self.dir=='L':
-                self.accion=1
-            self.vel_x=0
+            if self.accion==4 or self.accion==5 or self.accion==6 or self.accion==7 or self.accion==8 or self.accion==9:
+                if self.dir=='R':
+                    self.accion=0
+                if self.dir=='L':
+                    self.accion=1
+                self.vel_x=0
+            self.finished = False
+            self.updatemove = False
+            self.interrupt = False
+        else:
+            self.updatemove = True
 
 class Jugador2(pygame.sprite.Sprite):
     def __init__(self, matriz):
@@ -359,13 +396,18 @@ class Jugador2(pygame.sprite.Sprite):
         self.rect=self.image.get_rect()
         self.indice=0
         self.rect.x=50
-        self.rect.y=550
+        self.rect.y=450
         self.vel_x=0
         self.vel_y=0
         self.accion=0
         self.salto=False
         self.dir = 'R'
         self._health = 100
+        self.finished = False
+        self.updatemove = False
+        self.still = True
+        self.prevkey = None
+        self.interrupt = False
 
     def getHealth(self):
         return self._health
@@ -375,20 +417,31 @@ class Jugador2(pygame.sprite.Sprite):
         else:
             self.vel_y+=v
     def move(self, key):
-        if key == pygame.K_d:
-            self.derecha()
-        elif key == pygame.K_a:
-            self.izquierda()
-        elif key == pygame.K_w:
-            self.arriba()
-        elif key == pygame.K_s:
-            self.abajo()
-        #elif key == pygame.K_SPACE:
-        #    self.saltar()
-        elif key == pygame.K_r:
-            self.teclaq()
-        elif key == pygame.K_t:
-            self.teclaw()
+        checklist = [pygame.K_w,pygame.K_s,pygame.K_a, pygame.K_d]
+        if self.still:
+            self.finished = False
+            self.updatemove = False
+            self.still = False
+
+            if key == pygame.K_d:
+                self.derecha()
+            elif key == pygame.K_a:
+                self.izquierda()
+            elif key == pygame.K_w:
+                self.arriba()
+            elif key == pygame.K_s:
+                self.abajo()
+            elif key == pygame.K_r:
+                self.teclaq()
+            elif key == pygame.K_t:
+                self.teclaw()
+        else:
+            if self.prevkey in checklist:
+                self.interrupt = True
+                self.soltartecla()
+                self.move(key)
+        self.prevkey = key
+
     def update(self):
         '''
         if self.salto:
@@ -402,6 +455,7 @@ class Jugador2(pygame.sprite.Sprite):
 
             if self.indice > 2:
                 self.indice=0
+                self.finished = True
         #Idle L
         if self.accion==1:
             self.image = self.f[self.accion][self.indice]
@@ -409,6 +463,7 @@ class Jugador2(pygame.sprite.Sprite):
 
             if self.indice > 2:
                 self.indice=0
+                self.finished = True
         #Walk R
         if self.accion==2:
             self.image = self.f[self.accion][self.indice]
@@ -417,8 +472,10 @@ class Jugador2(pygame.sprite.Sprite):
             if self.indice==4:
                 step2.play()
             self.indice += 1
+
             if self.indice > 5:
                 self.indice=0
+                self.finished = True
 
         #Walk L
         if self.accion==3:
@@ -431,6 +488,7 @@ class Jugador2(pygame.sprite.Sprite):
 
             if self.indice > 5:
                 self.indice=0
+                self.finished = True
 
         #Jump R
         if self.accion==4:
@@ -440,6 +498,7 @@ class Jugador2(pygame.sprite.Sprite):
             #Es 7 normalmente
             if self.indice == 3:
                 self.indice=3
+                self.finished = True
 
         #Jump L
         if self.accion==5:
@@ -449,6 +508,7 @@ class Jugador2(pygame.sprite.Sprite):
             #Es 7 normalmente
             if self.indice == 3:
                 self.indice=3
+                self.finished = True
 
         #1
         #Attack R
@@ -461,6 +521,7 @@ class Jugador2(pygame.sprite.Sprite):
             #Es 7 normalmente
             if self.indice > 2:
                 self.indice=0
+                self.finished = True
 
         #Attack L
         if self.accion==7:
@@ -472,6 +533,7 @@ class Jugador2(pygame.sprite.Sprite):
             #Es 7 normalmente
             if self.indice > 2:
                 self.indice=0
+                self.finished = True
         #2
         #Attack R
         if self.accion==8:
@@ -483,6 +545,7 @@ class Jugador2(pygame.sprite.Sprite):
             #Es 7 normalmente
             if self.indice > 2:
                 self.indice=0
+                self.finished = True
 
         #Attack L
         if self.accion==9:
@@ -494,8 +557,10 @@ class Jugador2(pygame.sprite.Sprite):
             #Es 7 normalmente
             if self.indice > 2:
                 self.indice=0
+                self.finished = True
 
         #self.gravedad(1)
+
 
         self.rect.y += self.vel_y
         self.rect.x += self.vel_x
@@ -507,6 +572,8 @@ class Jugador2(pygame.sprite.Sprite):
             self.rect.y = RESOLUTION[1] - bglimit- self.rect.height
         elif self.rect.y < bglimit:
             self.rect.y = bglimit
+        if self.updatemove:
+            self.soltartecla()
     def derecha(self):
         if self.accion==4:
             pass
@@ -580,18 +647,25 @@ class Jugador2(pygame.sprite.Sprite):
             self.accion=9
 
     def soltartecla(self):
-        self.indice=0
-        if self.accion==2 or self.accion==3:
-            if self.dir=='R':
-                self.accion=0
-            if self.dir=='L':
-                self.accion=1
-            self.vel_x=0
-            self.vel_y=0
+        self.still = True
+        if (self.finished and self.updatemove) or self.interrupt:
+            self.indice=0
+            if self.accion==2 or self.accion==3:
+                if self.dir=='R':
+                    self.accion=0
+                if self.dir=='L':
+                    self.accion=1
+                self.vel_x=0
+                self.vel_y=0
 
-        if self.accion==4 or self.accion==5 or self.accion==6 or self.accion==7 or self.accion==8 or self.accion==9:
-            if self.dir=='R':
-                self.accion=0
-            if self.dir=='L':
-                self.accion=1
-            self.vel_x=0
+            if self.accion==4 or self.accion==5 or self.accion==6 or self.accion==7 or self.accion==8 or self.accion==9:
+                if self.dir=='R':
+                    self.accion=0
+                if self.dir=='L':
+                    self.accion=1
+                self.vel_x=0
+            self.finished = False
+            self.updatemove = False
+            self.interrupt = False
+        else:
+            self.updatemove = True
