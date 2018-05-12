@@ -17,7 +17,7 @@ class Modifier(pygame.sprite.Sprite):
         self.type = type
         self.blink = True
 class Facade(object):
-    def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos):
+    def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos, wolvface, wolvface2):
         self._normalrenders = menurenders[:]
         self._menurenders = menurenders
         self._Wolverine = Wolverine
@@ -30,17 +30,30 @@ class Facade(object):
         self._modifiers = []
         self.pause = False
         self._screensize = pygame.display.Info()
-        self._lifepos = [70, 20]
-        self._healthheight = 40
+        self._lifepos = [100, 30]
+        self._healthheight = 20
         self._pauserenders = []
         self._normalpauserenders = []
         self.pausepositions = []
+        self.wolvface = wolvface
+        self.wolvface2 = wolvface2
 
-    def drawLife(self, health):
+    def drawLife(self, health, noplayers = 1, health2=0):
+        self._screen.blit(self.wolvface, (self._lifepos[0] - 75, self._lifepos[1]/2 - 10))
         rect = [self._lifepos[0], self._lifepos[1], 302 , self._healthheight]
         rect2 = [self._lifepos[0] + 1, self._lifepos[1] + 1, health*3, self._healthheight-2]
-        pygame.draw.rect(self._screen, blue,rect, 1)
-        pygame.draw.rect(self._screen, red,rect2)
+        pygame.draw.rect(self._screen, red,rect, 1)
+        pygame.draw.rect(self._screen, yellow,rect2)
+        if noplayers >= 2:
+            wolvierect = self.wolvface.get_rect()
+            wolvierect.y = self._lifepos[1]/2 - 10
+            wolvieheight = wolvierect.height
+            self._screen.blit(self.wolvface2, (self._lifepos[0] - 75, self._lifepos[1]/2 +10 + wolvieheight))
+            rectW2 = [self._lifepos[0], self._lifepos[1] + wolvieheight + self._healthheight, 302 , self._healthheight]
+            rectW22 = [self._lifepos[0] + 1, self._lifepos[1] + 1 + wolvieheight + self._healthheight, health2*3, self._healthheight-2]
+            pygame.draw.rect(self._screen, green,rectW2, 1)
+            pygame.draw.rect(self._screen, blue,rectW22)
+
     def loadmodifiers(self, path, quantity = 4):
         image = pygame.image.load(path).convert_alpha()
         imageinfo = image.get_rect()

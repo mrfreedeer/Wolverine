@@ -26,15 +26,18 @@ def main():
     pygame.font.init()
     bob = Builder(pygame.font.Font('WolverineFont.ttf', 40), pygame.font.Font('WolverineFont.ttf', 60))
     screen = bob.buildscreen()
-    menubckg = pygame.image.load('menu.png')
-    menubckg2 = pygame.image.load('menu.png')
-    gamebckg = pygame.image.load('bg.png')
+    menubckg = pygame.image.load('menu.png').convert_alpha()
+    gamebckg = pygame.image.load('bg.png').convert_alpha()
     bginfo = [gamebckg.get_rect()[2],gamebckg.get_rect()[3]]
-    fondo = pygame.image.load('fondo.png')
-    player1 = pygame.image.load('jugador1.png')
+    fondo = pygame.image.load('fondo.png').convert_alpha()
+    player1 = pygame.image.load('jugador1.png').convert_alpha()
     player1=pygame.transform.scale(player1, (750, 350))
-    player2 = pygame.image.load('jugador2.png')
+    player2 = pygame.image.load('jugador2.png').convert_alpha()
     player2=pygame.transform.scale(player2, (750, 350))
+    wolvieface = pygame.image.load('WolverineFace.png').convert_alpha()
+    wolvieface = pygame.transform.scale(wolvieface, (50,50))
+    wolvieface2 = pygame.image.load('WolverineFace2.png').convert_alpha()
+    wolvieface2= pygame.transform.scale(wolvieface2, (50,50))
     menuoptions = ["1 Jugador", "2 Jugadores", "Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
     pauserender = bob.buildtxtrender("PAUSE", 1, white)
@@ -42,7 +45,7 @@ def main():
     menurenders = bob.buildtxtrenders(menuoptions)
     WolverineTitle = bob.buildtxtrender("Wolverine", 1)
     end = False
-    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0])
+    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0], wolvieface, wolvieface2)
     fac._screensize = bob.buildresolution()
     posbg[1] += fac._screensize[1]-200
     fac.posbg = posbg
@@ -66,10 +69,10 @@ def main():
     state = 'menu'
     backtomenured = bob.buildtxtrender("Back to Menu", 0, red)
 
-    wolverine=pygame.image.load('wolverine_sprites.png')
+    wolverine=pygame.image.load('wolverine_sprites.png').convert_alpha()
     infoWolverine=wolverine.get_rect()
 
-    wolverine2=pygame.image.load('wolverine_sprites2.png')
+    wolverine2=pygame.image.load('wolverine_sprites2.png').convert_alpha()
     infoWolverine2=wolverine2.get_rect()
 
     todos=pygame.sprite.Group()
@@ -199,6 +202,10 @@ def main():
                 #print "Menu Option Clicked: ", menuoptions[mouseonoption]
                 mouseclick = False
                 state = menuoptions[mouseonoption]
+                if mouseonoption == 0:
+                    modwait = 15000
+                else:
+                    modwait = 10000
             if mouseonoption != -1 and mouseonoption not in fac.getTurned():
                 #Turns blue the option the mouse is on
                 txt = menuoptions[mouseonoption]
@@ -260,7 +267,7 @@ def main():
                 for x in gottapop:
                     playermodlist.pop(x)
 
-                if pygame.time.get_ticks() - time >= random.randrange(10000,20000) and (len(modlist)<=3):
+                if pygame.time.get_ticks() - time >= random.randrange(modwait,modwait*2) and (len(modlist)<=3):
                     m = fac.getModifier(random.randrange(0,4))
                     m.rect.x = random.randrange(0,fac._screensize[0]-100)
                     m.rect.y = random.randrange((fac.posbg[1] + fac.posbgfixedy), fac._screensize[1]-100)
@@ -305,7 +312,11 @@ def main():
                 screen.blit(gamebckg, fac.posbg)
 
                 todos.draw(screen)
-                fac.drawLife(jugador.getHealth())
+                if state == menuoptions[0]:
+                    fac.drawLife(jugador.getHealth())
+                else:
+                    fac.drawLife(jugador.getHealth(), 2, jugador2.getHealth())
+
                 pygame.display.flip()
                 reloj.tick(10)
 
