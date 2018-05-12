@@ -133,8 +133,8 @@ class Enemigo1(pygame.sprite.Sprite):
 
         #1
         #Attack R
-        if self.accion==6:
-            if self.indice <3:
+        if self.accion==2:
+            if self.indice <2:
                 self.image = self.f[self.accion][self.indice]
                 self.indice += 1
             #Es 7 normalmente
@@ -142,33 +142,14 @@ class Enemigo1(pygame.sprite.Sprite):
                 self.indice=0
 
         #Attack L
-        if self.accion==7:
-            if self.indice <3:
-                self.image = self.f[self.accion][self.indice]
-                self.indice += 1
-            #Es 7 normalmente
-            if self.indice > 2:
-                self.indice=0
-        #2
-        #Attack R
-        '''
-        if self.accion==8:
-            if self.indice <3:
+        if self.accion==3:
+            if self.indice <2:
                 self.image = self.f[self.accion][self.indice]
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 2:
                 self.indice=0
 
-        #Attack L
-        if self.accion==9:
-            if self.indice <3:
-                self.image = self.f[self.accion][self.indice]
-                self.indice += 1
-            #Es 7 normalmente
-            if self.indice > 2:
-                self.indice=0
-        '''
 
 class Enemigo2(pygame.sprite.Sprite):
     def __init__(self, matriz):
@@ -204,23 +185,41 @@ class Enemigo2(pygame.sprite.Sprite):
             if self.indice > 2:
                 self.indice=0
 
-        #1
-        #Attack R
-        if self.accion==6:
-            if self.indice <3:
+        #Walk R
+        if self.accion==2:
+            if self.indice <5:
                 self.image = self.f[self.accion][self.indice]
                 self.indice += 1
             #Es 7 normalmente
-            if self.indice > 2:
+            if self.indice > 5:
+                self.indice=0
+
+        #Walk L
+        if self.accion==3:
+            if self.indice <5:
+                self.image = self.f[self.accion][self.indice]
+                self.indice += 1
+            #Es 7 normalmente
+            if self.indice > 5:
+                self.indice=0
+
+        #1
+        #Attack R
+        if self.accion==4:
+            if self.indice <1:
+                self.image = self.f[self.accion][self.indice]
+                self.indice += 1
+            #Es 7 normalmente
+            if self.indice > 1:
                 self.indice=0
 
         #Attack L
         if self.accion==7:
-            if self.indice <3:
+            if self.indice <1:
                 self.image = self.f[self.accion][self.indice]
                 self.indice += 1
             #Es 7 normalmente
-            if self.indice > 2:
+            if self.indice > 1:
                 self.indice=0
         #2
         #Attack R
