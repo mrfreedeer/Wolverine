@@ -5,7 +5,7 @@ ALTO=1000
 ANCHO=1000
 limites=[10, 8, 11, 10, 8, 6, 9, 4, 12, 8, 8, 10, 9, 4, 7, 5, 2, 8, 9, 9, 9]
 pygame.mixer.init(44100, -16, 2, 2048)
-step=pygame.mixer.Sound('pasosJugador.ogg')
+step=pygame.mixer.Sound('pasosJugador3.ogg')
 step.set_volume(0.05)
 step2=pygame.mixer.Sound('pasosJugador2.ogg')
 step2.set_volume(0.05)
@@ -206,8 +206,8 @@ class Jugador(pygame.sprite.Sprite):
             self.image = self.f[self.accion][self.indice]
             if self.indice==0:
                 step.play()
-            if self.indice==4:
-                step2.play()
+            if self.indice==3:
+                step.play()
             self.indice += 1
 
             if self.indice > 5:
@@ -219,8 +219,8 @@ class Jugador(pygame.sprite.Sprite):
             self.image = self.f[self.accion][self.indice]
             if self.indice==0:
                 step.play()
-            if self.indice==4:
-                step2.play()
+            if self.indice==3:
+                step.play()
             self.indice += 1
 
             if self.indice > 5:
@@ -536,8 +536,8 @@ class Jugador2(pygame.sprite.Sprite):
             self.image = self.f[self.accion][self.indice]
             if self.indice==0:
                 step.play()
-            if self.indice==4:
-                step2.play()
+            if self.indice==3:
+                step.play()
             self.indice += 1
 
             if self.indice > 5:
@@ -549,8 +549,8 @@ class Jugador2(pygame.sprite.Sprite):
             self.image = self.f[self.accion][self.indice]
             if self.indice==0:
                 step.play()
-            if self.indice==4:
-                step2.play()
+            if self.indice==3:
+                step.play()
             self.indice += 1
 
             if self.indice > 5:
