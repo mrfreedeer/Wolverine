@@ -190,7 +190,7 @@ class Jugador(pygame.sprite.Sprite):
             self.image = self.f[self.accion][self.indice]
             if self.indice==0:
                 step.play()
-            if self.indice==3s:
+            if self.indice==3:
                 step.play()
             self.indice += 1
 
