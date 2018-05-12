@@ -116,6 +116,9 @@ class Jugador(pygame.sprite.Sprite):
         self.rect.y=450
         self.vel_x=0
         self.vel_y=0
+        self.vel_x_value = 18
+        self.vel_y_value = 10
+        self.vel_multiplier = 1
         self.accion=0
         self.salto=False
         self.dir = 'R'
@@ -125,6 +128,7 @@ class Jugador(pygame.sprite.Sprite):
         self.still = True
         self.prevkey = None
         self.interrupt = False
+
 
     def getHealth(self):
         return self._health
@@ -301,7 +305,7 @@ class Jugador(pygame.sprite.Sprite):
             self.salto=False
             self.dir='R'
             self.accion=2
-            self.vel_x=18
+            self.vel_x= self.vel_x_value * self.vel_multiplier
         '''
         if self.rect.x>=1050:
             self.rect.x=1050
@@ -316,10 +320,10 @@ class Jugador(pygame.sprite.Sprite):
             self.salto=False
             self.dir='L'
             self.accion=3
-            self.vel_x=-18
+            self.vel_x=-self.vel_x_value * self.vel_multiplier
 
     def arriba(self):
-        self.vel_y=-10
+        self.vel_y=- self.vel_y_value * self.vel_multiplier
         if self.dir=='R':
             self.indice=0
             self.accion=2
@@ -330,7 +334,7 @@ class Jugador(pygame.sprite.Sprite):
             self.vel_x=0
 
     def abajo(self):
-        self.vel_y=10
+        self.vel_y = self.vel_y_value * self.vel_multiplier
         if self.dir=='R':
             self.indice=0
             self.accion=2
@@ -366,6 +370,8 @@ class Jugador(pygame.sprite.Sprite):
 
     def soltartecla(self):
         self.still = True
+        if self.prevkey in [pygame.K_RIGHT,pygame.K_LEFT,pygame.K_UP, pygame.K_DOWN]:
+            self.interrupt = True
         if (self.finished and self.updatemove) or self.interrupt:
             self.indice=0
             if self.accion==2 or self.accion==3:
@@ -399,6 +405,9 @@ class Jugador2(pygame.sprite.Sprite):
         self.rect.y=450
         self.vel_x=0
         self.vel_y=0
+        self.vel_x_value = 18
+        self.vel_y_value = 10
+        self.vel_multiplier = 1
         self.accion=0
         self.salto=False
         self.dir = 'R'
@@ -409,6 +418,7 @@ class Jugador2(pygame.sprite.Sprite):
         self.prevkey = None
         self.interrupt = False
 
+
     def getHealth(self):
         return self._health
     def gravedad(self, v):
@@ -417,7 +427,7 @@ class Jugador2(pygame.sprite.Sprite):
         else:
             self.vel_y+=v
     def move(self, key):
-        checklist = [pygame.K_w,pygame.K_s,pygame.K_a, pygame.K_d]
+        checklist = [pygame.K_d,pygame.K_a,pygame.K_w, pygame.K_s]
         if self.still:
             self.finished = False
             self.updatemove = False
@@ -574,6 +584,7 @@ class Jugador2(pygame.sprite.Sprite):
             self.rect.y = bglimit
         if self.updatemove:
             self.soltartecla()
+
     def derecha(self):
         if self.accion==4:
             pass
@@ -583,7 +594,7 @@ class Jugador2(pygame.sprite.Sprite):
             self.salto=False
             self.dir='R'
             self.accion=2
-            self.vel_x=18
+            self.vel_x= self.vel_x_value * self.vel_multiplier
         '''
         if self.rect.x>=1050:
             self.rect.x=1050
@@ -598,10 +609,10 @@ class Jugador2(pygame.sprite.Sprite):
             self.salto=False
             self.dir='L'
             self.accion=3
-            self.vel_x=-18
+            self.vel_x=-self.vel_x_value * self.vel_multiplier
 
     def arriba(self):
-        self.vel_y=-10
+        self.vel_y=- self.vel_y_value * self.vel_multiplier
         if self.dir=='R':
             self.indice=0
             self.accion=2
@@ -612,7 +623,7 @@ class Jugador2(pygame.sprite.Sprite):
             self.vel_x=0
 
     def abajo(self):
-        self.vel_y=10
+        self.vel_y = self.vel_y_value * self.vel_multiplier
         if self.dir=='R':
             self.indice=0
             self.accion=2
@@ -648,6 +659,8 @@ class Jugador2(pygame.sprite.Sprite):
 
     def soltartecla(self):
         self.still = True
+        if self.prevkey in [pygame.K_d,pygame.K_a,pygame.K_w, pygame.K_s]:
+            self.interrupt = True
         if (self.finished and self.updatemove) or self.interrupt:
             self.indice=0
             if self.accion==2 or self.accion==3:

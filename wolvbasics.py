@@ -10,11 +10,11 @@ black = (0,0,0)         #rgb(0,0,0)
 pink = (255,200,200) #rgb(255,200,200)c
 
 class Modifier(pygame.sprite.Sprite):
-    def __init__(self, image):
+    def __init__(self, image,type):
         pygame.sprite.Sprite.__init__(self)
         self.image = image
         self.rect = self.image.get_rect()
-
+        self.type = type
 class Facade(object):
     def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos):
         self._normalrenders = menurenders[:]
@@ -54,7 +54,7 @@ class Facade(object):
         self._normalpauserenders = pauserenders[:]
     def getModifier(self, i):
         if i < len(self._modifiers):
-            m = Modifier(self._modifiers[i])
+            m = Modifier(self._modifiers[i], i)
             return m
         else:
             return -1
@@ -123,6 +123,7 @@ class Facade(object):
         if player.rect.y + player.rect.height < self.posbgfixedy + self.posbg[1] + limit and key == pygame.K_UP:
             if self.posbg[1] + self.posbgfixedy + limit < self._screensize[1] - 200:
                     self.posbg[1] += limit
+
 class Builder(object):
     def __init__(self, normalfont, titlefont):
         self._normalfont = normalfont
