@@ -121,7 +121,6 @@ class Facade(object):
                 if bginfo[1] + self.posbg[1] - self._screensize[1]  - limit >0:
                     self.posbg[1] -= limit
         if player.rect.y + player.rect.height < self.posbgfixedy + self.posbg[1] + limit and key == pygame.K_UP:
-            print self.posbg[1] + limit, "--", player.rect.y + player.rect.height
             if self.posbg[1] + self.posbgfixedy + limit < self._screensize[1] - 200:
                     self.posbg[1] += limit
 class Builder(object):

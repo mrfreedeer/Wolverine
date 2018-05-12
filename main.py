@@ -19,6 +19,7 @@ def printkey(key):
         print "Right"
 
 def main():
+
     pygame.init()
     pygame.font.init()
     bob = Builder(pygame.font.Font('WolverineFont.ttf', 40), pygame.font.Font('WolverineFont.ttf', 60))
@@ -236,7 +237,7 @@ def main():
             if not fac.pause:
 
                 todos.update()
-                
+
                 if jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]:
                     jugador.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador.rect.height
                 if state == menuoptions[1]:
@@ -316,7 +317,8 @@ def main():
                 state = 'menu'
             #screen.blit(x,[750, 350])
             #select = fac.checkmousepause(mousepos)
-
+        elif state == 'Salir':
+            end = True
         pygame.display.flip()
     pygame.quit()
 
