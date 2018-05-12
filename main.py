@@ -115,6 +115,7 @@ def main():
     time = pygame.time.get_ticks()
     turn = False
     modlist = []
+    playermodlist = {}
     random.seed(pygame.time.get_ticks())
     time2 = pygame.time.get_ticks()
     while not end:
@@ -151,29 +152,6 @@ def main():
                     everyone.add(m)
 
             elif state == menuoptions[1] or state == menuoptions[0]:
-
-                #print 'Jugador:', jugador.rect.x, jugador.rect.y
-                #print 'Fondo:',posbg
-                #Gestion de limites------------------------------------------------------
-                if event.type == pygame.KEYDOWN:
-
-                    #ACOMODAR ESTE
-                    '''
-                    if posbg[1]<=-432:
-                        if jugador.rect.y<=342:
-                            jugador.downlimit_y+=6
-
-                            posbg[1]+=12
-                    '''
-
-                        #ACOMODAR ESTE
-                    '''
-                        if posbg[1]<=-432:
-                            if jugador2.rect.y<=342:
-                                jugador2.downlimit_y+=6
-
-                                posbg[1]+=12
-                    '''
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
@@ -218,7 +196,7 @@ def main():
                     modifiers.add(m)
                     everyone.add(m)
             if mouseonoption != -1 and mouseclick: #Detecting Option Clicked
-                print "Menu Option Clicked: ", menuoptions[mouseonoption]
+                #print "Menu Option Clicked: ", menuoptions[mouseonoption]
                 mouseclick = False
                 state = menuoptions[mouseonoption]
             if mouseonoption != -1 and mouseonoption not in fac.getTurned():
@@ -263,6 +241,25 @@ def main():
         if state == menuoptions[0] or state ==  menuoptions[1]:
 
             if not fac.pause:
+                for x in jugadores:
+                    lsmod = pygame.sprite.spritecollideany(x, modifiers)
+                    if lsmod != None:
+                        if not lsmod.blink:
+                            if lsmod.type in playermodlist:
+                                playermodlist.pop(lsmod.type)
+                                playermodlist[lsmod.type] = [ pygame.time.get_ticks(), x]
+                            else:
+                                playermodlist[lsmod.type] = [ pygame.time.get_ticks(), x]
+                            x.dealtwithModifiers(lsmod.type)
+                            lsmod.kill()
+                gottapop = []
+                for x in playermodlist:
+                    if pygame.time.get_ticks() - playermodlist[x][0] >= 10000:
+                        playermodlist[x][1].resetValue(x)
+                        gottapop.append(x)
+                for x in gottapop:
+                    playermodlist.pop(x)
+
                 if pygame.time.get_ticks() - time >= random.randrange(10000,20000) and (len(modlist)<=3):
                     m = fac.getModifier(random.randrange(0,4))
                     m.rect.x = random.randrange(0,fac._screensize[0]-100)
@@ -289,6 +286,7 @@ def main():
                             todos.add(m)
                     elif pygame.time.get_ticks() - time >= 2000:
                         blink = not blink
+                        m.blink = False
                         modifiers.add(m)
                         todos.add(m)
                 todos.update()

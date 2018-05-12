@@ -118,7 +118,11 @@ class Jugador(pygame.sprite.Sprite):
         self.vel_y=0
         self.vel_x_value = 18
         self.vel_y_value = 10
+        self.damage1 = 10
+        self.damage2 = 15
         self.vel_multiplier = 1
+        self.damagedealtmultiplier = 1
+        self.damageinflictedmultiplier = 1
         self.accion=0
         self.salto=False
         self.dir = 'R'
@@ -128,10 +132,22 @@ class Jugador(pygame.sprite.Sprite):
         self.still = True
         self.prevkey = None
         self.interrupt = False
-
-
+    def printstats(self):
+        print "--------------Stats-------------"
+        print "Vel: ", self.vel_multiplier
+        print "Dmgdealt: ", self.damagedealtmultiplier
+        print "Dmginflic: ", self.damageinflictedmultiplier
     def getHealth(self):
         return self._health
+    def dealDamage(self,damage):
+        self._health -= damage * self.damagedealtmultiplier
+    def inflictDamage(self):
+        if prevkey == pygame.K_j:
+            return self.damage1 * self.damageinflictedmultiplier
+        elif prevkey == pygame.K_k:
+            return self.damage2 * self.damageinflictedmultiplier
+        else:
+            return 0
     def gravedad(self, v):
         if self.vel_y==0:
             self.vel_y=1
@@ -393,6 +409,30 @@ class Jugador(pygame.sprite.Sprite):
             self.interrupt = False
         else:
             self.updatemove = True
+        self.prevkey = None
+    def resetValue(self,modid):
+        if modid == 0:
+            self.damagedealtmultiplier = 1
+        elif modid == 1:
+            self.damageinflictedmultiplier = 1
+        elif modid == 2:
+            self.damagedealtmultiplier = 1
+        elif modid == 3:
+            self.vel_multiplier = 1
+    def dealtwithModifiers(self,modid):
+        if modid == 0:
+            self.damageinflictedmultiplier = 0.5
+        elif modid == 1:
+            if self.damageinflictedmultiplier == 0.5:
+                self.damageinflictedmultiplier = 1
+            else:
+                self.damageinflictedmultiplier = 2
+        elif modid == 2:
+            self.damagedealtmultiplier =  2
+        elif modid == 3:
+            self.vel_multiplier = 2
+
+
 
 class Jugador2(pygame.sprite.Sprite):
     def __init__(self, matriz):
@@ -407,7 +447,11 @@ class Jugador2(pygame.sprite.Sprite):
         self.vel_y=0
         self.vel_x_value = 18
         self.vel_y_value = 10
+        self.damage1 = 10
+        self.damage2 = 15
         self.vel_multiplier = 1
+        self.damagedealtmultiplier = 1
+        self.damageinflictedmultiplier = 1
         self.accion=0
         self.salto=False
         self.dir = 'R'
@@ -418,9 +462,22 @@ class Jugador2(pygame.sprite.Sprite):
         self.prevkey = None
         self.interrupt = False
 
-
+    def printstats(self):
+        print "--------------Stats-------------"
+        print "Vel: ", self.vel_multiplier
+        print "Dmgdealt: ", self.damagedealtmultiplier
+        print "Dmginflic: ", self.damageinflictedmultiplier
     def getHealth(self):
         return self._health
+    def dealDamage(self,damage):
+        self._health -= damage * self.damagedealtmultiplier
+    def inflictDamage(self):
+        if prevkey == pygame.K_j:
+            return self.damage1 * self.damageinflictedmultiplier
+        elif prevkey == pygame.K_k:
+            return self.damage2 * self.damageinflictedmultiplier
+        else:
+            return 0
     def gravedad(self, v):
         if self.vel_y==0:
             self.vel_y=1
@@ -682,3 +739,24 @@ class Jugador2(pygame.sprite.Sprite):
             self.interrupt = False
         else:
             self.updatemove = True
+    def resetValue(self,modid):
+        if modid == 0:
+            self.damagedealtmultiplier = 1
+        elif modid == 1:
+            self.damageinflictedmultiplier = 1
+        elif modid == 2:
+            self.damagedealtmultiplier = 1
+        elif modid == 3:
+            self.vel_multiplier = 1
+    def dealtwithModifiers(self,modid):
+        if modid == 0:
+            self.damageinflictedmultiplier = 0.5
+        elif modid == 1:
+            if self.damageinflictedmultiplier == 0.5:
+                self.damageinflictedmultiplier = 1
+            else:
+                self.damageinflictedmultiplier = 2
+        elif modid == 2:
+            self.damagedealtmultiplier =  2
+        elif modid == 3:
+            self.vel_multiplier = 2
