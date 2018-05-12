@@ -92,11 +92,14 @@ class Facade(object):
             if mousepos[0] >= x[0] and mousepos[0]<= x[0]+x[2] and mousepos[1] >= x[1] and mousepos[1] <= x[1]+x[3]:
                 return self._display_info.index(x)
         return -1
-    def checkmousepause(self,mousepos):
+    def checkmousepause(self,mousepos, overwrite = None):
         i = 0
         for x in self._pauserenders:
             rect = x.get_rect()
-            rect.x, rect.y = self.pausepositions[i][0], self.pausepositions[i][1]
+            if overwrite == None:
+                rect.x, rect.y = self.pausepositions[i][0], self.pausepositions[i][1]
+            else:
+                rect.x, rect.y = overwrite[0], overwrite[1]
             i += 1
             if rect.collidepoint(mousepos):
                 return self._pauserenders.index(x)
@@ -104,7 +107,23 @@ class Facade(object):
 
     def display_bkg(self):
         self._screen.blit(self._bckg, self._bckgpos)
+    def checklimits(self, key, player, bginfo):
+        bglimit = 150
+        limit = 15
 
+        if player.rect.x > self._screensize[0] - bglimit and key == pygame.K_RIGHT:
+                if bginfo[0] + self.posbg[0] - self._screensize[0]  - limit >0:
+                    self.posbg[0] -= limit
+        if player.rect.x < limit and key == pygame.K_LEFT:
+            if self.posbg[0]  + limit <0:
+                    self.posbg[0] += limit
+        if player.rect.y > self._screensize[1] - bglimit and key == pygame.K_DOWN:
+                if bginfo[1] + self.posbg[1] - self._screensize[1]  - limit >0:
+                    self.posbg[1] -= limit
+        if player.rect.y + player.rect.height < self.posbgfixedy + self.posbg[1] + limit and key == pygame.K_UP:
+            print self.posbg[1] + limit, "--", player.rect.y + player.rect.height
+            if self.posbg[1] + self.posbgfixedy + limit < self._screensize[1] - 200:
+                    self.posbg[1] += limit
 class Builder(object):
     def __init__(self, normalfont, titlefont):
         self._normalfont = normalfont
@@ -113,6 +132,8 @@ class Builder(object):
         self._screensize = pygame.display.Info()
         screen = pygame.display.set_mode([self._screensize.current_w,self._screensize.current_h])
         return screen
+    def buildresolution(self):
+        return (self._screensize.current_w, self._screensize.current_h)
     def buildtxtrenders(self, txtlist, fonttype = 0, colour = black):
         renders = []
         if fonttype == 0:
