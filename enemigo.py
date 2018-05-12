@@ -3,6 +3,8 @@ import pygame
 ALTO=1000
 ANCHO=1000
 limites=[10, 8, 11, 10, 8, 6, 9, 4, 12, 8, 8, 10, 9, 4, 7, 5, 2, 8, 9, 9, 9]
+pygame.mixer.init(44100, -16, 2, 2048)
+punchE2=pygame.mixer.Sound('punchEnemy.ogg')
 #Funciones
 
 def recortarEne1(archivo):
@@ -208,15 +210,19 @@ class Enemigo2(pygame.sprite.Sprite):
         if self.accion==4:
             if self.indice <1:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice==1:
+                    punchE2.play()
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 1:
                 self.indice=0
 
         #Attack L
-        if self.accion==7:
+        if self.accion==5:
             if self.indice <1:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice==1:
+                    punchE2.play()
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 1:
