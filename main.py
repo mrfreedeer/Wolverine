@@ -19,8 +19,11 @@ posbg = [0, -840]
 beep=pygame.mixer.Sound('beep.ogg')
 pygame.mixer.music.load('titlescreen.ogg')
 pygame.mixer.music.set_volume(0.5)
-pygame.mixer.music.queue('level1.ogg')
+level1=pygame.mixer.Sound('level1.ogg')
 pygame.mixer.music.play()
+channel1 = pygame.mixer.Channel(0)
+channel1.set_volume(0)
+channel1.play(level1, -1)
 def printkey(key):
     if key == pygame.K_LEFT:
         print "Left"
@@ -163,7 +166,8 @@ def main():
             if event.type == pygame.MOUSEBUTTONUP:
                     mouseclick = False
             if state == 'menu':
-
+                pygame.mixer.music.set_volume(0.3)
+                channel1.set_volume(0)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         modi -= 1
@@ -187,7 +191,8 @@ def main():
                     everyone.add(m)
 
             elif state == menuoptions[1] or state == menuoptions[0]:
-                pygame.mixer.music.set_volume(0.3)
+                pygame.mixer.music.set_volume(0)
+                channel1.set_volume(0.3)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         fac.pause = not fac.pause
