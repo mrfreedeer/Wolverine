@@ -44,8 +44,6 @@ def main():
     player1=pygame.transform.scale(player1, (750, 350))
     player2 = pygame.image.load('jugador2.png').convert_alpha()
     player2=pygame.transform.scale(player2, (750, 350))
-    enemyface = pygame.image.load('enemyFace.png').convert_alpha()
-    enemyface = pygame.transform.scale(enemyface, (40,40))
     wolvieface = pygame.image.load('WolverineFace.png').convert_alpha()
     wolvieface = pygame.transform.scale(wolvieface, (40,40))
     wolvieface2 = pygame.image.load('WolverineFace2.png').convert_alpha()
@@ -57,7 +55,7 @@ def main():
     menurenders = bob.buildtxtrenders(menuoptions)
     WolverineTitle = bob.buildtxtrender("Wolverine", 1)
     end = False
-    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0], wolvieface, wolvieface2, enemyface)
+    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0], wolvieface, wolvieface2)
     fac._screensize = bob.buildresolution()
     posbg[1] += fac._screensize[1]-200
     fac.posbg = posbg[:]
@@ -117,6 +115,8 @@ def main():
     reloj=pygame.time.Clock()
     generator1=True
     generator2=True
+    numberOfMovingEnemies=5
+    numberOfStillEnemies=2
 
     #screen.blit(gamebckg, [0,0])
     pygame.draw.polygon(screen, [255,255,255], [[0,400], [ANCHO, 400]],2)
@@ -167,6 +167,7 @@ def main():
             if state == 'menu':
                 pygame.mixer.music.set_volume(0.3)
                 channel1.set_volume(0)
+                '''
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         modi -= 1
@@ -188,7 +189,7 @@ def main():
                     m = fac.getModifier(modi)
                     modifiers.add(m)
                     everyone.add(m)
-
+                '''
             elif state == menuoptions[1] or state == menuoptions[0]:
                 pygame.mixer.music.set_volume(0)
                 channel1.set_volume(0.3)
@@ -350,8 +351,10 @@ def main():
                     gameover = False
             elif not fac.pause:
                 if fac.posbg[0]==0 or fac.posbg[0]==-220 or fac.posbg[0]==-320 or fac.posbg[0]==-520 or fac.posbg[0]==-660 or fac.posbg[0]==-990:
-                    numberOfMovingEnemies=5
-                    numberOfStillEnemies=2
+
+                    if numberOfMovingEnemies==0:
+                        #generator1=True
+                        generator2=True
                     for i in range(numberOfMovingEnemies):
                         if generator2:
                             enemy2=Enemigo2(matrizEnemigos2)
@@ -363,6 +366,7 @@ def main():
                     for i in range(numberOfStillEnemies):
                         if generator1:
                             enemy=Enemigo1(matrizEnemigos1)
+                            enemy.rect.y=random.randrange(500, 700)
                             enemigos.add(enemy)
                             todos.add(enemy)
                     generator1=False
@@ -441,20 +445,12 @@ def main():
                         m.blink = False
                         modifiers.add(m)
                         todos.add(m)
-                enemybar = []
                 for x in enemigos2:
                     if state == menuoptions[0]:
                         x.AImove(jugador)
                     else:
                         x.AImove(jugador, jugador2,2)
-                    jugadorlscol = []
                     jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
-                    if jugadorlscol != []:
-                        if len(enemybar) >2:
-                            enemybar.pop()
-                            enemybar.append(x)
-                        else:
-                            enemybar.append(x)
                     for y in jugadorlscol:
                         damageinf = y.inflictDamage(x)
                         x._health -= damageinf
@@ -462,6 +458,8 @@ def main():
                             if x._health <= 0:
                                 y.score += 200
                                 genscore += 200
+                                numberOfMovingEnemies-=1
+                                x.die()
                                 x.kill()
                             else:
                                 y.score += 50
@@ -525,26 +523,10 @@ def main():
                 if state == menuoptions[0]:
                     fac.drawLife(jugador.getHealth())
                     fac.drawScore(scorerender1, scorerender = score)
-                    if enemybar != []:
-                        for x in enemybar:
-                            if jugador.inflictDamage(x) == 0:
-                                enemybar.remove(x)
-                    if enemybar != []:
-                        if jugador.inflictDamage(enemybar[0]) > 0:
-                            fac.drawEnemyLife(enemybar[0])
                 else:
                     scorerender2 = bob.buildscorerender(str(jugador2.score))
                     fac.drawScore(scorerender1, score, 2,scorerender2)
                     fac.drawLife(jugador.getHealth(), 2, jugador2.getHealth())
-                    if enemybar != []:
-                        for x in enemybar:
-                            if jugador.inflictDamage(x) == 0 and jugador2.inflictDamage(x) == 0:
-                                enemybar.remove(x)
-                    if enemybar != []:
-                        if len(enemybar) >= 2:
-                            fac.drawEnemyLife(enemybar[0], 2, enemybar[1])
-                        else:
-                            fac.drawEnemyLife(enemybar[0])
 
                 pygame.display.flip()
                 reloj.tick(10)
