@@ -79,15 +79,30 @@ def main():
     todos=pygame.sprite.Group()
     jugadores=pygame.sprite.Group()
     enemigos=pygame.sprite.Group()
+    #enemigos2=pygame.sprite.Group()
+    balas=pygame.sprite.Group()
     matrizJugador=[]
     #matrizJugador2=[]
     matrizJugador=recortar('wolverine_sprites.png')
     matrizJugador2=recortar('wolverine_sprites2.png')
     matrizEnemigos1=recortarEne1('enemy.png')
-
+    matrizEnemigos2=recortarEne2('enemigoMovil.png')
+    matrizBala=recortarBala('lasers.png')
+    '''
     enemigo=Enemigo1(matrizEnemigos1)
     enemigos.add(enemigo)
     todos.add(enemigo)
+
+    enemigo2=Enemigo2(matrizEnemigos2)
+    enemigos.add(enemigo2)
+    todos.add(enemigo2)
+
+    bala=Bala(matrizBala)
+    bala.rect.y=enemigo.rect.y+enemigo.rect.height/2
+    bala.rect.x=enemigo.rect.width+50
+    balas.add(bala)
+    todos.add(bala)
+    '''
 
 
     reloj=pygame.time.Clock()
@@ -238,11 +253,15 @@ def main():
             mousepos = pygame.mouse.get_pos()
 
             everyone.draw(screen)
+            #1 Player
             if state == menuoptions[0]:
+                genscore=0
                 jugador=Jugador(matrizJugador)
                 jugadores.add(jugador)
                 todos.add(jugador)
+            #2 players
             elif state == menuoptions[1]:
+                genscore=0
                 jugador=Jugador(matrizJugador)
                 jugadores.add(jugador)
                 todos.add(jugador)
@@ -254,7 +273,8 @@ def main():
 
         if state == menuoptions[0] or state ==  menuoptions[1]:
             if genscore >= endscore:
-
+                for j in jugadores:
+                    j.kill()
                 winrenderrect = winrender.get_rect()
                 winrenderpos = [RESOLUTION[0]/2 - winrenderrect.width/2,RESOLUTION[1]/2 - winrenderrect.height]
                 newbckpos = [RESOLUTION[0]/2 - fac._pauserenders[0].get_rect().width/2]
@@ -435,6 +455,8 @@ def main():
                         x.kill()
                     mouseclick = False
                     fac.pause = False
+
+        #Opcion no jugable
         elif state == menuoptions[2]:
             newbckpos =   [850, 650]
             screen.fill([0,0,0])

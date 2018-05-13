@@ -140,8 +140,8 @@ class Enemigo1(pygame.sprite.Sprite):
         self.rect=self.image.get_rect()
         self.indice=0
         self.rect.x=50
-        self.rect.y=450
-        self.accion=2
+        self.rect.y=500
+        self.accion=0
         self.dir = 'R'
         self._health = 100
 
@@ -171,8 +171,8 @@ class Enemigo1(pygame.sprite.Sprite):
         if self.accion==2:
             if self.indice <=2:
                 self.image = self.f[self.accion][self.indice]
-                #if self.indice==1:
-                #    shoot=Bala(matrizBala)
+                if self.indice==1:
+                    shoot=Bala(matrizBala)
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 2:
@@ -180,9 +180,16 @@ class Enemigo1(pygame.sprite.Sprite):
 
         #Attack L
         if self.accion==3:
-            if self.indice <2:
+            if self.indice <=2:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice==0:
+                    self.rect.x+=85
                 self.indice += 1
+                if self.indice==1:
+                    self.rect.x-=67
+                if self.indice==2:
+                    self.rect.x-=18
+
             #Es 7 normalmente
             if self.indice > 2:
                 self.indice=0
@@ -197,8 +204,8 @@ class Enemigo2(pygame.sprite.Sprite):
         self.image=self.f[0][0]
         self.rect=self.image.get_rect()
         self.indice=0
-        self.rect.x=200
-        self.rect.y=450
+        self.rect.x=900
+        self.rect.y=500
         self.accion=0
         self.dir = 'R'
         self._health = 100
@@ -206,8 +213,17 @@ class Enemigo2(pygame.sprite.Sprite):
     def getHealth(self):
         return self._health
 
-    def move(self, key):
-        pass
+    def getSlope(self, posJugador):
+        point1 = [self.rect.x, self.rect.y]
+        if self.rect.x == posJugador[0]:
+            return False
+        m = float(posJugador[1] -  point1[1])/(posJugador[0] - point1[0])
+        b = posJugador[1] - m*posJugador[0]
+
+        return [m, b]
+
+    def move(self):
+        pass    
     def update(self):
         #Idle R
         if self.accion==0:
@@ -284,6 +300,6 @@ class Bala (pygame.sprite.Sprite):
         self.vel_x=5
         self.dir = 'R'
 
-        def update():
+        def update(self):
             self.rect.x+=self.vel_x
             #Mov diagonal
