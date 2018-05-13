@@ -14,9 +14,11 @@ white = (255,255,255)   #rgb(255,255,255)
 black = (0,0,0)         #rgb(0,0,0)
 pink = (255,200,200) #rgb(255,200,200)
 posbg = [0, -840]
-pygame.mixer.set_num_channels(10)
+
 beep=pygame.mixer.Sound('beep.ogg')
 pygame.mixer.music.load('titlescreen.ogg')
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.queue('level1.ogg')
 pygame.mixer.music.play()
 def printkey(key):
     if key == pygame.K_LEFT:
@@ -62,7 +64,7 @@ def main():
     modi = 0
 
     fac.setPauserenders(pauseoptionrenders)
-
+    
 
 
 
@@ -184,7 +186,7 @@ def main():
                     everyone.add(m)
 
             elif state == menuoptions[1] or state == menuoptions[0]:
-                menuscreen.stop()
+                pygame.mixer.music.set_volume(0.3)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         fac.pause = not fac.pause
@@ -280,7 +282,6 @@ def main():
 
 
         if state == menuoptions[0] or state ==  menuoptions[1]:
-            pygame.mixer.music.load('titlescreen.ogg')
 
             if genscore >= endscore:
                 for j in jugadores:
