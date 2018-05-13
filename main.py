@@ -59,6 +59,7 @@ def main():
     fac._screensize = bob.buildresolution()
     posbg[1] += fac._screensize[1]-200
     fac.posbg = posbg[:]
+    fac.prevposbg = posbg[:]
     fac.defaultposbg = posbg[:]
     fac.posbgfixedy = 840
     fac.display_bkg()
@@ -146,7 +147,7 @@ def main():
     random.seed(pygame.time.get_ticks())
     time2 = pygame.time.get_ticks()
     score = bob.buildscorerender("score")
-    endscore = 100
+    endscore = 10000
     genscore = 0
     winrender = bob.buildtxtrender("Congratulations", 1, white)
     loserender = bob.buildtxtrender("GAME OVER", 1, red)
@@ -443,12 +444,26 @@ def main():
                         x.AImove(jugador)
                     else:
                         x.AImove(jugador, jugador2,2)
+                    jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
+                    for y in jugadorlscol:
+                        damageinf = y.inflictDamage(x)
+                        x._health -= damageinf
+                        if damageinf > 0:
+                            if x._health <= 0:
+                                y.score += 200
+                                genscore += 200
+                                x.kill()
+                            else:
+                                y.score += 50
+                                genscore += 50
+
                 for x in jugadores:
                     enemylscol = pygame.sprite.spritecollide(x, enemigos2, False)
                     for y in enemylscol:
                         if y.isAttacking():
                             x.dealDamage(0.5)
                 todos.update()
+
 
                 if jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]:
                     jugador.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador.rect.height
@@ -464,6 +479,23 @@ def main():
                     fac.checklimits(moves[0],jugador, bginfo)
                 if moves2 != []:
                     fac.checklimits(moves2[0],jugador2, bginfo)
+                if fac.prevposbg != fac.posbg:
+                    fac.prevposbg[0] = fac.prevposbg[0] - fac.posbg[0]
+                    fac.prevposbg[1] = fac.prevposbg[1] - fac.posbg[1]
+                    for x in enemigos:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
+                    for x in enemigos2:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
+                    if state == menuoptions[1]:
+                        if fac.isLimitrigger(moves[0], jugador, bginfo):
+                            jugador2.rect.x -= fac.prevposbg[0]
+                            jugador2.rect.y -= fac.prevposbg[1]
+                        elif  fac.isLimitrigger(moves[0], jugador, bginfo):
+                            jugador.rect.x -= fac.prevposbg[0]
+                            jugador.rect.y -= fac.prevposbg[1]
+                    fac.prevposbg = fac.posbg[:]
                 screen.fill([0,0,0])
                 screen.blit(fondo,[0,-50])
                 screen.blit(gamebckg, fac.posbg)

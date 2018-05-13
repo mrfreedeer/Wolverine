@@ -136,6 +136,18 @@ class Facade(object):
 
     def display_bkg(self):
         self._screen.blit(self._bckg, self._bckgpos)
+    def isLimitrigger(self, key, player, bginfo):
+        bglimit = 150
+        limit = 15
+        if player.rect.x > self._screensize[0] - bglimit and key == pygame.K_RIGHT:
+            return True
+
+        if player.rect.x < limit and key == pygame.K_LEFT:
+            return True
+        if player.rect.y > self._screensize[1] - bglimit and key == pygame.K_DOWN:
+            return True
+        if player.rect.y + player.rect.height < self.posbgfixedy + self.posbg[1] + limit and key == pygame.K_UP:
+            return True
     def checklimits(self, key, player, bginfo):
         bglimit = 150
         limit = 15

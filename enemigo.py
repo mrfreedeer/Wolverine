@@ -297,12 +297,8 @@ class Enemigo2(pygame.sprite.Sprite):
                         else:
                             self.move('L')
 
-
-
-
-
     def move(self, key):
-        if self.finished or self.prevkey not in ['AL', 'AR']:
+        if (self.finished and self.prevkey in ['AL', 'AR']) or self.prevkey not in ['AL', 'AR'] :
             self.finished = False
             if key == 'R':
                 self.accion = 2
