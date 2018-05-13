@@ -4,6 +4,7 @@ import random
 from wolvbasics import *
 from jugador import *
 from enemigo import *
+from operator import attrgetter
 
 red = (255,0,0)         #rgb(255,0,0)
 green = (0,255,0)       #rgb(0,255,0)
@@ -64,7 +65,7 @@ def main():
     modi = 0
 
     fac.setPauserenders(pauseoptionrenders)
-    
+
 
 
 
@@ -462,7 +463,16 @@ def main():
                 screen.blit(fondo,[0,-50])
                 screen.blit(gamebckg, fac.posbg)
 
-                todos.draw(screen)
+                drawlist = []
+                for x in todos:
+                    drawlist.append(x)
+                drawlist.sort(key = attrgetter('rect.y'))
+                drawgroup = pygame.sprite.Group()
+                for x in drawlist:
+                    drawgroup.add(x)
+                    drawgroup.draw(screen)
+                    drawgroup.remove(x)
+                #todos.draw(screen)
 
                 scorerender1 = bob.buildscorerender(str(jugador.score))
                 if state == menuoptions[0]:
