@@ -117,6 +117,9 @@ def main():
     generator2=True
     numberOfMovingEnemies=5
     numberOfStillEnemies=2
+    canGenerate=True
+    allDead=False
+    numberOfDeaths=0
 
     #screen.blit(gamebckg, [0,0])
     pygame.draw.polygon(screen, [255,255,255], [[0,400], [ANCHO, 400]],2)
@@ -288,7 +291,7 @@ def main():
 
 
         if state == menuoptions[0] or state ==  menuoptions[1]:
-
+            print numberOfStillEnemies, numberOfMovingEnemies
             if genscore >= endscore:
                 for j in jugadores:
                     j.kill()
@@ -350,11 +353,17 @@ def main():
                     state = 'menu'
                     gameover = False
             elif not fac.pause:
-                if fac.posbg[0]==0 or fac.posbg[0]==-220 or fac.posbg[0]==-320 or fac.posbg[0]==-520 or fac.posbg[0]==-660 or fac.posbg[0]==-990:
 
-                    if numberOfMovingEnemies==0:
-                        #generator1=True
+                if (fac.posbg[0]==0 and numberOfDeaths==0) or fac.posbg[0]==-220 or fac.posbg[0]<=-320 or fac.posbg[0]==-520 or fac.posbg[0]==-660 or fac.posbg[0]==-990:
+                    if numberOfDeaths==7 or numberOfDeaths==14 or numberOfDeaths==21 or numberOfDeaths==28 or numberOfDeaths==35:
+                        canGenerate=True
+                if canGenerate:
+                    if numberOfMovingEnemies<=0:
                         generator2=True
+                        numberOfMovingEnemies=5
+                    if numberOfStillEnemies<=0:
+                        generator1=True
+                        numberOfStillEnemies=2
                     for i in range(numberOfMovingEnemies):
                         if generator2:
                             enemy2=Enemigo2(matrizEnemigos2)
@@ -370,6 +379,7 @@ def main():
                             enemigos.add(enemy)
                             todos.add(enemy)
                     generator1=False
+                    canGenerate=False
                 '''
                 if fac.posbg[0]==-220:
                     numberOfMovingEnemies=5
@@ -445,6 +455,24 @@ def main():
                         m.blink = False
                         modifiers.add(m)
                         todos.add(m)
+
+                for x in enemigos:
+                    jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
+                    for y in jugadorlscol:
+                        damageinf = y.inflictDamage(x)
+                        x._health -= damageinf
+                        if damageinf > 0:
+                            if x._health <= 0:
+                                y.score += 200
+                                genscore += 200
+                                numberOfStillEnemies-=1
+                                numberOfDeaths+=1
+                                x.kill()
+                            else:
+                                y.score += 75
+                                genscore += 75
+
+
                 for x in enemigos2:
                     if state == menuoptions[0]:
                         x.AImove(jugador)
@@ -459,6 +487,7 @@ def main():
                                 y.score += 200
                                 genscore += 200
                                 numberOfMovingEnemies-=1
+                                numberOfDeaths+=1
                                 x.die()
                                 x.kill()
                             else:
