@@ -442,8 +442,8 @@ class Jugador2(pygame.sprite.Sprite):
         self.image=self.f[0][0]
         self.rect=self.image.get_rect()
         self.indice=0
-        self.rect.x=50
-        self.rect.y=450
+        self.rect.x=60
+        self.rect.y=490
         self.vel_x=0
         self.vel_y=0
         self.vel_x_value = 18
