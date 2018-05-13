@@ -85,6 +85,8 @@ def recortarEne2(archivo):
     walkL=[]
     attack1R=[]
     attack1L=[]
+    dieR=[]
+    dieL=[]
 
 
 
@@ -94,6 +96,8 @@ def recortarEne2(archivo):
     walkRight=[[183, 11, 38, 67] , [251, 11, 31, 67], [310, 11, 31, 67], [364, 11, 37, 67], [428, 11, 30, 67],[485, 11, 30, 67]]
 
     attack1=[[0,101,35,67], [49,101,55,67]]
+
+    die=[[262, 111, 55, 57], [328, 111, 67, 57], [404, 11 ,74, 57]]
 
 
     #Idle R-L
@@ -123,8 +127,17 @@ def recortarEne2(archivo):
         attack1R.append(cuadro)
         attack1L.append(cuadro2)
 
+    #Die 1 R-L
+    for x in range(3):
+        cuadro=fondo.subsurface(die[x])
+        cuadro=pygame.transform.scale(cuadro, (100, 125))
+        cuadro2=pygame.transform.flip(cuadro, True, False)
+        cuadro2=pygame.transform.scale(cuadro2, (100, 125))
+        dieR.append(cuadro)
+        dieL.append(cuadro2)
 
-    return idleR, idleL, walkR, walkL, attack1R, attack1L
+
+    return idleR, idleL, walkR, walkL, attack1R, attack1L, dieR, dieL
 
 def recortarBala(archivo):
     fondo=pygame.image.load(archivo)
@@ -153,11 +166,25 @@ class Enemigo1(pygame.sprite.Sprite):
     def getHealth(self):
         return self._health
 
-    def shoot(self, key):
+    def shoot(self, dir):
+        bala=Bala(matrizBala)
+        balas.add(bala)
+        todos.add(bala)
+        self.accion=0
+
+    def AIshoot(self, key):
         a=random.randrange(0,10)
-        if a==5:
-            if self.accion==2:
-                pass
+        if a>5:
+            self.accion=2
+            #self.shoot()
+        '''
+        self.shoottime -= 1
+        if self.shoottime <= -20:
+            print "reset"
+            self.shoottime = random.randrange(0,100)
+            self.shoot('I')
+        if self.movetime <= 0:
+        '''
 
     def update(self):
         #Idle R
@@ -296,6 +323,14 @@ class Enemigo2(pygame.sprite.Sprite):
                             self.move('R')
                         else:
                             self.move('L')
+    def die(self):
+        self.indice=0
+        if self.dir=='R':
+            self.accion=6
+
+        else:
+            self.accion=7
+
 
     def move(self, key):
         if (self.finished and self.prevkey in ['AL', 'AR']) or self.prevkey not in ['AL', 'AR'] :
@@ -387,10 +422,37 @@ class Enemigo2(pygame.sprite.Sprite):
             if self.indice > 1:
                 self.finished = True
                 self.indice=0
+
+            self.vel_x = 0
+            self.vel_y = 0
+
+        #Die R
+        if self.accion==6:
+            if self.indice <=2:
+                self.image = self.f[self.accion][self.indice]
+                self.indice += 1
+
+            if self.indice > 2:
+                self.indice=0
+
+            self.vel_x = 0
+            self.vel_y = 0
+        #Die L
+        if self.accion==7:
+            if self.indice <=2:
+                self.image = self.f[self.accion][self.indice]
+
+                self.indice += 1
+
+            if self.indice > 2:
+
+                self.indice=0
             self.vel_x = 0
             self.vel_y = 0
         self.rect.y += self.vel_y
         self.rect.x += self.vel_x
+
+
 
         #if self.rect.x + self.rect.width > RESOLUTION[0] - bglimit:
         #    self.rect.x = RESOLUTION[0] - bglimit - self.rect.width

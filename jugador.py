@@ -486,7 +486,6 @@ class Jugador2(pygame.sprite.Sprite):
         return self._health
     def dealDamage(self,damage):
         self._health -= damage * self.damagedealtmultiplier
-
     def inflictDamage(self, enemy):
         if math.fabs(enemy.rect.y - self.rect.y) <= 15:
             if self.prevkey == pygame.K_j:

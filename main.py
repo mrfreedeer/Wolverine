@@ -44,6 +44,8 @@ def main():
     player1=pygame.transform.scale(player1, (750, 350))
     player2 = pygame.image.load('jugador2.png').convert_alpha()
     player2=pygame.transform.scale(player2, (750, 350))
+    enemyface = pygame.image.load('enemyFace.png').convert_alpha()
+    enemyface = pygame.transform.scale(enemyface, (40,40))
     wolvieface = pygame.image.load('WolverineFace.png').convert_alpha()
     wolvieface = pygame.transform.scale(wolvieface, (40,40))
     wolvieface2 = pygame.image.load('WolverineFace2.png').convert_alpha()
@@ -55,7 +57,7 @@ def main():
     menurenders = bob.buildtxtrenders(menuoptions)
     WolverineTitle = bob.buildtxtrender("Wolverine", 1)
     end = False
-    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0], wolvieface, wolvieface2)
+    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0], wolvieface, wolvieface2, enemyface)
     fac._screensize = bob.buildresolution()
     posbg[1] += fac._screensize[1]-200
     fac.posbg = posbg[:]
@@ -115,6 +117,11 @@ def main():
     reloj=pygame.time.Clock()
     generator1=True
     generator2=True
+    numberOfMovingEnemies=5
+    numberOfStillEnemies=2
+    canGenerate=True
+    allDead=False
+    numberOfDeaths=0
 
     #screen.blit(gamebckg, [0,0])
     pygame.draw.polygon(screen, [255,255,255], [[0,400], [ANCHO, 400]],2)
@@ -147,7 +154,7 @@ def main():
     random.seed(pygame.time.get_ticks())
     time2 = pygame.time.get_ticks()
     score = bob.buildscorerender("score")
-    endscore = 10000
+    endscore = 18000
     genscore = 0
     winrender = bob.buildtxtrender("Congratulations", 1, white)
     loserender = bob.buildtxtrender("GAME OVER", 1, red)
@@ -165,6 +172,7 @@ def main():
             if state == 'menu':
                 pygame.mixer.music.set_volume(0.3)
                 channel1.set_volume(0)
+                '''
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         modi -= 1
@@ -186,7 +194,7 @@ def main():
                     m = fac.getModifier(modi)
                     modifiers.add(m)
                     everyone.add(m)
-
+                '''
             elif state == menuoptions[1] or state == menuoptions[0]:
                 pygame.mixer.music.set_volume(0)
                 channel1.set_volume(0.3)
@@ -285,8 +293,8 @@ def main():
 
 
         if state == menuoptions[0] or state ==  menuoptions[1]:
-
-            if genscore >= endscore:
+            #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
+            if genscore >= endscore and numberOfDeaths==35 and fac.posbg[0]<=-1010:
                 for j in jugadores:
                     j.kill()
                 winrenderrect = winrender.get_rect()
@@ -347,9 +355,16 @@ def main():
                     state = 'menu'
                     gameover = False
             elif not fac.pause:
-                if fac.posbg[0]==0 or fac.posbg[0]==-220 or fac.posbg[0]==-320 or fac.posbg[0]==-520 or fac.posbg[0]==-660 or fac.posbg[0]==-990:
-                    numberOfMovingEnemies=5
-                    numberOfStillEnemies=2
+
+                if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==7) or (fac.posbg[0]<=-320 and numberOfDeaths==14) or (fac.posbg[0]<=-520 and numberOfDeaths==21) or (fac.posbg[0]<=-660 and numberOfDeaths==28) or (fac.posbg[0]<=-990 and numberOfDeaths==35):
+                    canGenerate=True
+                if canGenerate:
+                    if numberOfMovingEnemies<=0:
+                        generator2=True
+                        numberOfMovingEnemies=5
+                    if numberOfStillEnemies<=0:
+                        generator1=True
+                        numberOfStillEnemies=2
                     for i in range(numberOfMovingEnemies):
                         if generator2:
                             enemy2=Enemigo2(matrizEnemigos2)
@@ -361,9 +376,11 @@ def main():
                     for i in range(numberOfStillEnemies):
                         if generator1:
                             enemy=Enemigo1(matrizEnemigos1)
+                            enemy.rect.y=random.randrange(500, 700)
                             enemigos.add(enemy)
                             todos.add(enemy)
                     generator1=False
+                    canGenerate=False
                 '''
                 if fac.posbg[0]==-220:
                     numberOfMovingEnemies=5
@@ -425,6 +442,7 @@ def main():
                     if modlist != []:
                         modlist[0].kill()
                         modlist.pop(0)
+
                 if blink:
                     if pygame.time.get_ticks()-lasttime >= 200:
                         turn = not turn
@@ -439,11 +457,9 @@ def main():
                         m.blink = False
                         modifiers.add(m)
                         todos.add(m)
-                for x in enemigos2:
-                    if state == menuoptions[0]:
-                        x.AImove(jugador)
-                    else:
-                        x.AImove(jugador, jugador2,2)
+                enemybar = []
+
+                for x in enemigos:
                     jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
                     for y in jugadorlscol:
                         damageinf = y.inflictDamage(x)
@@ -452,6 +468,37 @@ def main():
                             if x._health <= 0:
                                 y.score += 200
                                 genscore += 200
+                                numberOfStillEnemies-=1
+                                numberOfDeaths+=1
+                                x.kill()
+                            else:
+                                y.score += 75
+                                genscore += 75
+
+
+                for x in enemigos2:
+                    if state == menuoptions[0]:
+                        x.AImove(jugador)
+                    else:
+                        x.AImove(jugador, jugador2,2)
+                    jugadorlscol = []
+                    jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
+                    if jugadorlscol != []:
+                        if len(enemybar) >2:
+                            enemybar.pop()
+                            enemybar.append(x)
+                        else:
+                            enemybar.append(x)
+                    for y in jugadorlscol:
+                        damageinf = y.inflictDamage(x)
+                        x._health -= damageinf
+                        if damageinf > 0:
+                            if x._health <= 0:
+                                y.score += 200
+                                genscore += 200
+                                numberOfMovingEnemies-=1
+                                numberOfDeaths+=1
+                                x.die()
                                 x.kill()
                             else:
                                 y.score += 50
@@ -515,10 +562,26 @@ def main():
                 if state == menuoptions[0]:
                     fac.drawLife(jugador.getHealth())
                     fac.drawScore(scorerender1, scorerender = score)
+                    if enemybar != []:
+                        for x in enemybar:
+                            if jugador.inflictDamage(x) == 0:
+                                enemybar.remove(x)
+                    if enemybar != []:
+                        if jugador.inflictDamage(enemybar[0]) > 0:
+                            fac.drawEnemyLife(enemybar[0])
                 else:
                     scorerender2 = bob.buildscorerender(str(jugador2.score))
                     fac.drawScore(scorerender1, score, 2,scorerender2)
                     fac.drawLife(jugador.getHealth(), 2, jugador2.getHealth())
+                    if enemybar != []:
+                        for x in enemybar:
+                            if jugador.inflictDamage(x) == 0 and jugador2.inflictDamage(x) == 0:
+                                enemybar.remove(x)
+                    if enemybar != []:
+                        if len(enemybar) >= 2:
+                            fac.drawEnemyLife(enemybar[0], 2, enemybar[1])
+                        else:
+                            fac.drawEnemyLife(enemybar[0])
 
                 pygame.display.flip()
                 reloj.tick(10)
