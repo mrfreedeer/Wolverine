@@ -10,7 +10,9 @@ pygame.mixer.init(44100, -16, 2, 2048)
 punchE2=pygame.mixer.Sound('punchEnemy.ogg')
 stepE=pygame.mixer.Sound('pasosJugador.ogg')
 stepE.set_volume(0.05)
-
+screensize = pygame.display.Info()
+RESOLUTION = [screensize.current_w, screensize.current_h]
+bglimit = 10
 #Funciones
 
 def recortarEne1(archivo):
@@ -141,18 +143,22 @@ class Enemigo1(pygame.sprite.Sprite):
         self.f=matriz
         self.image=self.f[0][0]
         self.rect=self.image.get_rect()
-        self.indice=0
+        self.indice=1
         self.rect.x=50
         self.rect.y=500
         self.accion=0
-        self.dir = 'R'
+        self.dir = 'L'
         self._health = 100
 
     def getHealth(self):
         return self._health
 
-    def move(self, key):
-        pass
+    def shoot(self, key):
+        a=random.randrange(0,10)
+        if a==5:
+            if self.accion==2:
+                pass
+
     def update(self):
         #Idle R
         if self.accion==0:
@@ -238,6 +244,7 @@ class Enemigo2(pygame.sprite.Sprite):
         else:
             return False
     def AImove(self, jugador1, jugador2 = None, noplayers = 1):
+
         self.movetime -= 1
         if self.movetime <= -20:
             print "reset"
@@ -388,6 +395,12 @@ class Enemigo2(pygame.sprite.Sprite):
             self.vel_y = 0
         self.rect.y += self.vel_y
         self.rect.x += self.vel_x
+
+        #if self.rect.x + self.rect.width > RESOLUTION[0] - bglimit:
+        #    self.rect.x = RESOLUTION[0] - bglimit - self.rect.width
+        #elif self.rect.x < bglimit:
+        #    self.rect.x = bglimit
+
 
 class Bala (pygame.sprite.Sprite):
     def __init__(self, matriz):
