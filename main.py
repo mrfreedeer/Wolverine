@@ -325,6 +325,7 @@ def main():
                     fac._pauserenders.pop(select)
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
+
                 elif select == -1 and fac.getTurned() != []:
                     fac._pauserenders = fac._normalpauserenders[:]
                     fac.emptyTurned()
@@ -477,6 +478,9 @@ def main():
                     screen.blit(x,fac.pausepositions[i])
                     i += 1
                 select = fac.checkmousepause(mousepos)
+                
+                if select != -1 and len(fac.getTurned())<1:
+                    beep.play()
 
                 if select != -1:
                     txt = pauseoptions[select]
@@ -484,9 +488,11 @@ def main():
                     selectedrender = bob.buildtxtrender(txt, 0, red)
                     fac._pauserenders.insert(select,selectedrender)
                     fac._turnedoptions.append(select)
+
                 elif select == -1 and fac.getTurned() != []:
                     fac._pauserenders = fac._normalpauserenders[:]
                     fac.emptyTurned()
+
                 elif len(fac.getTurned())> 1:
                     txt = pauseoptions[select]
                     fac._pauserenders = fac._normalpauserenders[:]
