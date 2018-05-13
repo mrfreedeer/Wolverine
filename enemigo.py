@@ -7,6 +7,7 @@ pygame.mixer.init(44100, -16, 2, 2048)
 punchE2=pygame.mixer.Sound('punchEnemy.ogg')
 stepE=pygame.mixer.Sound('pasosJugador.ogg')
 stepE.set_volume(0.05)
+
 #Funciones
 
 def recortarEne1(archivo):
@@ -25,9 +26,9 @@ def recortarEne1(archivo):
 
     #walkRight=[[11, 193, 59, 59] , [172, 196, 51, 55], [249, 193, 59, 59], [323, 200, 56, 53], [402, 197, 56, 55],[16, 281, 51, 55], [91, 281, 51, 55]]
 
-    attack1=[[3,183,53,75], [62,183,82,75], [153,183,86,75]]
+    attack1=[[4,183,50,75], [67,183,77,75], [154,183,84,75]]
 
-    attack2=[[242, 108, 63, 59], [313, 95, 73, 73], [397, 98, 54, 74]]
+    #attack2=[[242, 108, 63, 59], [313, 95, 73, 73], [397, 98, 54, 74]]
 
     #Idle R-L
     for x in range(3):
@@ -39,6 +40,7 @@ def recortarEne1(archivo):
         idleL.append(cuadro)
 
     #Attack 1 R-L
+    '''
     for x in range(3):
         cuadro=fondo.subsurface(attack1[x])
         cuadro=pygame.transform.scale(cuadro, (125, 125))
@@ -46,7 +48,25 @@ def recortarEne1(archivo):
         cuadro2=pygame.transform.scale(cuadro2, (125, 125))
         attack1R.append(cuadro2)
         attack1L.append(cuadro)
+    '''
+    cuadro0=fondo.subsurface(attack1[0])
+    cuadro0=pygame.transform.scale(cuadro0, (125, 125))
+    cuadro1=fondo.subsurface(attack1[1])
+    cuadro1=pygame.transform.scale(cuadro1, (192, 125))
+    cuadro2=fondo.subsurface(attack1[2])
+    cuadro2=pygame.transform.scale(cuadro1, (210, 125))
 
+    attack1L.append(cuadro0)
+    attack1L.append(cuadro1)
+    attack1L.append(cuadro2)
+
+    cuadro00=pygame.transform.flip(cuadro0, True, False)
+    cuadro11=pygame.transform.flip(cuadro1, True, False)
+    cuadro22=pygame.transform.flip(cuadro2, True, False)
+
+    attack1R.append(cuadro00)
+    attack1R.append(cuadro11)
+    attack1R.append(cuadro22)
 
     return idleR, idleL, attack1R, attack1L
 
@@ -100,6 +120,17 @@ def recortarEne2(archivo):
 
 
     return idleR, idleL, walkR, walkL, attack1R, attack1L
+
+def recortarBala(archivo):
+    fondo=pygame.image.load(archivo)
+    infoFondo=fondo.get_rect()
+    matriz=[]
+
+    cuadro=fondo.subsurface(410, 35, 15, 15)
+    matriz.append(cuadro)
+
+    return matriz
+matrizBala=recortarBala('lasers.png')
 #Clases
 class Enemigo1(pygame.sprite.Sprite):
     def __init__(self, matriz):
@@ -110,7 +141,7 @@ class Enemigo1(pygame.sprite.Sprite):
         self.indice=0
         self.rect.x=50
         self.rect.y=450
-        self.accion=0
+        self.accion=2
         self.dir = 'R'
         self._health = 100
 
@@ -138,8 +169,10 @@ class Enemigo1(pygame.sprite.Sprite):
         #1
         #Attack R
         if self.accion==2:
-            if self.indice <2:
+            if self.indice <=2:
                 self.image = self.f[self.accion][self.indice]
+                #if self.indice==1:
+                #    shoot=Bala(matrizBala)
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 2:
@@ -155,6 +188,8 @@ class Enemigo1(pygame.sprite.Sprite):
                 self.indice=0
 
 
+
+
 class Enemigo2(pygame.sprite.Sprite):
     def __init__(self, matriz):
         pygame.sprite.Sprite.__init__(self)
@@ -162,7 +197,7 @@ class Enemigo2(pygame.sprite.Sprite):
         self.image=self.f[0][0]
         self.rect=self.image.get_rect()
         self.indice=0
-        self.rect.x=50
+        self.rect.x=200
         self.rect.y=450
         self.accion=0
         self.dir = 'R'
@@ -223,7 +258,7 @@ class Enemigo2(pygame.sprite.Sprite):
                 if self.indice==1:
                     punchE2.play()
                 self.indice += 1
-            #Es 7 normalmente
+
             if self.indice > 1:
                 self.indice=0
 
@@ -234,26 +269,21 @@ class Enemigo2(pygame.sprite.Sprite):
                 if self.indice==1:
                     punchE2.play()
                 self.indice += 1
-            #Es 7 normalmente
+
             if self.indice > 1:
                 self.indice=0
-        #2
-        #Attack R
-        '''
-        if self.accion==8:
-            if self.indice <3:
-                self.image = self.f[self.accion][self.indice]
-                self.indice += 1
-            #Es 7 normalmente
-            if self.indice > 2:
-                self.indice=0
 
-        #Attack L
-        if self.accion==9:
-            if self.indice <3:
-                self.image = self.f[self.accion][self.indice]
-                self.indice += 1
-            #Es 7 normalmente
-            if self.indice > 2:
-                self.indice=0
-        '''
+class Bala (pygame.sprite.Sprite):
+    def __init__(self, matriz):
+        pygame.sprite.Sprite.__init__(self)
+        self.f=matriz
+        self.image=self.f[0]
+        self.rect=self.image.get_rect()
+        self.rect.x=50
+        self.rect.y=450
+        self.vel_x=5
+        self.dir = 'R'
+
+        def update():
+            self.rect.x+=self.vel_x
+            #Mov diagonal
