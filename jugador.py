@@ -126,7 +126,7 @@ class Jugador(pygame.sprite.Sprite):
         self.accion=0
         self.salto=False
         self.dir = 'R'
-        self._health = -100
+        self._health = 100
         self.finished = False
         self.updatemove = False
         self.still = True
