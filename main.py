@@ -379,12 +379,8 @@ def main():
 
                 '''
 
-
-
-
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
-
                     if lsmod != None:
                         if not lsmod.blink:
                             if lsmod.type in playermodlist:
@@ -412,8 +408,6 @@ def main():
                         gottapop.append(x)
                 for x in gottapop:
                     playermodlist.pop(x)
-
-
 
                 if pygame.time.get_ticks() - time >= random.randrange(modwait,modwait*2) and (len(modlist)<=3):
                     m = fac.getModifier(random.randrange(0,4))
@@ -450,10 +444,6 @@ def main():
                     else:
                         x.AImove(jugador, jugador2,2)
                 for x in jugadores:
-                    if x == jugador:
-                        print "J1"
-                    else:
-                        print "J2"
                     enemylscol = pygame.sprite.spritecollide(x, enemigos2, False)
                     for y in enemylscol:
                         if y.isAttacking():
@@ -494,7 +484,6 @@ def main():
                     fac.drawLife(jugador.getHealth())
                     fac.drawScore(scorerender1, scorerender = score)
                 else:
-                    jugador2._health = 50
                     scorerender2 = bob.buildscorerender(str(jugador2.score))
                     fac.drawScore(scorerender1, score, 2,scorerender2)
                     fac.drawLife(jugador.getHealth(), 2, jugador2.getHealth())

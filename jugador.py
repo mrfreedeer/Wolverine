@@ -139,6 +139,8 @@ class Jugador(pygame.sprite.Sprite):
         print "Dmgdealt: ", self.damagedealtmultiplier
         print "Dmginflic: ", self.damageinflictedmultiplier
     def getHealth(self):
+        if self._health < 0:
+            self._health = 0
         return self._health
     def dealDamage(self,damage):
         self._health -= damage * self.damagedealtmultiplier
@@ -470,9 +472,12 @@ class Jugador2(pygame.sprite.Sprite):
         print "Dmgdealt: ", self.damagedealtmultiplier
         print "Dmginflic: ", self.damageinflictedmultiplier
     def getHealth(self):
+        if self._health < 0:
+            self._health = 0
         return self._health
     def dealDamage(self,damage):
         self._health -= damage * self.damagedealtmultiplier
+        print "damagedealt"
     def inflictDamage(self):
         if prevkey == pygame.K_r:
             return self.damage1 * self.damageinflictedmultiplier
