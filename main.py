@@ -152,7 +152,7 @@ def main():
     random.seed(pygame.time.get_ticks())
     time2 = pygame.time.get_ticks()
     score = bob.buildscorerender("score")
-    endscore = 23375
+    endscore = 18000
     genscore = 0
     winrender = bob.buildtxtrender("Congratulations", 1, white)
     loserender = bob.buildtxtrender("GAME OVER", 1, red)
@@ -291,8 +291,8 @@ def main():
 
 
         if state == menuoptions[0] or state ==  menuoptions[1]:
-            print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
-            if genscore >= endscore:
+            #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
+            if genscore >= endscore and numberOfDeaths==35 and fac.posbg[0]<=-1010:
                 for j in jugadores:
                     j.kill()
                 winrenderrect = winrender.get_rect()
