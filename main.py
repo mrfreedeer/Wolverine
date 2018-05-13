@@ -106,6 +106,8 @@ def main():
 
 
     reloj=pygame.time.Clock()
+    generator1=True
+    generator2=True
 
     #screen.blit(gamebckg, [0,0])
     pygame.draw.polygon(screen, [255,255,255], [[0,400], [ANCHO, 400]],2)
@@ -272,6 +274,8 @@ def main():
 
 
         if state == menuoptions[0] or state ==  menuoptions[1]:
+
+
             if genscore >= endscore:
                 for j in jugadores:
                     j.kill()
@@ -332,8 +336,45 @@ def main():
                     state = 'menu'
                     gameover = False
             elif not fac.pause:
+                if fac.posbg[0]==0 or fac.posbg[0]==-220 or fac.posbg[0]==-320 or fac.posbg[0]==-520 or fac.posbg[0]==-660 or fac.posbg[0]==-990:
+                    numberOfMovingEnemies=5
+                    numberOfStillEnemies=2
+                    for i in range(numberOfMovingEnemies):
+                        if generator2:
+                            enemy2=Enemigo2(matrizEnemigos2)
+                            enemy2.rect.x=random.randrange(0, 900, 30)
+                            enemigos.add(enemy2)
+                            todos.add(enemy2)
+                    generator2=False
+
+                    for i in range(numberOfStillEnemies):
+                        if generator1:
+                            enemy=Enemigo1(matrizEnemigos1)
+                            enemigos.add(enemy)
+                            todos.add(enemy)
+                    generator1=False
+                '''
+                if fac.posbg[0]==-220:
+                    numberOfMovingEnemies=5
+                    numberOfStillEnemies=2
+                elif fac.posbg[0]==-320:
+                    numberOfMovingEnemies=5
+                    numberOfStillEnemies=2
+                elif fac.posbg[0]==-660:
+                    numberOfMovingEnemies=5
+                    numberOfStillEnemies=2
+                elif fac.posbg[0]==-990:
+                    numberOfMovingEnemies=5
+                    numberOfStillEnemies=2
+
+                '''
+
+
+
+
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
+
                     if lsmod != None:
                         if not lsmod.blink:
                             if lsmod.type in playermodlist:
@@ -353,6 +394,8 @@ def main():
                             if genscore < 0:
                                 genscore = 0
                             lsmod.kill()
+                    if lsene != None:
+                        pass
                 gottapop = []
                 for x in playermodlist:
                     if pygame.time.get_ticks() - playermodlist[x][0] >= 10000:
@@ -360,6 +403,8 @@ def main():
                         gottapop.append(x)
                 for x in gottapop:
                     playermodlist.pop(x)
+
+
 
                 if pygame.time.get_ticks() - time >= random.randrange(modwait,modwait*2) and (len(modlist)<=3):
                     m = fac.getModifier(random.randrange(0,4))
