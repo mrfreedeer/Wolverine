@@ -14,6 +14,7 @@ white = (255,255,255)   #rgb(255,255,255)
 black = (0,0,0)         #rgb(0,0,0)
 pink = (255,200,200) #rgb(255,200,200)
 posbg = [0, -840]
+beep=pygame.mixer.Sound('beep.ogg')
 def printkey(key):
     if key == pygame.K_LEFT:
         print "Left"
@@ -237,6 +238,7 @@ def main():
                 newrender = bob.buildtxtrender(txt, 0, white)
                 fac.popmenurenders(mouseonoption)
                 fac.insertmenurenders(mouseonoption, newrender)
+                beep.play()
             elif fac.getTurned() != [] and mouseonoption == -1:
                 #Returns all text to normal colors
                 fac.emptyTurned()
@@ -394,8 +396,7 @@ def main():
                             if genscore < 0:
                                 genscore = 0
                             lsmod.kill()
-                    if lsene != None:
-                        pass
+
                 gottapop = []
                 for x in playermodlist:
                     if pygame.time.get_ticks() - playermodlist[x][0] >= 10000:
