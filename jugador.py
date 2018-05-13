@@ -1,4 +1,5 @@
 import pygame
+import math
 
 pygame.init()
 ALTO=1000
@@ -138,17 +139,25 @@ class Jugador(pygame.sprite.Sprite):
         print "Vel: ", self.vel_multiplier
         print "Dmgdealt: ", self.damagedealtmultiplier
         print "Dmginflic: ", self.damageinflictedmultiplier
+    def isAttacking(self):
+        if self.prevkey in [pygame.K_j, pygame.K_k]:
+            return True
+        else:
+            return False
     def getHealth(self):
         if self._health < 0:
             self._health = 0
         return self._health
     def dealDamage(self,damage):
         self._health -= damage * self.damagedealtmultiplier
-    def inflictDamage(self):
-        if prevkey == pygame.K_j:
-            return self.damage1 * self.damageinflictedmultiplier
-        elif prevkey == pygame.K_k:
-            return self.damage2 * self.damageinflictedmultiplier
+    def inflictDamage(self, enemy):
+        if math.fabs(enemy.rect.y - self.rect.y) <= 15:
+            if self.prevkey == pygame.K_j:
+                return self.damage1 * self.damageinflictedmultiplier
+            elif self.prevkey == pygame.K_k:
+                return self.damage2 * self.damageinflictedmultiplier
+            else:
+                return 0
         else:
             return 0
     def gravedad(self, v):
@@ -477,12 +486,15 @@ class Jugador2(pygame.sprite.Sprite):
         return self._health
     def dealDamage(self,damage):
         self._health -= damage * self.damagedealtmultiplier
-        print "damagedealt"
-    def inflictDamage(self):
-        if prevkey == pygame.K_r:
-            return self.damage1 * self.damageinflictedmultiplier
-        elif prevkey == pygame.K_t:
-            return self.damage2 * self.damageinflictedmultiplier
+
+    def inflictDamage(self, enemy):
+        if math.fabs(enemy.rect.y - self.rect.y) <= 15:
+            if self.prevkey == pygame.K_j:
+                return self.damage1 * self.damageinflictedmultiplier
+            elif self.prevkey == pygame.K_k:
+                return self.damage2 * self.damageinflictedmultiplier
+            else:
+                return 0
         else:
             return 0
     def gravedad(self, v):
