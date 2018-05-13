@@ -68,10 +68,6 @@ def main():
     modi = 0
 
     fac.setPauserenders(pauseoptionrenders)
-
-
-
-
     modifiers = pygame.sprite.Group()
     everyone = pygame.sprite.Group()
     m = fac.getModifier(modi)
@@ -89,7 +85,7 @@ def main():
     todos=pygame.sprite.Group()
     jugadores=pygame.sprite.Group()
     enemigos=pygame.sprite.Group()
-    #enemigos2=pygame.sprite.Group()
+    enemigos2=pygame.sprite.Group()
     balas=pygame.sprite.Group()
     matrizJugador=[]
     #matrizJugador2=[]
@@ -357,7 +353,7 @@ def main():
                         if generator2:
                             enemy2=Enemigo2(matrizEnemigos2)
                             enemy2.rect.x=random.randrange(0, 900, 30)
-                            enemigos.add(enemy2)
+                            enemigos2.add(enemy2)
                             todos.add(enemy2)
                     generator2=False
 
@@ -448,6 +444,20 @@ def main():
                         m.blink = False
                         modifiers.add(m)
                         todos.add(m)
+                for x in enemigos2:
+                    if state == menuoptions[0]:
+                        x.AImove(jugador)
+                    else:
+                        x.AImove(jugador, jugador2,2)
+                for x in jugadores:
+                    if x == jugador:
+                        print "J1"
+                    else:
+                        print "J2"
+                    enemylscol = pygame.sprite.spritecollide(x, enemigos2, False)
+                    for y in enemylscol:
+                        if y.isAttacking():
+                            x.dealDamage(0.5)
                 todos.update()
 
                 if jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]:
@@ -484,6 +494,7 @@ def main():
                     fac.drawLife(jugador.getHealth())
                     fac.drawScore(scorerender1, scorerender = score)
                 else:
+                    jugador2._health = 50
                     scorerender2 = bob.buildscorerender(str(jugador2.score))
                     fac.drawScore(scorerender1, score, 2,scorerender2)
                     fac.drawLife(jugador.getHealth(), 2, jugador2.getHealth())
