@@ -39,6 +39,7 @@ class Facade(object):
         self.wolvface = wolvface
         self.wolvface2 = wolvface2
         self.enemyface = enemyface
+
     def drawLife(self, health, noplayers = 1, health2=0):
         self._screen.blit(self.wolvface, (self._lifepos[0] - 75, self._lifepos[1]/2 - 5))
         rect = [self._lifepos[0], self._lifepos[1], 302 , self._healthheight]
@@ -57,6 +58,7 @@ class Facade(object):
             rectW22 = [self._lifepos[0] + 1, wolviebottom - self._healthheight + 1, health2*3, self._healthheight-2]
             pygame.draw.rect(self._screen, green,rectW2, 1)
             pygame.draw.rect(self._screen, blue,rectW22)
+
     def drawEnemyLife(self, enemy, noplayers = 1, enemy2=None):
             health = enemy._health
             self._screen.blit(self.enemyface, [self._enemylifepos[0] - 352, self._enemylifepos[1]-15])
