@@ -39,21 +39,36 @@ class Facade(object):
         self.wolvface2 = wolvface2
 
     def drawLife(self, health, noplayers = 1, health2=0):
-        self._screen.blit(self.wolvface, (self._lifepos[0] - 75, self._lifepos[1]/2 - 10))
+        self._screen.blit(self.wolvface, (self._lifepos[0] - 75, self._lifepos[1]/2 - 5))
         rect = [self._lifepos[0], self._lifepos[1], 302 , self._healthheight]
         rect2 = [self._lifepos[0] + 1, self._lifepos[1] + 1, health*3, self._healthheight-2]
         pygame.draw.rect(self._screen, red,rect, 1)
         pygame.draw.rect(self._screen, yellow,rect2)
         if noplayers >= 2:
             wolvierect = self.wolvface.get_rect()
-            wolvierect.y = self._lifepos[1]/2 - 10
+            wolvierect.y = self._lifepos[1]/2 - 5
+            wolvierect2 = self.wolvface2.get_rect()
             wolvieheight = wolvierect.height
-            self._screen.blit(self.wolvface2, (self._lifepos[0] - 75, self._lifepos[1]/2 +10 + wolvieheight))
-            rectW2 = [self._lifepos[0], self._lifepos[1] + wolvieheight + self._healthheight, 302 , self._healthheight]
-            rectW22 = [self._lifepos[0] + 1, self._lifepos[1] + 1 + wolvieheight + self._healthheight, health2*3, self._healthheight-2]
+            wolvierect2.y = self._lifepos[1]/2 +5 + wolvieheight
+            wolviebottom = wolvierect2.bottom
+            self._screen.blit(self.wolvface2, (self._lifepos[0] - 75, self._lifepos[1]/2 +5 + wolvieheight))
+            rectW2 = [self._lifepos[0], wolviebottom - self._healthheight, 302 , self._healthheight]
+            rectW22 = [self._lifepos[0] + 1, wolviebottom - self._healthheight + 1, health2*3, self._healthheight-2]
             pygame.draw.rect(self._screen, green,rectW2, 1)
             pygame.draw.rect(self._screen, blue,rectW22)
-
+    def drawScore(self, score1, scorerender, noplayers = 1 , score2 = 0, ):
+        score1pos = [self._lifepos[0] + 352, self._lifepos[1]]
+        self._screen.blit(score1, score1pos)
+        self._screen.blit(scorerender,[score1pos[0] - 10, score1pos[1] - 25] )
+        if noplayers >= 2:
+            wolvierect = self.wolvface.get_rect()
+            wolvierect.y = self._lifepos[1]/2 - 5
+            wolvierect2 = self.wolvface2.get_rect()
+            wolvieheight = wolvierect.height
+            wolvierect2.y = self._lifepos[1]/2 +5 + wolvieheight
+            wolviebottom = wolvierect2.bottom
+            score2pos = [self._lifepos[0] + 352, wolviebottom - self._healthheight]
+            self._screen.blit(score2, score2pos)
     def loadmodifiers(self, path, quantity = 4):
         image = pygame.image.load(path).convert_alpha()
         imageinfo = image.get_rect()
@@ -137,11 +152,14 @@ class Facade(object):
         if player.rect.y + player.rect.height < self.posbgfixedy + self.posbg[1] + limit and key == pygame.K_UP:
             if self.posbg[1] + self.posbgfixedy + limit < self._screensize[1] - 200:
                     self.posbg[1] += limit
+    def resetposbg(self):
+        self.posbg = self.defaultposbg[:]
 
 class Builder(object):
-    def __init__(self, normalfont, titlefont):
+    def __init__(self, normalfont, titlefont, scorefont):
         self._normalfont = normalfont
         self._titlefont = titlefont
+        self._scorefont = scorefont
     def buildscreen(self):
         self._screensize = pygame.display.Info()
         screen = pygame.display.set_mode([self._screensize.current_w,self._screensize.current_h])
@@ -162,3 +180,5 @@ class Builder(object):
             return self._normalfont.render(txt, True, colour)
         else:
             return self._titlefont.render(txt, True, colour)
+    def buildscorerender(self,txt,colour = white):
+        return self._scorefont.render(txt, True, colour)

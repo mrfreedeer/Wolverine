@@ -24,7 +24,7 @@ def main():
 
     pygame.init()
     pygame.font.init()
-    bob = Builder(pygame.font.Font('WolverineFont.ttf', 40), pygame.font.Font('WolverineFont.ttf', 60))
+    bob = Builder(pygame.font.Font('WolverineFont.ttf', 40), pygame.font.Font('WolverineFont.ttf', 60), pygame.font.Font('WolverineFont.ttf', 15))
     screen = bob.buildscreen()
     menubckg = pygame.image.load('menu.png').convert_alpha()
     gamebckg = pygame.image.load('bg.png').convert_alpha()
@@ -35,9 +35,9 @@ def main():
     player2 = pygame.image.load('jugador2.png').convert_alpha()
     player2=pygame.transform.scale(player2, (750, 350))
     wolvieface = pygame.image.load('WolverineFace.png').convert_alpha()
-    wolvieface = pygame.transform.scale(wolvieface, (50,50))
+    wolvieface = pygame.transform.scale(wolvieface, (40,40))
     wolvieface2 = pygame.image.load('WolverineFace2.png').convert_alpha()
-    wolvieface2= pygame.transform.scale(wolvieface2, (50,50))
+    wolvieface2= pygame.transform.scale(wolvieface2, (40,40))
     menuoptions = ["1 Jugador", "2 Jugadores", "Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
     pauserender = bob.buildtxtrender("PAUSE", 1, white)
@@ -48,7 +48,8 @@ def main():
     fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0], wolvieface, wolvieface2)
     fac._screensize = bob.buildresolution()
     posbg[1] += fac._screensize[1]-200
-    fac.posbg = posbg
+    fac.posbg = posbg[:]
+    fac.defaultposbg = posbg[:]
     fac.posbgfixedy = 840
     fac.display_bkg()
     mouseclick = False
@@ -121,6 +122,12 @@ def main():
     playermodlist = {}
     random.seed(pygame.time.get_ticks())
     time2 = pygame.time.get_ticks()
+    score = bob.buildscorerender("score")
+    endscore = 100
+    genscore = 0
+    winrender = bob.buildtxtrender("Congratulations", 1, white)
+    loserender = bob.buildtxtrender("GAME OVER", 1, red)
+    gameover = False
     while not end:
         pygame.display.flip()
         for event in pygame.event.get():
@@ -246,8 +253,65 @@ def main():
 
 
         if state == menuoptions[0] or state ==  menuoptions[1]:
+            if genscore >= endscore:
 
-            if not fac.pause:
+                winrenderrect = winrender.get_rect()
+                winrenderpos = [RESOLUTION[0]/2 - winrenderrect.width/2,RESOLUTION[1]/2 - winrenderrect.height]
+                newbckpos = [RESOLUTION[0]/2 - fac._pauserenders[0].get_rect().width/2]
+                newbckpos.append(RESOLUTION[1]/2 + winrenderrect.height + 50)
+
+
+                screen.blit(winrender, winrenderpos )
+                screen.blit(fac._pauserenders[0], newbckpos)
+
+                select = fac.checkmousepause(mousepos, newbckpos)
+
+                if select != -1:
+                    txt = pauseoptions[select]
+                    fac._pauserenders.pop(select)
+                    fac._pauserenders.insert(select,backtomenured)
+                    fac._turnedoptions.append(select)
+                elif select == -1 and fac.getTurned() != []:
+                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac.emptyTurned()
+                elif len(fac.getTurned())> 1:
+                    txt = pauseoptions[select]
+                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac._pauserenders.pop(select)
+                    fac._pauserenders.insert(select,backtomenured)
+                    fac._turnedoptions.append(select)
+                if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
+                    state = 'menu'
+            elif gameover:
+                loserenderrect = loserender.get_rect()
+                loserenderpos = [RESOLUTION[0]/2 - loserenderrect.width/2,RESOLUTION[1]/2 - loserenderrect.height]
+                newbckpos = [RESOLUTION[0]/2 - fac._pauserenders[0].get_rect().width/2]
+                newbckpos.append(RESOLUTION[1]/2 + loserenderrect.height + 50)
+
+
+                screen.blit(loserender, loserenderpos )
+                screen.blit(fac._pauserenders[0], newbckpos)
+
+                select = fac.checkmousepause(mousepos, newbckpos)
+
+                if select != -1:
+                    txt = pauseoptions[select]
+                    fac._pauserenders.pop(select)
+                    fac._pauserenders.insert(select,backtomenured)
+                    fac._turnedoptions.append(select)
+                elif select == -1 and fac.getTurned() != []:
+                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac.emptyTurned()
+                elif len(fac.getTurned())> 1:
+                    txt = pauseoptions[select]
+                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac._pauserenders.pop(select)
+                    fac._pauserenders.insert(select,backtomenured)
+                    fac._turnedoptions.append(select)
+                if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
+                    state = 'menu'
+                    gameover = False
+            elif not fac.pause:
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
@@ -258,6 +322,16 @@ def main():
                             else:
                                 playermodlist[lsmod.type] = [ pygame.time.get_ticks(), x]
                             x.dealtwithModifiers(lsmod.type)
+                            if lsmod.type in [1,3]:
+                                x.score += 100
+                                genscore += 100
+                            else:
+                                x.score -= 100
+                                genscore -= 100
+                            if x.score < 0:
+                                x.score = 0
+                            if genscore < 0:
+                                genscore = 0
                             lsmod.kill()
                 gottapop = []
                 for x in playermodlist:
@@ -301,8 +375,13 @@ def main():
                 if jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]:
                     jugador.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador.rect.height
                 if state == menuoptions[1]:
+                    if jugador.getHealth() + jugador2.getHealth() <= 0:
+                        gameover = True
                     if jugador2.rect.y + jugador2.rect.height < fac.posbgfixedy + fac.posbg[1]:
                         jugador2.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador2.rect.height
+                else:
+                    if jugador.getHealth() <= 0:
+                        gameover = True
                 if moves != []:
                     fac.checklimits(moves[0],jugador, bginfo)
                 if moves2 != []:
@@ -312,15 +391,18 @@ def main():
                 screen.blit(gamebckg, fac.posbg)
 
                 todos.draw(screen)
+
+                scorerender1 = bob.buildscorerender(str(jugador.score))
                 if state == menuoptions[0]:
                     fac.drawLife(jugador.getHealth())
+                    fac.drawScore(scorerender1, scorerender = score)
                 else:
+                    scorerender2 = bob.buildscorerender(str(jugador2.score))
+                    fac.drawScore(scorerender1, score, 2,scorerender2)
                     fac.drawLife(jugador.getHealth(), 2, jugador2.getHealth())
 
                 pygame.display.flip()
                 reloj.tick(10)
-
-            #if state == menuoptions[2]:
 
             else:
                 screen.blit(pauserender, [pausexpos- pausewidth,pauseypos])
@@ -348,6 +430,7 @@ def main():
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select != -1:
                     state = 'menu'
+                    fac.resetposbg()
                     for x in jugadores:
                         x.kill()
                     mouseclick = False
@@ -379,6 +462,7 @@ def main():
                 fac._turnedoptions.append(select)
             if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
                 state = 'menu'
+
             #screen.blit(x,[750, 350])
             #select = fac.checkmousepause(mousepos)
         elif state == 'Salir':

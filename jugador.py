@@ -126,12 +126,13 @@ class Jugador(pygame.sprite.Sprite):
         self.accion=0
         self.salto=False
         self.dir = 'R'
-        self._health = 100
+        self._health = -100
         self.finished = False
         self.updatemove = False
         self.still = True
         self.prevkey = None
         self.interrupt = False
+        self.score = 0
     def printstats(self):
         print "--------------Stats-------------"
         print "Vel: ", self.vel_multiplier
@@ -461,6 +462,7 @@ class Jugador2(pygame.sprite.Sprite):
         self.still = True
         self.prevkey = None
         self.interrupt = False
+        self.score = 0
 
     def printstats(self):
         print "--------------Stats-------------"
