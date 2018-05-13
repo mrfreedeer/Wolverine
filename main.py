@@ -152,7 +152,7 @@ def main():
     random.seed(pygame.time.get_ticks())
     time2 = pygame.time.get_ticks()
     score = bob.buildscorerender("score")
-    endscore = 10000
+    endscore = 23375
     genscore = 0
     winrender = bob.buildtxtrender("Congratulations", 1, white)
     loserender = bob.buildtxtrender("GAME OVER", 1, red)
@@ -291,7 +291,7 @@ def main():
 
 
         if state == menuoptions[0] or state ==  menuoptions[1]:
-            print numberOfStillEnemies, numberOfMovingEnemies
+            print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
             if genscore >= endscore:
                 for j in jugadores:
                     j.kill()
@@ -354,9 +354,8 @@ def main():
                     gameover = False
             elif not fac.pause:
 
-                if (fac.posbg[0]==0 and numberOfDeaths==0) or fac.posbg[0]==-220 or fac.posbg[0]<=-320 or fac.posbg[0]==-520 or fac.posbg[0]==-660 or fac.posbg[0]==-990:
-                    if numberOfDeaths==7 or numberOfDeaths==14 or numberOfDeaths==21 or numberOfDeaths==28 or numberOfDeaths==35:
-                        canGenerate=True
+                if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==7) or (fac.posbg[0]<=-320 and numberOfDeaths==14) or (fac.posbg[0]<=-520 and numberOfDeaths==21) or (fac.posbg[0]<=-660 and numberOfDeaths==28) or (fac.posbg[0]<=-990 and numberOfDeaths==35):
+                    canGenerate=True
                 if canGenerate:
                     if numberOfMovingEnemies<=0:
                         generator2=True
