@@ -137,6 +137,7 @@ def main():
     allowedmoves2 = [pygame.K_w, pygame.K_d, pygame.K_t, pygame.K_r, pygame.K_a, pygame.K_s]
     moves = []
     moves2 = []
+    blink2 = False
     pausewidth = pauserender.get_width()/2
     pauseheight = pauserender.get_height()/2
     for x in pauseoptionrenders:
@@ -152,11 +153,13 @@ def main():
         ypos += x.get_height() + 10
     fac.pausepositions = pausepositions
     blink = False
+    blinkers = []
     blinkEnemy = False
     time = pygame.time.get_ticks()
     turn = False
     modlist = []
     playermodlist = {}
+    turn2 = False
     random.seed(pygame.time.get_ticks())
     time2 = pygame.time.get_ticks()
     score = bob.buildscorerender("score")
@@ -178,6 +181,27 @@ def main():
             if state == 'menu':
                 pygame.mixer.music.set_volume(0.3)
                 channel1.set_volume(0)
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT:
+                        modi -= 1
+                        blink = True
+                        time = pygame.time.get_ticks()
+                        lasttime = pygame.time.get_ticks()
+                    if event.key == pygame.K_RIGHT:
+                        modi += 1
+                        blink = True
+                        time = pygame.time.get_ticks()
+                        lasttime = pygame.time.get_ticks()
+                    if modi < 0:
+                        modi = 3
+                    elif modi > 3:
+                        modi = 0
+                    if modifiers:
+                        for x in modifiers:
+                            x.kill()
+                    m = fac.getModifier(modi)
+                    modifiers.add(m)
+                    everyone.add(m)
 
             elif state == menuoptions[1] or state == menuoptions[0]:
                 pygame.mixer.music.set_volume(0)
@@ -220,10 +244,11 @@ def main():
                     else:
                         modifiers.add(m)
                         everyone.add(m)
-                elif pygame.time.get_ticks() - time >= 2000:
-                    blink = not blink
+                if pygame.time.get_ticks() - time >= 2000:
+                    blink = False
                     modifiers.add(m)
                     everyone.add(m)
+
             if mouseonoption != -1 and mouseclick: #Detecting Option Clicked
                 #print "Menu Option Clicked: ", menuoptions[mouseonoption]
                 mouseclick = False
@@ -339,10 +364,11 @@ def main():
                     state = 'menu'
                     gameover = False
             elif not fac.pause:
-
                 if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==7) or (fac.posbg[0]<=-320 and numberOfDeaths==14) or (fac.posbg[0]<=-520 and numberOfDeaths==21) or (fac.posbg[0]<=-660 and numberOfDeaths==28) or (fac.posbg[0]<=-990 and numberOfDeaths==35):
                     canGenerate=True
                 if canGenerate:
+                    lasttime2 = pygame.time.get_ticks()
+                    time4 = pygame.time.get_ticks()
                     if numberOfMovingEnemies<=0:
                         generator2=True
                         numberOfMovingEnemies=5
@@ -370,6 +396,8 @@ def main():
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
+                        ylevel = math.fabs(lsmod.rect.y - x.rect.y)
+                    if lsmod != None and ylevel <= x.rect.height/3:
                         if not lsmod.blink:
                             if lsmod.type in playermodlist:
                                 playermodlist.pop(lsmod.type)
@@ -390,6 +418,7 @@ def main():
                             if genscore < 0:
                                 genscore = 0
                             lsmod.kill()
+                            modlist.remove(lsmod)
 
                 gottapop = []
                 for x in playermodlist:
@@ -398,12 +427,13 @@ def main():
                         gottapop.append(x)
                 for x in gottapop:
                     playermodlist.pop(x)
-
-                if pygame.time.get_ticks() - time >= random.randrange(modwait,modwait*2) and (len(modlist)<=3):
+                print len(modlist)
+                if (pygame.time.get_ticks() - time >= random.randrange(modwait,modwait*2) and (len(modlist)<=15)) or len(modlist) <= 3:
                     m = fac.getModifier(random.randrange(0,4))
-                    m.rect.x = random.randrange(0,fac._screensize[0]-100)
+                    m.rect.x = random.randrange(fac.posbg[0],fac.posbg[0]+2100)
                     m.rect.y = random.randrange((fac.posbg[1] + fac.posbgfixedy), fac._screensize[1]-100)
                     blink = True
+                    blinkers.append(m)
                     lasttime = pygame.time.get_ticks()
                     time = pygame.time.get_ticks()
                     modifiers.add(m)
@@ -420,15 +450,19 @@ def main():
                         turn = not turn
                         lasttime = pygame.time.get_ticks()
                         if turn:
-                            m.kill()
+                            for x in blinkers:
+                                x.kill()
                         else:
-                            modifiers.add(m)
-                            todos.add(m)
-                    elif pygame.time.get_ticks() - time >= 2000:
+                            for x in blinkers:
+                                modifiers.add(x)
+                                todos.add(x)
+                    if pygame.time.get_ticks() - time >= 2000:
                         blink = not blink
-                        m.blink = False
-                        modifiers.add(m)
-                        todos.add(m)
+                        for x in blinkers:
+                            x.blink = False
+                            modifiers.add(x)
+                            todos.add(x)
+                        blinkers = []
                 enemybar = []
                 enemybar1 = []
 
@@ -515,6 +549,9 @@ def main():
                     for x in enemigos2:
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
+                    for m in modifiers:
+                        m.rect.x -= fac.prevposbg[0]
+                        m.rect.y -= fac.prevposbg[1]
                     if state == menuoptions[1]:
                         if fac.isLimitrigger(moves[0], jugador, bginfo):
                             jugador2.rect.x -= fac.prevposbg[0]

@@ -197,7 +197,10 @@ class Facade(object):
             return True
     def checklimits(self, key, player, bginfo):
         bglimit = 150
-        limit = 15
+        if player.vel_multiplier > 1:
+            limit = 30
+        else:
+            limit = 15
 
         if player.rect.x > self._screensize[0] - bglimit and key == pygame.K_RIGHT:
                 if bginfo[0] + self.posbg[0] - self._screensize[0]  - limit >0:

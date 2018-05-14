@@ -274,7 +274,6 @@ class Enemigo2(pygame.sprite.Sprite):
 
         self.movetime -= 1
         if self.movetime <= -20:
-            print "reset"
             self.movetime = random.randrange(0,100)
             self.move('I')
         if self.movetime <= 0:
