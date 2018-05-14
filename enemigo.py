@@ -188,6 +188,11 @@ class Enemigo1(pygame.sprite.Sprite):
         if self.shoottimer < 0:
             self.shoot = True
             self.shoottimer = random.randrange(20,50)
+
+        if self.shoot:
+            self.accion=2
+        else:
+            self.accion=0        
         if self.accion==0:
             self.image = self.f[self.accion][self.indice]
             self.indice += 1
