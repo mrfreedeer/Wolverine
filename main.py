@@ -149,6 +149,7 @@ def main():
         ypos += x.get_height() + 10
     fac.pausepositions = pausepositions
     blink = False
+    blinkEnemy = False
     time = pygame.time.get_ticks()
     turn = False
     modlist = []
@@ -174,29 +175,7 @@ def main():
             if state == 'menu':
                 pygame.mixer.music.set_volume(0.3)
                 channel1.set_volume(0)
-                '''
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        modi -= 1
-                        blink = True
-                        time = pygame.time.get_ticks()
-                        lasttime = pygame.time.get_ticks()
-                    if event.key == pygame.K_RIGHT:
-                        modi += 1
-                        blink = True
-                        time = pygame.time.get_ticks()
-                        lasttime = pygame.time.get_ticks()
-                    if modi < 0:
-                        modi = 3
-                    elif modi > 3:
-                        modi = 0
-                    if modifiers:
-                        for x in modifiers:
-                            x.kill()
-                    m = fac.getModifier(modi)
-                    modifiers.add(m)
-                    everyone.add(m)
-                '''
+
             elif state == menuoptions[1] or state == menuoptions[0]:
                 pygame.mixer.music.set_volume(0)
                 channel1.set_volume(0.3)
@@ -384,21 +363,6 @@ def main():
                             todos.add(enemy)
                     generator1=False
                     canGenerate=False
-                '''
-                if fac.posbg[0]==-220:
-                    numberOfMovingEnemies=5
-                    numberOfStillEnemies=2
-                elif fac.posbg[0]==-320:
-                    numberOfMovingEnemies=5
-                    numberOfStillEnemies=2
-                elif fac.posbg[0]==-660:
-                    numberOfMovingEnemies=5
-                    numberOfStillEnemies=2
-                elif fac.posbg[0]==-990:
-                    numberOfMovingEnemies=5
-                    numberOfStillEnemies=2
-
-                '''
 
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
