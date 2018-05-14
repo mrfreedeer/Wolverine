@@ -546,8 +546,9 @@ def main():
                                 numberOfMovingEnemies-=1
                                 numberOfDeaths+=1
                                 x.die()
-                                if x.canDie:
+                                if x.canDie and x.finished:
                                     x.kill()
+                                x.finished=False
                             else:
                                 y.score += 50
                                 genscore += 50

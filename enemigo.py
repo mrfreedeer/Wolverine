@@ -192,7 +192,7 @@ class Enemigo1(pygame.sprite.Sprite):
         if self.shoot:
             self.accion=2
         else:
-            self.accion=0        
+            self.accion=0
         if self.accion==0:
             self.image = self.f[self.accion][self.indice]
             self.indice += 1
@@ -328,22 +328,13 @@ class Enemigo2(pygame.sprite.Sprite):
                                 self.move('L')
     def die(self):
         #ouch.play()
-        channel3.play(ouch)
-        self.indice=0
-        self.finished = False
-        if self.dir=='R':
+        if self.dir=='R' or self.move=='R' or self.move=='AR' or self.move=='I':
             self.accion=6
-            for i in range (3):
-                self.image=self.f[self.accion][i]
-                self.update()
 
-
-        else:
+        elif self.dir=='L' or self.move=='L' or self.move=='AL':
             self.accion=7
-            for i in range (3):
-                self.image=self.f[self.accion][i]
-                self.update()
-        self.canDie=True
+
+        #self.finished = False
 
 
     def move(self, key):
@@ -443,24 +434,33 @@ class Enemigo2(pygame.sprite.Sprite):
         #Die R
         if self.accion==6:
             if self.indice <=2:
+                if self.indice==0:
+                    channel3.play(ouch)
                 self.image = self.f[self.accion][self.indice]
                 self.indice += 1
 
-            if self.indice > 2:
-                self.indice=0
+            if self.indice == 2:
+                self.finished = True
+                self.canDie = True
+
 
             self.vel_x = 0
             self.vel_y = 0
         #Die L
         if self.accion==7:
             if self.indice <=2:
+                if self.indice==0:
+                    channel3.play(ouch)
                 self.image = self.f[self.accion][self.indice]
 
                 self.indice += 1
 
-            if self.indice > 2:
+            if self.indice == 2:
+                self.finished = True
+                self.canDie = True
 
-                self.indice=0
+
+
             self.vel_x = 0
             self.vel_y = 0
         self.rect.y += self.vel_y
