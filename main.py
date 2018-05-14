@@ -44,6 +44,8 @@ def main():
     player1=pygame.transform.scale(player1, (750, 350))
     player2 = pygame.image.load('jugador2.png').convert_alpha()
     player2=pygame.transform.scale(player2, (750, 350))
+    enemyface1 = pygame.image.load('enemyFace1.png').convert_alpha()
+    enemyface1 = pygame.transform.scale(enemyface1, (40,40))
     enemyface = pygame.image.load('enemyFace.png').convert_alpha()
     enemyface = pygame.transform.scale(enemyface, (40,40))
     wolvieface = pygame.image.load('WolverineFace.png').convert_alpha()
@@ -57,7 +59,7 @@ def main():
     menurenders = bob.buildtxtrenders(menuoptions)
     WolverineTitle = bob.buildtxtrender("Wolverine", 1)
     end = False
-    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0], wolvieface, wolvieface2, enemyface)
+    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0], wolvieface, wolvieface2, enemyface, enemyface1)
     fac._screensize = bob.buildresolution()
     posbg[1] += fac._screensize[1]-200
     fac.posbg = posbg[:]
@@ -458,9 +460,17 @@ def main():
                         modifiers.add(m)
                         todos.add(m)
                 enemybar = []
+                enemybar1 = []
 
                 for x in enemigos:
+                    jugadorlscol=[]
                     jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
+                    if jugadorlscol != []:
+                        if len(enemybar1) >2:
+                            enemybar1.pop()
+                            enemybar1.append(x)
+                        else:
+                            enemybar1.append(x)
                     for y in jugadorlscol:
                         damageinf = y.inflictDamage(x)
                         x._health -= damageinf
@@ -562,6 +572,16 @@ def main():
                 if state == menuoptions[0]:
                     fac.drawLife(jugador.getHealth())
                     fac.drawScore(scorerender1, scorerender = score)
+
+                    if enemybar1 != []:
+                        for x in enemybar1:
+                            if jugador.inflictDamage(x) == 0:
+                                enemybar1.remove(x)
+                    if enemybar1 != []:
+                        if jugador.inflictDamage(enemybar1[0]) > 0:
+                            fac.drawEnemy1Life(enemybar1[0])
+
+
                     if enemybar != []:
                         for x in enemybar:
                             if jugador.inflictDamage(x) == 0:
@@ -573,6 +593,16 @@ def main():
                     scorerender2 = bob.buildscorerender(str(jugador2.score))
                     fac.drawScore(scorerender1, score, 2,scorerender2)
                     fac.drawLife(jugador.getHealth(), 2, jugador2.getHealth())
+                    if enemybar1 != []:
+                        for x in enemybar1:
+                            if jugador.inflictDamage(x) == 0 and jugador2.inflictDamage(x) == 0:
+                                enemybar1.remove(x)
+                    if enemybar1 != []:
+                        if len(enemybar1) >= 2:
+                            fac.drawEnemy1Life(enemybar1[0], 2, enemybar1[1])
+                        else:
+                            fac.drawEnemy1Life(enemybar1[0])
+
                     if enemybar != []:
                         for x in enemybar:
                             if jugador.inflictDamage(x) == 0 and jugador2.inflictDamage(x) == 0:

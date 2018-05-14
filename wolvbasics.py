@@ -17,7 +17,7 @@ class Modifier(pygame.sprite.Sprite):
         self.type = type
         self.blink = True
 class Facade(object):
-    def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos, wolvface, wolvface2, enemyface):
+    def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos, wolvface, wolvface2, enemyface, enemyface1):
         self._normalrenders = menurenders[:]
         self._menurenders = menurenders
         self._Wolverine = Wolverine
@@ -32,6 +32,7 @@ class Facade(object):
         self._screensize = pygame.display.Info()
         self._lifepos = [100, 30]
         self._enemylifepos = [self._screensize.current_w - 50,30]
+        self._enemy1lifepos = [self._screensize.current_w - 50,30]
         self._healthheight = 20
         self._pauserenders = []
         self._normalpauserenders = []
@@ -39,6 +40,7 @@ class Facade(object):
         self.wolvface = wolvface
         self.wolvface2 = wolvface2
         self.enemyface = enemyface
+        self.enemy1face = enemyface1
 
     def drawLife(self, health, noplayers = 1, health2=0):
         self._screen.blit(self.wolvface, (self._lifepos[0] - 75, self._lifepos[1]/2 - 5))
@@ -79,6 +81,28 @@ class Facade(object):
                 rectW22 = [self._enemylifepos[0] -301, wolviebottom - self._healthheight + 1, health2*3, self._healthheight-2]
                 pygame.draw.rect(self._screen, green,rectW2, 1)
                 pygame.draw.rect(self._screen, blue,rectW22)
+
+    def drawEnemy1Life(self, enemy, noplayers = 1, enemy2=None):
+            health = enemy._health
+            self._screen.blit(self.enemy1face, [self._enemy1lifepos[0] - 352, self._enemy1lifepos[1]-15])
+            rect = [self._enemy1lifepos[0] - 302, self._enemy1lifepos[1], 302 , self._healthheight]
+            rect2 = [self._enemy1lifepos[0] -301, self._enemy1lifepos[1] + 1, health*3, self._healthheight-2]
+            pygame.draw.rect(self._screen, red,rect, 1)
+            pygame.draw.rect(self._screen, yellow,rect2)
+            if noplayers >= 2:
+                health2 = enemy2._health
+                wolvierect = self.wolvface.get_rect()
+                wolvierect.y = self._lifepos[1]/2 - 5
+                wolvierect2 = self.wolvface2.get_rect()
+                wolvieheight = wolvierect.height
+                wolvierect2.y = self._lifepos[1]/2 +5 + wolvieheight
+                wolviebottom = wolvierect2.bottom
+                self._screen.blit(self.enemyface, [self._enemy1lifepos[0]-352, wolviebottom - self._healthheight-15])
+                rectW2 = [self._enemy1lifepos[0]-302, wolviebottom - self._healthheight, 302 , self._healthheight]
+                rectW22 = [self._enemy1lifepos[0] -301, wolviebottom - self._healthheight + 1, health2*3, self._healthheight-2]
+                pygame.draw.rect(self._screen, green,rectW2, 1)
+                pygame.draw.rect(self._screen, blue,rectW22)
+
     def drawScore(self, score1, scorerender, noplayers = 1 , score2 = 0, ):
         score1pos = [self._lifepos[0] + 352, self._lifepos[1]]
         self._screen.blit(score1, score1pos)
