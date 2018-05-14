@@ -505,6 +505,7 @@ def main():
                                 genscore += 200
                                 numberOfStillEnemies-=1
                                 numberOfDeaths+=1
+                                x.die()
                                 x.kill()
                             else:
                                 y.score += 75

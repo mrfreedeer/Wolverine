@@ -10,9 +10,12 @@ pygame.mixer.init(44100, -16, 2, 2048)
 punchE2=pygame.mixer.Sound('punchEnemy.ogg')
 stepE=pygame.mixer.Sound('pasosJugador.ogg')
 ouch=pygame.mixer.Sound('gag.ogg')
+blast=pygame.mixer.Sound('blast.ogg')
 ouch.set_volume(0.6)
 stepE.set_volume(0.05)
+blast.set_volume(0.3)
 channel3 = pygame.mixer.Channel(2)
+channel4 = pygame.mixer.Channel(3)
 
 
 screensize = pygame.display.Info()
@@ -172,6 +175,11 @@ class Enemigo1(pygame.sprite.Sprite):
 
     def getHealth(self):
         return self._health
+
+    def die(self):
+        #ouch.play()
+        channel4.play(blast)
+
     def update(self):
         #Idle R
         self.shoottimer -= 1
