@@ -327,15 +327,11 @@ class Enemigo2(pygame.sprite.Sprite):
                             else:
                                 self.move('L')
     def die(self):
-        #ouch.play()
         if self.dir=='R' or self.move=='R' or self.move=='AR' or self.move=='I':
             self.accion=6
 
         elif self.dir=='L' or self.move=='L' or self.move=='AL':
             self.accion=7
-
-        #self.finished = False
-
 
     def move(self, key):
         if (self.finished and self.prevkey in ['AL', 'AR']) or self.prevkey not in ['AL', 'AR'] :
@@ -433,7 +429,7 @@ class Enemigo2(pygame.sprite.Sprite):
 
         #Die R
         if self.accion==6:
-            if self.indice <=2:
+            if self.indice <2:
                 if self.indice==0:
                     channel3.play(ouch)
                 self.image = self.f[self.accion][self.indice]
