@@ -304,8 +304,8 @@ def main():
         if state == menuoptions[0] or state ==  menuoptions[1]:
             #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
             if genscore >= endscore and numberOfDeaths==35 and fac.posbg[0]<=-1010:
-                for j in jugadores:
-                    j.kill()
+                #for j in jugadores:
+                #    j.kill()
                 winrenderrect = winrender.get_rect()
                 winrenderpos = [RESOLUTION[0]/2 - winrenderrect.width/2,RESOLUTION[1]/2 - winrenderrect.height]
                 newbckpos = [RESOLUTION[0]/2 - fac._pauserenders[0].get_rect().width/2]
@@ -332,6 +332,16 @@ def main():
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
+                    numberOfStillEnemies=0
+                    numberOfMovingEnemies=0
+                    numberOfDeaths=0
+                    fac.posbg[0]=0
+                    for j in jugadores:
+                        j.kill()
+                    for e in enemigos:
+                        e.kill()
+                    for e in enemigos2:
+                        e.kill()
                     state = 'menu'
             elif gameover:
                 loserenderrect = loserender.get_rect()
@@ -361,6 +371,16 @@ def main():
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
+                    numberOfStillEnemies=0
+                    numberOfMovingEnemies=0
+                    numberOfDeaths=0
+                    fac.posbg[0]=0
+                    for j in jugadores:
+                        j.kill()
+                    for e in enemigos:
+                        e.kill()
+                    for e in enemigos2:
+                        e.kill()
                     state = 'menu'
                     gameover = False
             elif not fac.pause:

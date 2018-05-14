@@ -9,7 +9,12 @@ limites=[10, 8, 11, 10, 8, 6, 9, 4, 12, 8, 8, 10, 9, 4, 7, 5, 2, 8, 9, 9, 9]
 pygame.mixer.init(44100, -16, 2, 2048)
 punchE2=pygame.mixer.Sound('punchEnemy.ogg')
 stepE=pygame.mixer.Sound('pasosJugador.ogg')
+ouch=pygame.mixer.Sound('gag.ogg')
+ouch.set_volume(0.6)
 stepE.set_volume(0.05)
+channel3 = pygame.mixer.Channel(2)
+
+
 screensize = pygame.display.Info()
 RESOLUTION = [screensize.current_w, screensize.current_h]
 bglimit = 10
@@ -306,6 +311,8 @@ class Enemigo2(pygame.sprite.Sprite):
                             else:
                                 self.move('L')
     def die(self):
+        #ouch.play()
+        channel3.play(ouch)
         self.indice=0
         self.finished = False
         if self.dir=='R':
