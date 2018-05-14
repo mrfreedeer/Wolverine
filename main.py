@@ -351,6 +351,7 @@ def main():
                     for e in enemigos2:
                         e.kill()
                     state = 'menu'
+                    fac.resetposbg()
             elif gameover:
                 loserenderrect = loserender.get_rect()
                 loserenderpos = [RESOLUTION[0]/2 - loserenderrect.width/2,RESOLUTION[1]/2 - loserenderrect.height]
@@ -392,6 +393,7 @@ def main():
                     for e in enemigos2:
                         e.kill()
                     state = 'menu'
+                    fac.resetposbg()
                     gameover = False
             elif not fac.pause:
                 if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==10) or (fac.posbg[0]<=-320 and numberOfDeaths==20) or (fac.posbg[0]<=-520 and numberOfDeaths==30) or (fac.posbg[0]<=-660 and numberOfDeaths==40) or (fac.posbg[0]<=-990 and numberOfDeaths==50):
@@ -774,6 +776,7 @@ def main():
                 fac._turnedoptions.append(select)
             if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
                 state = 'menu'
+                fac.resetposbg()
 
             #screen.blit(x,[750, 350])
             #select = fac.checkmousepause(mousepos)
