@@ -325,9 +325,15 @@ class Enemigo2(pygame.sprite.Sprite):
         self.finished = False
         if self.dir=='R':
             self.accion=6
+            for i in range (3):
+                self.image=self.f[self.accion][i]
+                self.update()
 
         else:
             self.accion=7
+            for i in range (3):
+                self.image=self.f[self.accion][i]
+                self.update()
 
 
     def move(self, key):

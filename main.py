@@ -303,7 +303,7 @@ def main():
 
         if state == menuoptions[0] or state ==  menuoptions[1]:
             #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
-            if genscore >= endscore and numberOfDeaths==35 and fac.posbg[0]<=-1010:
+            if genscore >= endscore and numberOfDeaths>=35 and fac.posbg[0]<=-1010 and numberOfStillEnemies==0 and numberOfMovingEnemies==0:
                 #for j in jugadores:
                 #    j.kill()
                 winrenderrect = winrender.get_rect()
