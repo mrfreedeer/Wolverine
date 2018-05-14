@@ -50,6 +50,9 @@ def main():
     player1=pygame.transform.scale(player1, (750, 350))
     player2 = pygame.image.load('jugador2.png').convert_alpha()
     player2=pygame.transform.scale(player2, (750, 350))
+    im0 = pygame.image.load('instMods.png').convert_alpha()
+    im0=pygame.transform.scale(im0, (450, 125))
+
     enemyface1 = pygame.image.load('enemyFace1.png').convert_alpha()
     enemyface1 = pygame.transform.scale(enemyface1, (40,40))
     enemyface = pygame.image.load('enemyFace.png').convert_alpha()
@@ -130,6 +133,7 @@ def main():
     canGenerate=True
     allDead=False
     numberOfDeaths=0
+    inst=0
 
     #screen.blit(gamebckg, [0,0])
     pygame.draw.polygon(screen, [255,255,255], [[0,400], [ANCHO, 400]],2)
@@ -325,6 +329,8 @@ def main():
                     fac._pauserenders.pop(select)
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
+                if select != -1 and len(fac.getTurned())==1:
+                    beep.play()
                 elif select == -1 and fac.getTurned() != []:
                     fac._pauserenders = fac._normalpauserenders[:]
                     fac.emptyTurned()
@@ -363,6 +369,8 @@ def main():
                     fac._pauserenders.pop(select)
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
+                if select != -1 and len(fac.getTurned())==1:
+                    beep.play()
 
                 elif select == -1 and fac.getTurned() != []:
                     fac._pauserenders = fac._normalpauserenders[:]
@@ -725,9 +733,14 @@ def main():
             screen.fill([0,0,0])
             fac.display_bkg()
             #screen.blit(menubckg2, [100, 0])
+
             screen.blit(player1,[10,0])
             screen.blit(player2,[10,400])
+            screen.blit(im0, [10, 295])
+
+
             screen.blit(fac._pauserenders[0], newbckpos)
+
 
             select = fac.checkmousepause(mousepos, newbckpos)
 
@@ -736,6 +749,10 @@ def main():
                 fac._pauserenders.pop(select)
                 fac._pauserenders.insert(select,backtomenured)
                 fac._turnedoptions.append(select)
+
+            if select != -1 and len(fac.getTurned())==1:
+                beep.play()
+
             elif select == -1 and fac.getTurned() != []:
                 fac._pauserenders = fac._normalpauserenders[:]
                 fac.emptyTurned()
