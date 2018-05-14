@@ -370,7 +370,8 @@ def main():
                     for i in range(numberOfMovingEnemies):
                         if generator2:
                             enemy2=Enemigo2(matrizEnemigos2)
-                            enemy2.rect.x=random.randrange(0, 900, 30)
+                            enemy2.rect.x=random.randrange(0, 1000, 50)
+                            enemy2.rect.y=random.randrange(500, 700)
                             enemigos2.add(enemy2)
                             todos.add(enemy2)
                     generator2=False
