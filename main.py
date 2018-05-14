@@ -51,8 +51,7 @@ def main():
     player2 = pygame.image.load('jugador2.png').convert_alpha()
     player2=pygame.transform.scale(player2, (750, 350))
     im0 = pygame.image.load('instMods.png').convert_alpha()
-    im0=pygame.transform.scale(im0, (450, 125))
-
+    im0 = pygame.transform.scale(im0, (700, 125))
     enemyface1 = pygame.image.load('enemyFace1.png').convert_alpha()
     enemyface1 = pygame.transform.scale(enemyface1, (40,40))
     enemyface = pygame.image.load('enemyFace.png').convert_alpha()
@@ -733,11 +732,9 @@ def main():
             screen.fill([0,0,0])
             fac.display_bkg()
             #screen.blit(menubckg2, [100, 0])
-
+            screen.blit(im0, [10, 300])
             screen.blit(player1,[10,0])
             screen.blit(player2,[10,400])
-            screen.blit(im0, [10, 295])
-
 
             screen.blit(fac._pauserenders[0], newbckpos)
 
