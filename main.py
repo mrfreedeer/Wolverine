@@ -417,6 +417,7 @@ def main():
                     for i in range(numberOfStillEnemies):
                         if generator1:
                             enemy=Enemigo1(matrizEnemigos1)
+                            enemy.rect.x = random.randrange(0,20)
                             enemy.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy.rect.height)
                             enemigos.add(enemy)
                             todos.add(enemy)
@@ -537,13 +538,13 @@ def main():
 
                 for x in enemigos2:
                     if x._health == 0:
-                        '''
                         print x.finished
                         print x.canDie
                         print x.accion
                         print x.indice
-                        '''
                         x.die()
+                    if x.canDie and x.finished:
+                        x.kill()
                     if not x.canDie:
                         if state == menuoptions[0]:
                             x.AImove(jugador)
@@ -571,10 +572,6 @@ def main():
                             else:
                                 y.score += 50
                                 genscore += 50
-                    if x.canDie:
-                        x.kill()
-                        numberOfMovingEnemies-=1
-                        numberOfDeaths+=1
                 for x in jugadores:
                     enemylscol = pygame.sprite.spritecollide(x, enemigos2, False)
                     for y in enemylscol:
@@ -625,10 +622,10 @@ def main():
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
                     if state == menuoptions[1]:
-                        if fac.isLimitrigger(moves[0], jugador, bginfo):
+                        if moves != [] and fac.isLimitrigger(moves[0], jugador, bginfo):
                             jugador2.rect.x -= fac.prevposbg[0]
                             jugador2.rect.y -= fac.prevposbg[1]
-                        elif  fac.isLimitrigger(moves[0], jugador, bginfo):
+                        elif moves2 != [] and fac.isLimitrigger(moves2[0], jugador2, bginfo):
                             jugador.rect.x -= fac.prevposbg[0]
                             jugador.rect.y -= fac.prevposbg[1]
                     fac.prevposbg = fac.posbg[:]

@@ -441,7 +441,7 @@ class Enemigo2(pygame.sprite.Sprite):
                 self.image = self.f[self.accion][self.indice]
                 self.indice += 1
 
-            if self.indice == 2:
+            if self.indice >= 2:
                 self.indice = 0
                 self.finished = True
 
@@ -459,7 +459,7 @@ class Enemigo2(pygame.sprite.Sprite):
 
                 self.indice += 1
 
-            if self.indice == 2:
+            if self.indice >= 2:
                 self.indice = 0
                 self.finished = True
 
