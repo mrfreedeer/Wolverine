@@ -451,12 +451,8 @@ def main():
                             modlist.remove(lsmod)
                     lscolbullets = pygame.sprite.spritecollide(x, balas, True)
                     for z in lscolbullets:
-                        if z.rect.y > x.rect.y:
-                            if z.rect.bottom -  x.rect.top <= 3:
-                                x.dealDamage(5)
-                        else:
-                            if x.rect.bottom -  z.rect.top <= 3:
-                                x.dealDamage(5)
+                        if z.rect.y >= x.rect.y and z.rect.y <= x.rect.bottom -1:
+                            x.dealDamage(1)
                 gottapop = []
                 for x in playermodlist:
                     if pygame.time.get_ticks() - playermodlist[x][0] >= 10000:
@@ -537,13 +533,16 @@ def main():
                         balas.add(b)
                         todos.add(b)
                         #x.shoot = False
-                if len(enemigos2) == 1:
-                    for x in enemigos2:
+
+
+                for x in enemigos2:
+                    if x._health == 0:
+                        '''
                         print x.finished
                         print x.canDie
                         print x.accion
-                for x in enemigos2:
-                    if x._health == 0:
+                        print x.indice
+                        '''
                         x.die()
                     if not x.canDie:
                         if state == menuoptions[0]:
