@@ -277,8 +277,8 @@ class Enemigo2(pygame.sprite.Sprite):
     def AImove(self, jugador1, jugador2 = None, noplayers = 1):
         if self.accion not in[6,7]:
             self.movetime -= 1
-            if self.movetime <= -20:
-                self.movetime = random.randrange(0,100)
+            if self.movetime <= -50:
+                self.movetime = random.randrange(0,50)
                 self.move('I')
             if self.movetime <= 0:
                 if noplayers == 1:
@@ -326,6 +326,7 @@ class Enemigo2(pygame.sprite.Sprite):
                                 self.move('R')
                             else:
                                 self.move('L')
+        random.seed(pygame.time.get_ticks())
     def die(self):
         if self.dir=='R' or self.move=='R' or self.move=='AR' or self.move=='I':
             self.accion=6

@@ -451,7 +451,12 @@ def main():
                             modlist.remove(lsmod)
                     lscolbullets = pygame.sprite.spritecollide(x, balas, True)
                     for z in lscolbullets:
-                        x.dealDamage(5)
+                        if z.rect.y > x.rect.y:
+                            if z.rect.bottom -  x.rect.top <= 3:
+                                x.dealDamage(5)
+                        else:
+                            if x.rect.bottom -  z.rect.top <= 3:
+                                x.dealDamage(5)
                 gottapop = []
                 for x in playermodlist:
                     if pygame.time.get_ticks() - playermodlist[x][0] >= 10000:
