@@ -695,6 +695,13 @@ def main():
                     numberOfStillEnemies=0
                     numberOfMovingEnemies=0
                     numberOfDeaths=0
+                    fac.posbg[0]=0
+                    for j in jugadores:
+                        j.kill()
+                    for e in enemigos:
+                        e.kill()
+                    for e in enemigos2:
+                        e.kill()
                     state = 'menu'
                     fac.resetposbg()
                     for x in jugadores:
