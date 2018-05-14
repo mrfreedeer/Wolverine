@@ -524,10 +524,12 @@ def main():
                         todos.add(b)
                         #x.shoot = False
                 for x in enemigos2:
-                    if state == menuoptions[0]:
-                        x.AImove(jugador)
-                    else:
-                        x.AImove(jugador, jugador2,2)
+                    if x.canDie != False:
+                        if state == menuoptions[0]:
+                            x.AImove(jugador)
+                        else:
+                            x.AImove(jugador, jugador2,2)
+
                     jugadorlscol = []
                     jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
                     if jugadorlscol != []:
