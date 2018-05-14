@@ -17,6 +17,8 @@ pink = (255,200,200) #rgb(255,200,200)
 posbg = [0, -840]
 
 beep=pygame.mixer.Sound('beep.ogg')
+powerup=pygame.mixer.Sound('powerup.ogg')
+powerdown=pygame.mixer.Sound('powerdown.ogg')
 pygame.mixer.music.load('titlescreen.ogg')
 pygame.mixer.music.set_volume(0.5)
 level1=pygame.mixer.Sound('level1.ogg')
@@ -375,9 +377,11 @@ def main():
                                 playermodlist[lsmod.type] = [ pygame.time.get_ticks(), x]
                             x.dealtwithModifiers(lsmod.type)
                             if lsmod.type in [1,3]:
+                                powerup.play()
                                 x.score += 100
                                 genscore += 100
                             else:
+                                powerdown.play
                                 x.score -= 100
                                 genscore -= 100
                             if x.score < 0:
