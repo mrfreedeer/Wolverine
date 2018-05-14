@@ -305,7 +305,7 @@ def main():
 
 
         if state == menuoptions[0] or state ==  menuoptions[1]:
-            #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
+            print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
             if genscore >= endscore and numberOfDeaths>=35 and fac.posbg[0]<=-1010 and numberOfStillEnemies==0 and numberOfMovingEnemies==0:
                 #for j in jugadores:
                 #    j.kill()
@@ -519,12 +519,13 @@ def main():
                         x.shoot = False
                         channel5.play(shoot)
                         b = Bala(matrizBala)
-                        b.rect.x,b.rect.y = x.rect.x + 20,x.rect.y +10
+                        b.rect.x,b.rect.y = x.rect.x + 20,x.rect.y +50
                         balas.add(b)
                         todos.add(b)
                         #x.shoot = False
+
                 for x in enemigos2:
-                    if x.canDie != False:
+                    if x.canDie == False:
                         if state == menuoptions[0]:
                             x.AImove(jugador)
                         else:
@@ -545,11 +546,11 @@ def main():
                             if x._health <= 0:
                                 y.score += 200
                                 genscore += 200
-                                numberOfMovingEnemies-=1
-                                numberOfDeaths+=1
                                 x.die()
                                 if x.canDie and x.finished:
                                     x.kill()
+                                    numberOfMovingEnemies-=1
+                                    numberOfDeaths+=1
                                 x.finished=False
                             else:
                                 y.score += 50
