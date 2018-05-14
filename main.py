@@ -580,7 +580,11 @@ def main():
                             x.AIbullet(jugador)
                         else:
                             x.AIbullet(jugador,2,jugador2)
-
+                    if x.rect.x > fac.posbg[0] + 2400:
+                        tokillbullets.append(x)
+                for b in tokillbullets:
+                    b.kill()
+                
                 todos.update()
 
 
