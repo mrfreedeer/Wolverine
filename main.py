@@ -122,7 +122,7 @@ def main():
     reloj=pygame.time.Clock()
     generator1=True
     generator2=True
-    numberOfMovingEnemies=5
+    numberOfMovingEnemies=8
     numberOfStillEnemies=2
     canGenerate=True
     allDead=False
@@ -384,14 +384,14 @@ def main():
                     state = 'menu'
                     gameover = False
             elif not fac.pause:
-                if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==7) or (fac.posbg[0]<=-320 and numberOfDeaths==14) or (fac.posbg[0]<=-520 and numberOfDeaths==21) or (fac.posbg[0]<=-660 and numberOfDeaths==28) or (fac.posbg[0]<=-990 and numberOfDeaths==35):
+                if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==10) or (fac.posbg[0]<=-320 and numberOfDeaths==20) or (fac.posbg[0]<=-520 and numberOfDeaths==30) or (fac.posbg[0]<=-660 and numberOfDeaths==40) or (fac.posbg[0]<=-990 and numberOfDeaths==50):
                     canGenerate=True
                 if canGenerate:
                     lasttime2 = pygame.time.get_ticks()
                     time4 = pygame.time.get_ticks()
                     if numberOfMovingEnemies<=0:
                         generator2=True
-                        numberOfMovingEnemies=5
+                        numberOfMovingEnemies=8
                     if numberOfStillEnemies<=0:
                         generator1=True
                         numberOfStillEnemies=2
