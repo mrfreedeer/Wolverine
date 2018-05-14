@@ -419,7 +419,9 @@ def main():
                                 genscore = 0
                             lsmod.kill()
                             modlist.remove(lsmod)
-
+                    lscolbullets = pygame.sprite.spritecollide(x, balas, True)
+                    for z in lscolbullets:
+                        x.dealDamage(5)
                 gottapop = []
                 for x in playermodlist:
                     if pygame.time.get_ticks() - playermodlist[x][0] >= 10000:
@@ -427,7 +429,6 @@ def main():
                         gottapop.append(x)
                 for x in gottapop:
                     playermodlist.pop(x)
-                print len(modlist)
                 if (pygame.time.get_ticks() - time >= random.randrange(modwait,modwait*2) and (len(modlist)<=15)) or len(modlist) <= 3:
                     m = fac.getModifier(random.randrange(0,4))
                     m.rect.x = random.randrange(fac.posbg[0],fac.posbg[0]+2100)
@@ -489,7 +490,14 @@ def main():
                                 y.score += 75
                                 genscore += 75
 
-
+                for x in enemigos:
+                    if x.shoot:
+                        x.shoot = False
+                        b = Bala(matrizBala)
+                        b.rect.x,b.rect.y = x.rect.x + 20,x.rect.y +10
+                        balas.add(b)
+                        todos.add(b)
+                        #x.shoot = False
                 for x in enemigos2:
                     if state == menuoptions[0]:
                         x.AImove(jugador)
@@ -523,6 +531,14 @@ def main():
                     for y in enemylscol:
                         if y.isAttacking():
                             x.dealDamage(0.5)
+                tokillbullets =[]
+                for x in balas:
+                    if x.lucky:
+                        if state == menuoptions[0]:
+                            x.AIbullet(jugador)
+                        else:
+                            x.AIbullet(jugador,2,jugador2)
+
                 todos.update()
 
 
@@ -552,6 +568,9 @@ def main():
                     for m in modifiers:
                         m.rect.x -= fac.prevposbg[0]
                         m.rect.y -= fac.prevposbg[1]
+                    for x in balas:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
                     if state == menuoptions[1]:
                         if fac.isLimitrigger(moves[0], jugador, bginfo):
                             jugador2.rect.x -= fac.prevposbg[0]

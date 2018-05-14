@@ -162,32 +162,17 @@ class Enemigo1(pygame.sprite.Sprite):
         self.accion=0
         self.dir = 'L'
         self._health = 100
+        self.shoottimer = 50
+        self.shoot = False
 
     def getHealth(self):
         return self._health
-
-    def shoot(self, dir):
-        bala=Bala(matrizBala)
-        balas.add(bala)
-        todos.add(bala)
-        self.accion=0
-
-    def AIshoot(self, key):
-        a=random.randrange(0,10)
-        if a>5:
-            self.accion=2
-            #self.shoot()
-        '''
-        self.shoottime -= 1
-        if self.shoottime <= -20:
-            print "reset"
-            self.shoottime = random.randrange(0,100)
-            self.shoot('I')
-        if self.movetime <= 0:
-        '''
-
     def update(self):
         #Idle R
+        self.shoottimer -= 1
+        if self.shoottimer < 0:
+            self.shoot = True
+            self.shoottimer = random.randrange(20,50)
         if self.accion==0:
             self.image = self.f[self.accion][self.indice]
             self.indice += 1
@@ -231,8 +216,6 @@ class Enemigo1(pygame.sprite.Sprite):
                 self.indice=0
 
 
-
-
 class Enemigo2(pygame.sprite.Sprite):
     def __init__(self, matriz):
         pygame.sprite.Sprite.__init__(self)
@@ -271,59 +254,60 @@ class Enemigo2(pygame.sprite.Sprite):
         else:
             return False
     def AImove(self, jugador1, jugador2 = None, noplayers = 1):
-
-        self.movetime -= 1
-        if self.movetime <= -20:
-            self.movetime = random.randrange(0,100)
-            self.move('I')
-        if self.movetime <= 0:
-            if noplayers == 1:
-                selectplayer = jugador1
-            else:
-                distanceplayer1 = math.fabs(jugador1.rect.x-self.rect.x)+math.fabs(jugador1.rect.y-self.rect.y)
-                distanceplayer2 = math.fabs(jugador2.rect.x-self.rect.x)+math.fabs(jugador2.rect.y-self.rect.y)
-                if distanceplayer1 > distanceplayer2:
-                    selectplayer = jugador2
-                else:
+        if self.accion not in[6,7]:
+            self.movetime -= 1
+            if self.movetime <= -20:
+                self.movetime = random.randrange(0,100)
+                self.move('I')
+            if self.movetime <= 0:
+                if noplayers == 1:
                     selectplayer = jugador1
-            if math.fabs(selectplayer.rect.x - self.rect.x) <= self.moverange and math.fabs(selectplayer.rect.y- self.rect.y) <= self.moverange/4:
-                if selectplayer.rect.x - self.rect.x > 0:
-                    self.move('AR')
                 else:
-                    self.move('AL')
-            else:
-                movedir = random.randrange(0,2)
-                discardedy = False
-                if movedir:
-                    if selectplayer.rect.y - self.rect.y > self.moverange/4:
-                        self.vel_y = self.vel_y_value
-                        if selectplayer.rect.x - self.rect.x > 0:
-                            self.move('R')
-                        else:
-                            self.move('L')
-                    elif selectplayer.rect.y - self.rect.y < -self.moverange/4:
-                        self.vel_y = -self.vel_y_value
-                        if selectplayer.rect.x - self.rect.x > 0:
-                            self.move('R')
-                        else:
-                            self.move('L')
+                    distanceplayer1 = math.fabs(jugador1.rect.x-self.rect.x)+math.fabs(jugador1.rect.y-self.rect.y)
+                    distanceplayer2 = math.fabs(jugador2.rect.x-self.rect.x)+math.fabs(jugador2.rect.y-self.rect.y)
+                    if distanceplayer1 > distanceplayer2:
+                        selectplayer = jugador2
                     else:
-                        discardedy = True
+                        selectplayer = jugador1
+                if math.fabs(selectplayer.rect.x - self.rect.x) <= self.moverange and math.fabs(selectplayer.rect.y- self.rect.y) <= self.moverange/4:
+                    if selectplayer.rect.x - self.rect.x > 0:
+                        self.move('AR')
+                    else:
+                        self.move('AL')
                 else:
-                    if selectplayer.rect.x - self.rect.x > self.moverange:
-                        self.vel_x = self.vel_x_value
-                        if selectplayer.rect.x - self.rect.x > 0:
-                            self.move('R')
+                    movedir = random.randrange(0,2)
+                    discardedy = False
+                    if movedir:
+                        if selectplayer.rect.y - self.rect.y > self.moverange/4:
+                            self.vel_y = self.vel_y_value
+                            if selectplayer.rect.x - self.rect.x > 0:
+                                self.move('R')
+                            else:
+                                self.move('L')
+                        elif selectplayer.rect.y - self.rect.y < -self.moverange/4:
+                            self.vel_y = -self.vel_y_value
+                            if selectplayer.rect.x - self.rect.x > 0:
+                                self.move('R')
+                            else:
+                                self.move('L')
                         else:
-                            self.move('L')
-                    elif selectplayer.rect.x - self.rect.x < -self.moverange:
-                        self.vel_x = -self.vel_x_value
-                        if selectplayer.rect.x - self.rect.x > 0:
-                            self.move('R')
-                        else:
-                            self.move('L')
+                            discardedy = True
+                    elif discardedy or movedir == 0:
+                        if selectplayer.rect.x - self.rect.x > self.moverange:
+                            self.vel_x = self.vel_x_value
+                            if selectplayer.rect.x - self.rect.x > 0:
+                                self.move('R')
+                            else:
+                                self.move('L')
+                        elif selectplayer.rect.x - self.rect.x < -self.moverange:
+                            self.vel_x = -self.vel_x_value
+                            if selectplayer.rect.x - self.rect.x > 0:
+                                self.move('R')
+                            else:
+                                self.move('L')
     def die(self):
         self.indice=0
+        self.finished = False
         if self.dir=='R':
             self.accion=6
 
@@ -467,9 +451,26 @@ class Bala (pygame.sprite.Sprite):
         self.rect=self.image.get_rect()
         self.rect.x=50
         self.rect.y=450
-        self.vel_x=5
+        self.vel_x=15
         self.dir = 'R'
+        self.lucky = random.randrange(0,2)
+    def AIbullet(self, player, noplayers = 1, player2 = None):
+        movedir = random.randrange(0,2)
+        if noplayers == 1:
+            selectplayer = player
+        else:
+            distanceplayer1 = math.fabs(player.rect.x-self.rect.x)+math.fabs(player.rect.y-self.rect.y)
+            distanceplayer2 = math.fabs(player2.rect.x-self.rect.x)+math.fabs(player2.rect.y-self.rect.y)
+            if distanceplayer1 > distanceplayer2:
+                selectplayer = player2
+            else:
+                selectplayer = player
+        if movedir:
+            if self.rect.y - selectplayer.rect.y > 10:
+                self.rect.y -= 2
+            elif self.rect.y - selectplayer.rect.y < - 5:
+                self.rect.y += 2
 
-        def update(self):
-            self.rect.x+=self.vel_x
+    def update(self):
+        self.rect.x+=self.vel_x
             #Mov diagonal
