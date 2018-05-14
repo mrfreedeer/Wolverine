@@ -672,6 +672,9 @@ def main():
                     fac._pauserenders.insert(select,selectedrender)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select != -1:
+                    numberOfStillEnemies=0
+                    numberOfMovingEnemies=0
+                    numberOfDeaths=0
                     state = 'menu'
                     fac.resetposbg()
                     for x in jugadores:
