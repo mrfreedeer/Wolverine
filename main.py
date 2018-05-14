@@ -23,6 +23,9 @@ powerdown=pygame.mixer.Sound('powerdown.ogg')
 pygame.mixer.music.load('titlescreen.ogg')
 pygame.mixer.music.set_volume(0.5)
 level1=pygame.mixer.Sound('level1.ogg')
+shoot=pygame.mixer.Sound('shoot.ogg')
+shoot.set_volume(0.6)
+channel5 = pygame.mixer.Channel(4)
 pygame.mixer.music.play()
 channel1 = pygame.mixer.Channel(0)
 channel1.set_volume(0)
@@ -514,6 +517,7 @@ def main():
                 for x in enemigos:
                     if x.shoot:
                         x.shoot = False
+                        channel5.play(shoot)
                         b = Bala(matrizBala)
                         b.rect.x,b.rect.y = x.rect.x + 20,x.rect.y +10
                         balas.add(b)
@@ -542,7 +546,8 @@ def main():
                                 numberOfMovingEnemies-=1
                                 numberOfDeaths+=1
                                 x.die()
-                                x.kill()
+                                if x.canDie:
+                                    x.kill()
                             else:
                                 y.score += 50
                                 genscore += 50

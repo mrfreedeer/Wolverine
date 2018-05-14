@@ -11,11 +11,13 @@ punchE2=pygame.mixer.Sound('punchEnemy.ogg')
 stepE=pygame.mixer.Sound('pasosJugador.ogg')
 ouch=pygame.mixer.Sound('gag.ogg')
 blast=pygame.mixer.Sound('blast.ogg')
+
 ouch.set_volume(0.6)
 stepE.set_volume(0.05)
 blast.set_volume(0.3)
 channel3 = pygame.mixer.Channel(2)
 channel4 = pygame.mixer.Channel(3)
+
 
 
 screensize = pygame.display.Info()
@@ -242,6 +244,7 @@ class Enemigo2(pygame.sprite.Sprite):
         self.dir = 'R'
         self._health = 100
         self.finished = False
+        self.canDie = False
         self.prevkey = None
         self.vel_y = 0
         self.vel_x = 0
@@ -329,11 +332,13 @@ class Enemigo2(pygame.sprite.Sprite):
                 self.image=self.f[self.accion][i]
                 self.update()
 
+
         else:
             self.accion=7
             for i in range (3):
                 self.image=self.f[self.accion][i]
                 self.update()
+        self.canDie=True
 
 
     def move(self, key):
