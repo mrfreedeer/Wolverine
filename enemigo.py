@@ -495,9 +495,9 @@ class Bala (pygame.sprite.Sprite):
                 selectplayer = player
         if movedir:
             if self.rect.y - selectplayer.rect.y > 10:
-                self.rect.y -= 2
+                self.rect.y -= 4
             elif self.rect.y - selectplayer.rect.y < - 5:
-                self.rect.y += 2
+                self.rect.y += 4
 
     def update(self):
         self.rect.x+=self.vel_x
