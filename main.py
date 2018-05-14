@@ -408,8 +408,8 @@ def main():
                     for i in range(numberOfMovingEnemies):
                         if generator2:
                             enemy2=Enemigo2(matrizEnemigos2)
-                            enemy2.rect.x=random.randrange(0, 1000, 50)
-                            enemy2.rect.y=random.randrange(500, 700)
+                            enemy2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
+                            enemy2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy2.rect.height)
                             enemigos2.add(enemy2)
                             todos.add(enemy2)
                     generator2=False
@@ -417,7 +417,7 @@ def main():
                     for i in range(numberOfStillEnemies):
                         if generator1:
                             enemy=Enemigo1(matrizEnemigos1)
-                            enemy.rect.y=random.randrange(500, 700)
+                            enemy.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy.rect.height)
                             enemigos.add(enemy)
                             todos.add(enemy)
                     generator1=False
@@ -514,8 +514,10 @@ def main():
                     for y in jugadorlscol:
                         damageinf = y.inflictDamage(x)
                         x._health -= damageinf
+                        if x._health <0:
+                            x._health = 0
                         if damageinf > 0:
-                            if x._health <= 0:
+                            if x._health == 0:
                                 y.score += 200
                                 genscore += 200
                                 numberOfStillEnemies-=1
@@ -535,9 +537,15 @@ def main():
                         balas.add(b)
                         todos.add(b)
                         #x.shoot = False
-
+                if len(enemigos2) == 1:
+                    for x in enemigos2:
+                        print x.finished
+                        print x.canDie
+                        print x.accion
                 for x in enemigos2:
-                    if x.canDie == False:
+                    if x._health == 0:
+                        x.die()
+                    if not x.canDie:
                         if state == menuoptions[0]:
                             x.AImove(jugador)
                         else:
@@ -554,20 +562,20 @@ def main():
                     for y in jugadorlscol:
                         damageinf = y.inflictDamage(x)
                         x._health -= damageinf
+                        if x._health < 0:
+                            x._health = 0
                         if damageinf > 0:
-                            if x._health <= 0:
+                            if x._health == 0:
                                 y.score += 200
                                 genscore += 200
                                 x.die()
-                                if x.canDie and x.finished:
-                                    x.kill()
-                                    numberOfMovingEnemies-=1
-                                    numberOfDeaths+=1
-                                x.finished=False
                             else:
                                 y.score += 50
                                 genscore += 50
-
+                    if x.canDie:
+                        x.kill()
+                        numberOfMovingEnemies-=1
+                        numberOfDeaths+=1
                 for x in jugadores:
                     enemylscol = pygame.sprite.spritecollide(x, enemigos2, False)
                     for y in enemylscol:
@@ -584,7 +592,7 @@ def main():
                         tokillbullets.append(x)
                 for b in tokillbullets:
                     b.kill()
-                
+
                 todos.update()
 
 

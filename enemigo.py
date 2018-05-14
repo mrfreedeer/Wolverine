@@ -328,11 +328,16 @@ class Enemigo2(pygame.sprite.Sprite):
                                 self.move('L')
         random.seed(pygame.time.get_ticks())
     def die(self):
-        if self.dir=='R' or self.move=='R' or self.move=='AR' or self.move=='I':
-            self.accion=6
+        if not self.accion in [6,7]:
+            if self.dir=='R' or self.move=='R' or self.move=='AR' or self.move=='I':
+                self.accion=6
+                self.finished = False
 
-        elif self.dir=='L' or self.move=='L' or self.move=='AL':
-            self.accion=7
+            elif self.dir=='L' or self.move=='L' or self.move=='AL':
+                self.accion=7
+                self.finished = False
+        else:
+            pass
 
     def move(self, key):
         if (self.finished and self.prevkey in ['AL', 'AR']) or self.prevkey not in ['AL', 'AR'] :
@@ -437,8 +442,10 @@ class Enemigo2(pygame.sprite.Sprite):
                 self.indice += 1
 
             if self.indice == 2:
+                self.indice = 0
                 self.finished = True
-                self.canDie = True
+
+
 
 
             self.vel_x = 0
@@ -453,8 +460,11 @@ class Enemigo2(pygame.sprite.Sprite):
                 self.indice += 1
 
             if self.indice == 2:
+                self.indice = 0
                 self.finished = True
-                self.canDie = True
+
+        if self.accion in [6,7] and self.finished:
+            self.canDie = True
 
 
 
