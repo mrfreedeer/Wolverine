@@ -451,7 +451,8 @@ def main():
                             if genscore < 0:
                                 genscore = 0
                             lsmod.kill()
-                            modlist.remove(lsmod)
+                            if lsmod in modlist:
+                                modlist.remove(lsmod)
                     lscolbullets = pygame.sprite.spritecollide(x, balas, True)
                     for z in lscolbullets:
                         if z.rect.y >= x.rect.y and z.rect.y <= x.rect.bottom -1:
