@@ -541,10 +541,6 @@ def main():
 
                 for x in enemigos2:
                     if x._health == 0:
-                        print x.finished
-                        print x.canDie
-                        print x.accion
-                        print x.indice
                         x.die()
                     if x.canDie and x.finished:
                         x.kill()

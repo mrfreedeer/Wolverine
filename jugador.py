@@ -167,11 +167,10 @@ class Jugador(pygame.sprite.Sprite):
             self.vel_y+=v
     def move(self, key):
         checklist = [pygame.K_RIGHT,pygame.K_LEFT,pygame.K_UP, pygame.K_DOWN]
-        if self.still:
+        if self.still and self.finished:
             self.finished = False
             self.updatemove = False
             self.still = False
-
             if key == pygame.K_RIGHT:
                 self.derecha()
             elif key == pygame.K_LEFT:
@@ -185,10 +184,11 @@ class Jugador(pygame.sprite.Sprite):
             elif key == pygame.K_k:
                 self.teclaw()
         else:
-            if self.prevkey in checklist:
+            if key != self.prevkey:
                 self.interrupt = True
                 self.soltartecla()
                 self.move(key)
+
         self.prevkey = key
 
     def update(self):
@@ -416,12 +416,13 @@ class Jugador(pygame.sprite.Sprite):
                 if self.dir=='L':
                     self.accion=1
                 self.vel_x=0
-            self.finished = False
             self.updatemove = False
             self.interrupt = False
+            self.finished = True
+            self.prevkey = None
         else:
             self.updatemove = True
-        self.prevkey = None
+
     def resetValue(self,modid):
         if modid == 0:
             self.damagedealtmultiplier = 1
@@ -502,8 +503,8 @@ class Jugador2(pygame.sprite.Sprite):
         else:
             self.vel_y+=v
     def move(self, key):
-        checklist = [pygame.K_d,pygame.K_a,pygame.K_w, pygame.K_s]
-        if self.still:
+        checklist = [pygame.K_RIGHT,pygame.K_LEFT,pygame.K_UP, pygame.K_DOWN]
+        if self.still and self.finished:
             self.finished = False
             self.updatemove = False
             self.still = False
@@ -521,10 +522,10 @@ class Jugador2(pygame.sprite.Sprite):
             elif key == pygame.K_t:
                 self.teclaw()
         else:
-            if self.prevkey in checklist:
-                self.interrupt = True
-                self.soltartecla()
-                self.move(key)
+            self.interrupt = True
+            self.soltartecla()
+            self.move(key)
+
         self.prevkey = key
 
     def update(self):
@@ -734,7 +735,7 @@ class Jugador2(pygame.sprite.Sprite):
 
     def soltartecla(self):
         self.still = True
-        if self.prevkey in [pygame.K_d,pygame.K_a,pygame.K_w, pygame.K_s]:
+        if self.prevkey in [pygame.K_RIGHT,pygame.K_LEFT,pygame.K_UP, pygame.K_DOWN]:
             self.interrupt = True
         if (self.finished and self.updatemove) or self.interrupt:
             self.indice=0
@@ -752,9 +753,10 @@ class Jugador2(pygame.sprite.Sprite):
                 if self.dir=='L':
                     self.accion=1
                 self.vel_x=0
-            self.finished = False
             self.updatemove = False
             self.interrupt = False
+            self.finished = True
+            self.prevkey = None
         else:
             self.updatemove = True
     def resetValue(self,modid):
