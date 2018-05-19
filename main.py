@@ -139,8 +139,8 @@ def main():
     pygame.display.flip()
 
     fin=False
-    allowedmoves = [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_k, pygame.K_j, pygame.K_UP, pygame.K_DOWN]
-    allowedmoves2 = [pygame.K_w, pygame.K_d, pygame.K_t, pygame.K_r, pygame.K_a, pygame.K_s]
+    allowedmoves = [pygame.K_RIGHT, pygame.K_LEFT, pygame.K_UP, pygame.K_DOWN, pygame.K_k, pygame.K_j]
+    allowedmoves2 = [ pygame.K_d, pygame.K_a, pygame.K_w,pygame.K_s,  pygame.K_r, pygame.K_t]
     moves = []
     moves2 = []
     blink2 = False
@@ -212,6 +212,7 @@ def main():
             elif state == menuoptions[1] or state == menuoptions[0]:
                 pygame.mixer.music.set_volume(0)
                 channel1.set_volume(0.3)
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         fac.pause = not fac.pause
@@ -292,16 +293,16 @@ def main():
             #1 Player
             if state == menuoptions[0]:
                 genscore=0
-                jugador=Jugador(matrizJugador)
+                jugador=Jugador(matrizJugador,allowedmoves)
                 jugadores.add(jugador)
                 todos.add(jugador)
             #2 players
             elif state == menuoptions[1]:
                 genscore=0
-                jugador=Jugador(matrizJugador)
+                jugador=Jugador(matrizJugador, allowedmoves)
                 jugadores.add(jugador)
                 todos.add(jugador)
-                jugador2=Jugador2(matrizJugador2)
+                jugador2=Jugador(matrizJugador2, allowedmoves2)
                 jugadores.add(jugador2)
                 todos.add(jugador2)
 
@@ -309,6 +310,10 @@ def main():
 
         if state == menuoptions[0] or state ==  menuoptions[1]:
             #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
+            if moves != [] and jugador.prevkey == None:
+                jugador.move(moves[0])
+            if moves2 != [] and jugador2.prevkey == None:
+                jugador2.move(moves2[0])
             if genscore >= endscore and numberOfDeaths>=35 and fac.posbg[0]<=-1010 and numberOfStillEnemies==0 and numberOfMovingEnemies==0:
                 #for j in jugadores:
                 #    j.kill()
