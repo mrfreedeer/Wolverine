@@ -224,10 +224,10 @@ class Builder(object):
         self._scorefont = scorefont
     def buildscreen(self):
         self._screensize = pygame.display.Info()
-        screen = pygame.display.set_mode([self._screensize.current_w,self._screensize.current_h])
+        screen = pygame.display.set_mode([self._screensize.current_w,self._screensize.current_h-70])
         return screen
     def buildresolution(self):
-        return (self._screensize.current_w, self._screensize.current_h)
+        return (self._screensize.current_w, self._screensize.current_h-70)
     def buildtxtrenders(self, txtlist, fonttype = 0, colour = black):
         renders = []
         if fonttype == 0:
