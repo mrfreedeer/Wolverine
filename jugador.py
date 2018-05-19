@@ -175,9 +175,9 @@ class Jugador(pygame.sprite.Sprite):
             elif key == self.validmoves[3]:
                 self.abajo()
             elif key == self.validmoves[4]:
-                self.teclaq()
+                self.ataquefuerte()
             elif key == self.validmoves[5]:
-                self.teclaw()
+                self.ataquedebil()
         else:
             if key != self.prevkey:
                 self.interrupt = True
@@ -379,14 +379,14 @@ class Jugador(pygame.sprite.Sprite):
             self.accion=5
         self.salto=True
 
-    def teclaq(self):
+    def ataquedebil(self):
         self.indice=0
         if self.dir=='R':
             self.accion=6
         if self.dir=='L':
             self.accion=7
 
-    def teclaw(self):
+    def ataquefuerte(self):
         self.indice=0
         if self.dir=='R':
             self.accion=8
