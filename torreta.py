@@ -155,7 +155,7 @@ class BalaT(pygame.sprite.Sprite):
                 self.rect.y += 4
 
     def update(self):
-        self.rect.x+=self.vel_x
+        self.rect.x-=self.vel_x
             #Mov diagonal
 
 #PRUEBAS
