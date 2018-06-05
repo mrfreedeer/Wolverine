@@ -77,7 +77,7 @@ def main():
     fac.display_bkg()
     mouseclick = False
     fac.display_menu()
-    fac.loadmodifiers('gamemodifiers.png')
+    fac.loadmodifiers('gamemodifiers.png', quantity=6)
     modi = 0
 
     fac.setPauserenders(pauseoptionrenders)
@@ -199,8 +199,8 @@ def main():
                         time = pygame.time.get_ticks()
                         lasttime = pygame.time.get_ticks()
                     if modi < 0:
-                        modi = 3
-                    elif modi > 3:
+                        modi = 5
+                    elif modi > 5:
                         modi = 0
                     if modifiers:
                         for x in modifiers:
@@ -443,7 +443,7 @@ def main():
                             else:
                                 playermodlist[lsmod.type] = [ pygame.time.get_ticks(), x]
                             x.dealtwithModifiers(lsmod.type)
-                            if lsmod.type in [1,3]:
+                            if lsmod.type in [1,5]:
                                 channel2.play(powerup)
                                 x.score += 100
                                 genscore += 100
@@ -470,7 +470,7 @@ def main():
                 for x in gottapop:
                     playermodlist.pop(x)
                 if (pygame.time.get_ticks() - time >= random.randrange(modwait,modwait*2) and (len(modlist)<=15)) or len(modlist) <= 3:
-                    m = fac.getModifier(random.randrange(0,4))
+                    m = fac.getModifier(random.randrange(0,6))
                     m.rect.x = random.randrange(fac.posbg[0],fac.posbg[0]+2100)
                     m.rect.y = random.randrange((fac.posbg[1] + fac.posbgfixedy), fac._screensize[1]-100)
                     blink = True
