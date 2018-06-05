@@ -600,6 +600,7 @@ def main():
 
                 if jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]:
                     jugador.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador.rect.height
+                    #2 jugadores
                 if state == menuoptions[1]:
                     if jugador.getHealth() <= 0 or jugador2.getHealth() <= 0:
                         gameover = True
