@@ -6,7 +6,9 @@ random.seed(pygame.time.get_ticks())
 ALTO=1000
 ANCHO=1000
 pygame.mixer.init(44100, -16, 2, 2048)
-
+channel5 = pygame.mixer.Channel(4)
+disparo=pygame.mixer.Sound('disparo.ogg')
+disparo.set_volume(0.3)
 
 #screensize = pygame.display.Info()
 #RESOLUTION = [screensize.current_w, screensize.current_h]
@@ -48,7 +50,7 @@ def recortarTorr(archivo):
     return spawnS, shootS, explodeS
 
 
-def recortarBala(archivo):
+def recortarBalaT(archivo):
     fondo=pygame.image.load(archivo)
     infoFondo=fondo.get_rect()
     matriz=[]
@@ -58,7 +60,7 @@ def recortarBala(archivo):
 
     return matriz
 
-matrizBala=recortarBala('torreta.png')
+matrizBalaT=recortarBalaT('torreta.png')
 
 #Clases
 class Turret(pygame.sprite.Sprite):
@@ -94,6 +96,7 @@ class Turret(pygame.sprite.Sprite):
             self.shoottimer = random.randrange(20,50)
         if self.spawned:
             if self.shoot:
+                channel5.play(disparo)
                 self.accion=1
                 #self.rect.x-=17
             else:
@@ -116,13 +119,14 @@ class Turret(pygame.sprite.Sprite):
         if self.accion==1:
             self.indice=0
             self.image = self.f[self.accion][self.indice]
-            shoot=Bala(matrizBala)
+            shoot=BalaT(matrizBalaT)
             self.shoot=False
             self.shoottimer=50
 
 
 
-class Bala (pygame.sprite.Sprite):
+
+class BalaT(pygame.sprite.Sprite):
     def __init__(self, matriz):
         pygame.sprite.Sprite.__init__(self)
         self.f=matriz
@@ -185,4 +189,4 @@ if __name__ == '__main__':
 
         pygame.display.flip()
         reloj.tick(20)
-'''        
+'''
