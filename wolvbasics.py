@@ -17,7 +17,7 @@ class Modifier(pygame.sprite.Sprite):
         self.type = type
         self.blink = True
 class Facade(object):
-    def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos, wolvface, wolvface2, enemyface, enemyface1):
+    def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos, wolvface, enemyface, enemyface1):
         self._normalrenders = menurenders[:]
         self._menurenders = menurenders
         self._Wolverine = Wolverine
@@ -38,7 +38,6 @@ class Facade(object):
         self._normalpauserenders = []
         self.pausepositions = []
         self.wolvface = wolvface
-        self.wolvface2 = wolvface2
         self.enemyface = enemyface
         self.enemy1face = enemyface1
 

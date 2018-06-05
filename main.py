@@ -58,16 +58,14 @@ def main():
     enemyface = pygame.transform.scale(enemyface, (40,40))
     wolvieface = pygame.image.load('WolverineFace.png').convert_alpha()
     wolvieface = pygame.transform.scale(wolvieface, (40,40))
-    wolvieface2 = pygame.image.load('WolverineFace2.png').convert_alpha()
-    wolvieface2= pygame.transform.scale(wolvieface2, (40,40))
-    menuoptions = ["1 Jugador", "2 Jugadores", "Instrucciones", "Salir"]
+    menuoptions = ["1 Jugador", "Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
     pauserender = bob.buildtxtrender("PAUSE", 1, white)
     pauseoptionrenders = bob.buildtxtrenders(pauseoptions, 0, white)
     menurenders = bob.buildtxtrenders(menuoptions)
     WolverineTitle = bob.buildtxtrender("Wolverine", 1)
     end = False
-    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0], wolvieface, wolvieface2, enemyface, enemyface1)
+    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0], wolvieface, enemyface, enemyface1)
     fac._screensize = bob.buildresolution()
     posbg[1] += fac._screensize[1]-200
     fac.posbg = posbg[:]
@@ -92,9 +90,6 @@ def main():
     wolverine=pygame.image.load('wolverine_sprites.png').convert_alpha()
     infoWolverine=wolverine.get_rect()
 
-    wolverine2=pygame.image.load('wolverine_sprites2.png').convert_alpha()
-    infoWolverine2=wolverine2.get_rect()
-
     todos=pygame.sprite.Group()
     jugadores=pygame.sprite.Group()
     enemigos=pygame.sprite.Group()
@@ -107,22 +102,6 @@ def main():
     matrizEnemigos1=recortarEne1('enemy.png')
     matrizEnemigos2=recortarEne2('enemigoMovil.png')
     matrizBala=recortarBala('lasers.png')
-    '''
-    enemigo=Enemigo1(matrizEnemigos1)
-    enemigos.add(enemigo)
-    todos.add(enemigo)
-
-    enemigo2=Enemigo2(matrizEnemigos2)
-    enemigos.add(enemigo2)
-    todos.add(enemigo2)
-
-    bala=Bala(matrizBala)
-    bala.rect.y=enemigo.rect.y+enemigo.rect.height/2
-    bala.rect.x=enemigo.rect.width+50
-    balas.add(bala)
-    todos.add(bala)
-    '''
-
 
     reloj=pygame.time.Clock()
     generator1=True
@@ -140,9 +119,7 @@ def main():
 
     fin=False
     allowedmoves = [pygame.K_RIGHT, pygame.K_LEFT, pygame.K_UP, pygame.K_DOWN, pygame.K_k, pygame.K_j]
-    allowedmoves2 = [ pygame.K_d, pygame.K_a, pygame.K_w,pygame.K_s,  pygame.K_r, pygame.K_t]
     moves = []
-    moves2 = []
     blink2 = False
     pausewidth = pauserender.get_width()/2
     pauseheight = pauserender.get_height()/2
@@ -209,7 +186,7 @@ def main():
                     modifiers.add(m)
                     everyone.add(m)
 
-            elif state == menuoptions[1] or state == menuoptions[0]:
+            elif state == menuoptions[0]:
                 pygame.mixer.music.set_volume(0)
                 channel1.set_volume(0.3)
 
@@ -221,11 +198,6 @@ def main():
                         moves.insert(0,event.key)
                     if moves != []:
                         jugador.move(moves[0])
-                    if state == menuoptions[1]:
-                        if event.key in allowedmoves2:
-                            moves2.insert(0,event.key)
-                        if moves2 != []:
-                            jugador2.move(moves2[0])
 
                 if event.type == pygame.KEYUP:
                     if event.key in allowedmoves:
@@ -233,12 +205,6 @@ def main():
                     jugador.soltartecla()
                     if moves != []:
                         jugador.move(moves[0])
-                    if state == menuoptions[1]:
-                        if event.key in allowedmoves2:
-                            moves2.remove(event.key)
-                        jugador2.soltartecla()
-                        if moves2 != []:
-                            jugador2.move(moves2[0])
         mousepos = pygame.mouse.get_pos()
         mouseonoption = fac.checkmouse(mousepos)
         if state == 'menu':
@@ -296,24 +262,13 @@ def main():
                 jugador=Jugador(matrizJugador,allowedmoves)
                 jugadores.add(jugador)
                 todos.add(jugador)
-            #2 players
-            elif state == menuoptions[1]:
-                genscore=0
-                jugador=Jugador(matrizJugador, allowedmoves)
-                jugadores.add(jugador)
-                todos.add(jugador)
-                jugador2=Jugador(matrizJugador2, allowedmoves2)
-                jugadores.add(jugador2)
-                todos.add(jugador2)
 
 
 
-        if state == menuoptions[0] or state ==  menuoptions[1]:
+        if state == menuoptions[0]:
             #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
             if moves != [] and jugador.prevkey == None:
                 jugador.move(moves[0])
-            if moves2 != [] and jugador2.prevkey == None:
-                jugador2.move(moves2[0])
             if genscore >= endscore and numberOfDeaths>=35 and fac.posbg[0]<=-1010 and numberOfStillEnemies==0 and numberOfMovingEnemies==0:
                 #for j in jugadores:
                 #    j.kill()
@@ -588,8 +543,6 @@ def main():
                     if x.lucky:
                         if state == menuoptions[0]:
                             x.AIbullet(jugador)
-                        else:
-                            x.AIbullet(jugador,2,jugador2)
                     if x.rect.x > fac.posbg[0] + 2400:
                         tokillbullets.append(x)
                 for b in tokillbullets:
@@ -601,18 +554,10 @@ def main():
                 if jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]:
                     jugador.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador.rect.height
                     #2 jugadores
-                if state == menuoptions[1]:
-                    if jugador.getHealth() <= 0 or jugador2.getHealth() <= 0:
-                        gameover = True
-                    if jugador2.rect.y + jugador2.rect.height < fac.posbgfixedy + fac.posbg[1]:
-                        jugador2.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador2.rect.height
-                else:
-                    if jugador.getHealth() <= 0:
+                if jugador.getHealth() <= 0:
                         gameover = True
                 if moves != []:
                     fac.checklimits(moves[0],jugador, bginfo)
-                if moves2 != []:
-                    fac.checklimits(moves2[0],jugador2, bginfo)
                 if fac.prevposbg != fac.posbg:
                     fac.prevposbg[0] = fac.prevposbg[0] - fac.posbg[0]
                     fac.prevposbg[1] = fac.prevposbg[1] - fac.posbg[1]
@@ -628,13 +573,6 @@ def main():
                     for x in balas:
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
-                    if state == menuoptions[1]:
-                        if moves != [] and fac.isLimitrigger(moves[0], jugador, bginfo):
-                            jugador2.rect.x -= fac.prevposbg[0]
-                            jugador2.rect.y -= fac.prevposbg[1]
-                        elif moves2 != [] and fac.isLimitrigger(moves2[0], jugador2, bginfo):
-                            jugador.rect.x -= fac.prevposbg[0]
-                            jugador.rect.y -= fac.prevposbg[1]
                     fac.prevposbg = fac.posbg[:]
                 screen.fill([0,0,0])
                 screen.blit(fondo,[0,-50])
