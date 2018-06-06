@@ -75,18 +75,47 @@ def recortar(archivo):
         walkL.append(cuadro2)
 
     #Jump R-L
+    '''
     for x in range(4):
         cuadro=fondo.subsurface(jump[x])
-        cuadro=pygame.transform.scale(cuadro, (100, 95))
+        cuadro=pygame.transform.scale(cuadro, (100, 179))
         cuadro2=pygame.transform.flip(cuadro, True, False)
-        cuadro2=pygame.transform.scale(cuadro2, (100, 95))
+        cuadro2=pygame.transform.scale(cuadro2, (100, 179))
         jumpR.append(cuadro)
         jumpL.append(cuadro2)
+    '''
+    cuadro=fondo.subsurface(jump[0])
+    cuadro=pygame.transform.scale(cuadro, (92, 179))
+    cuadro2=pygame.transform.flip(cuadro, True, False)
+    cuadro2=pygame.transform.scale(cuadro2, (92, 179))
+    jumpR.append(cuadro)
+    jumpL.append(cuadro2)
+
+    cuadro=fondo.subsurface(jump[1])
+    cuadro=pygame.transform.scale(cuadro, (120, 179))
+    cuadro2=pygame.transform.flip(cuadro, True, False)
+    cuadro2=pygame.transform.scale(cuadro2, (120, 179))
+    jumpR.append(cuadro)
+    jumpL.append(cuadro2)
+
+    cuadro=fondo.subsurface(jump[2])
+    cuadro=pygame.transform.scale(cuadro, (92, 179))
+    cuadro2=pygame.transform.flip(cuadro, True, False)
+    cuadro2=pygame.transform.scale(cuadro2, (92, 179))
+    jumpR.append(cuadro)
+    jumpL.append(cuadro2)
+
+    cuadro=fondo.subsurface(jump[3])
+    cuadro=pygame.transform.scale(cuadro, (152, 160))
+    cuadro2=pygame.transform.flip(cuadro, True, False)
+    cuadro2=pygame.transform.scale(cuadro2, (152, 160))
+    jumpR.append(cuadro)
+    jumpL.append(cuadro2)
 
     #Attack 1 R-L
     for x in range(3):
         cuadro=fondo.subsurface(attack1[x])
-        cuadro=pygame.transform.scale(cuadro, (125, 125))
+        cuadro=pygame.transform.scale(cuadro, (125, 179))
         cuadro2=pygame.transform.flip(cuadro, True, False)
         cuadro2=pygame.transform.scale(cuadro2, (125, 125))
         attack1R.append(cuadro)
