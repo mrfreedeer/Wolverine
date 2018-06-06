@@ -134,6 +134,7 @@ class Jugador(pygame.sprite.Sprite):
         self.score = 0
         self.validmoves = validmoves
         self.currentkey = None
+        self.startjump = -1
     def printstats(self):
         print "--------------Stats-------------"
         print "Vel: ", self.vel_multiplier
@@ -178,6 +179,8 @@ class Jugador(pygame.sprite.Sprite):
                 self.ataquefuerte()
             elif key == self.validmoves[5]:
                 self.ataquedebil()
+            elif key == self.validmoves[6]:
+                self.saltar()
         else:
             if key != self.prevkey:
                 self.interrupt = True
@@ -187,6 +190,15 @@ class Jugador(pygame.sprite.Sprite):
 
 
         self.prevkey = key
+
+    def saltar(self):
+        self.startjump = self.rect.y
+        if self.dir == 'R':
+            self.accion = 4
+            self.vel_y = -15
+        else:
+            self.accion = 5
+            self.vel_y = -15
 
     def update(self):
         '''
@@ -305,11 +317,13 @@ class Jugador(pygame.sprite.Sprite):
                 self.indice=0
                 self.finished = True
 
-        #self.gravedad(1)
-
-
         self.rect.y += self.vel_y
         self.rect.x += self.vel_x
+        if self.startjump != -1:
+            self.gravedad(1)
+            if self.rect.y > self.startjump:
+                self.rect.y = self.startjump
+                self.startjump = -1
         if self.rect.x + self.rect.width > RESOLUTION[0] - bglimit:
             self.rect.x = RESOLUTION[0] - bglimit - self.rect.width
         elif self.rect.x < bglimit:

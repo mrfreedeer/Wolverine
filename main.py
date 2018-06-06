@@ -145,7 +145,7 @@ def main():
     pygame.display.flip()
 
     fin=False
-    allowedmoves = [pygame.K_RIGHT, pygame.K_LEFT, pygame.K_UP, pygame.K_DOWN, pygame.K_k, pygame.K_j]
+    allowedmoves = [pygame.K_RIGHT, pygame.K_LEFT, pygame.K_UP, pygame.K_DOWN, pygame.K_k, pygame.K_j, pygame.K_SPACE]
     moves = []
     blink2 = False
     pausewidth = pauserender.get_width()/2
@@ -724,7 +724,7 @@ def main():
                         x.kill()
                     mouseclick = False
                     fac.pause = False
-    
+
         elif state == menuoptions[1]:
             newbckpos =   [850, 650]
             screen.fill([0,0,0])
