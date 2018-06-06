@@ -118,8 +118,13 @@ def main():
 
     todos=pygame.sprite.Group()
     jugadores=pygame.sprite.Group()
+
     enemigos=pygame.sprite.Group()
     enemigos2=pygame.sprite.Group()
+
+    enemigos2=pygame.sprite.Group()
+    enemigos22=pygame.sprite.Group()
+
     balas=pygame.sprite.Group()
     plataformas = pygame.sprite.Group()
 
@@ -322,6 +327,19 @@ def main():
             if state == menuoptions[0]:
 
 
+                platforms = readmapplatforms()
+                for p in platforms:
+                    x = Platform(platform)
+                    plataformas.add(x)
+                    x.rect.x = p[0]
+                    x.rect.y = p[1]
+                    todos.add(x)
+                genscore=0
+                jugador=Jugador(matrizJugador,allowedmoves)
+                jugadores.add(jugador)
+                todos.add(jugador)
+
+            if state == menuoptions[1]:
                 platforms = readmapplatforms()
                 for p in platforms:
                     x = Platform(platform)
@@ -689,6 +707,27 @@ def main():
                     if enemybar != []:
                         if jugador.inflictDamage(enemybar[0]) > 0:
                             fac.drawEnemyLife(enemybar[0])
+                elif state == menuoptions[1]:
+                    fac.drawLife(jugador.getHealth())
+                    fac.drawScore(scorerender1, scorerender = score)
+                    '''
+                    if enemybar1 != []:
+                        for x in enemybar1:
+                            if jugador.inflictDamage(x) == 0:
+                                enemybar1.remove(x)
+                    if enemybar1 != []:
+                        if jugador.inflictDamage(enemybar1[0]) > 0:
+                            fac.drawEnemy1Life(enemybar1[0])
+
+
+                    if enemybar != []:
+                        for x in enemybar:
+                            if jugador.inflictDamage(x) == 0:
+                                enemybar.remove(x)
+                    if enemybar != []:
+                        if jugador.inflictDamage(enemybar[0]) > 0:
+                            fac.drawEnemyLife(enemybar[0])
+                    '''
                 else:
                     scorerender2 = bob.buildscorerender(str(jugador2.score))
                     fac.drawScore(scorerender1, score, 2,scorerender2)
@@ -766,7 +805,7 @@ def main():
         elif state == menuoptions[1]:
             if moves != [] and jugador.prevkey == None:
                 jugador.move(moves[0])
-                if genscore >= endscore and numberOfDeaths>=35 and fac.posbg[0]<=-1010 and numberOfStillEnemies==0 and numberOfMovingEnemies==0:
+                if genscore >= endscore and numberOfDeaths2>=35 and fac.posbg[0]<=-1010 and numberOfStillEnemies2==0 and numberOfMovingEnemies2==0:
                     #for j in jugadores:
                     #    j.kill()
                     winrenderrect = winrender.get_rect()
@@ -853,7 +892,8 @@ def main():
                         fac.resetposbg()
                         gameover = False
                 elif not fac.pause:
-                    if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==6) or (fac.posbg[0]<=-320 and numberOfDeaths==12) or (fac.posbg[0]<=-520 and numberOfDeaths==18) or (fac.posbg[0]<=-660 and numberOfDeaths==24) or (fac.posbg[0]<=-990 and numberOfDeaths==30):
+                    '''
+                    if (fac.posbg[0]==0 and numberOfDeaths2==0) or (fac.posbg[0]<=-220 and numberOfDeaths2==6) or (fac.posbg[0]<=-320 and numberOfDeaths2==12) or (fac.posbg[0]<=-520 and numberOfDeaths2==18) or (fac.posbg[0]<=-660 and numberOfDeaths2==24) or (fac.posbg[0]<=-990 and numberOfDeaths2==30):
                         canGenerate=True
                     if canGenerate:
                         lasttime2 = pygame.time.get_ticks()
@@ -882,7 +922,7 @@ def main():
                                 todos.add(enemy)
                         generator1=False
                         canGenerate=False
-
+                    '''
                     for x in jugadores:
                         lsmod = pygame.sprite.spritecollideany(x, modifiers)
                         if lsmod != None:
@@ -958,7 +998,7 @@ def main():
                             blinkers = []
                     enemybar = []
                     enemybar1 = []
-
+                    '''
                     for x in enemigos:
                         if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
                             x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
@@ -1008,7 +1048,7 @@ def main():
                             numberOfDeaths+=1
                             numberOfMovingEnemies-=1
                         if not x.canDie:
-                            if state == menuoptions[0]:
+                            if state == menuoptions[1]:
                                 x.AImove(jugador)
                             else:
                                 x.AImove(jugador, jugador2,2)
@@ -1042,13 +1082,13 @@ def main():
                     tokillbullets =[]
                     for x in balas:
                         if x.lucky:
-                            if state == menuoptions[0]:
+                            if state == menuoptions[1]:
                                 x.AIbullet(jugador)
                         if x.rect.x > fac.posbg[0] + 2400:
                             tokillbullets.append(x)
                     for b in tokillbullets:
                         b.kill()
-
+                    '''
                     todos.update()
 
 
