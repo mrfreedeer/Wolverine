@@ -145,7 +145,7 @@ class Jugador(pygame.sprite.Sprite):
         self.vel_x=0
         self.vel_y=0
         self.vel_x_value = 36
-        self.vel_y_value = 10
+        self.vel_y_value = 15
         self.damage1 = 10
         self.damage2 = 15
         self.vel_multiplier = 1
@@ -368,7 +368,7 @@ class Jugador(pygame.sprite.Sprite):
                     self.indice = 0
             else:
                 self.gravedad(5)
-        '''
+
         if self.rect.x + self.rect.width > RESOLUTION[0] - bglimit:
             self.rect.x = RESOLUTION[0] - bglimit - self.rect.width
         elif self.rect.x < bglimit:
@@ -377,7 +377,7 @@ class Jugador(pygame.sprite.Sprite):
             self.rect.y = RESOLUTION[1] - bglimit- self.rect.height
         elif self.rect.y < bglimit:
             self.rect.y = bglimit
-        '''
+        
         if self.updatemove:
             self.soltartecla()
 
