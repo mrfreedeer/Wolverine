@@ -501,6 +501,8 @@ def main():
                 enemybar1 = []
 
                 for x in enemigos:
+                    if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
+                        x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
                     jugadorlscol=[]
                     jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
                     if jugadorlscol != []:
@@ -538,6 +540,8 @@ def main():
 
 
                 for x in enemigos2:
+                    if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
+                        x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
                     if x._health == 0:
                         x.die()
                     if x.canDie and x.finished:
@@ -589,7 +593,7 @@ def main():
                 todos.update()
 
 
-                if jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]:
+                if (jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]) and jugador.accion not in [4,5]:
                     jugador.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador.rect.height
                     #2 jugadores
                 if jugador.getHealth() <= 0:

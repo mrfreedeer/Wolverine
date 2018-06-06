@@ -144,7 +144,7 @@ class Jugador(pygame.sprite.Sprite):
         self.rect.y=450
         self.vel_x=0
         self.vel_y=0
-        self.vel_x_value = 18
+        self.vel_x_value = 36
         self.vel_y_value = 10
         self.damage1 = 10
         self.damage2 = 15
@@ -211,6 +211,11 @@ class Jugador(pygame.sprite.Sprite):
             elif key == self.validmoves[6]:
                 self.saltar()
         else:
+            if self.accion in [4,5]:
+                if self.dir =='R':
+                    self.vel_x= self.vel_x_value * self.vel_multiplier
+                else:
+                    self.vel_x= -self.vel_x_value * self.vel_multiplier
             if key != self.prevkey:
                 self.interrupt = True
                 self.soltartecla()
@@ -221,14 +226,12 @@ class Jugador(pygame.sprite.Sprite):
         self.prevkey = key
 
     def saltar(self):
-        self.startjump = self.rect.y
+        self.indice = 0
         if self.dir == 'R':
             self.accion = 4
-            self.vel_y = -15
         else:
             self.accion = 5
-            self.vel_y = -15
-
+        self.vel_y = -25
     def update(self):
         '''
         if self.salto:
@@ -282,20 +285,22 @@ class Jugador(pygame.sprite.Sprite):
             if self.indice <4:
                 self.image = self.f[self.accion][self.indice]
                 self.indice += 1
+                if self.startjump == -1:
+                    self.startjump = self.rect.bottom
             #Es 7 normalmente
             if self.indice == 3:
-                self.indice=3
-                self.finished = True
+                pass
 
         #Jump L
         if self.accion==5:
             if self.indice <4:
                 self.image = self.f[self.accion][self.indice]
                 self.indice += 1
+                if self.startjump == -1:
+                    self.startjump = self.rect.bottom
             #Es 7 normalmente
             if self.indice == 3:
-                self.indice=3
-                self.finished = True
+                pass
 
         #1
         #Attack R
@@ -345,14 +350,25 @@ class Jugador(pygame.sprite.Sprite):
             if self.indice > 2:
                 self.indice=0
                 self.finished = True
-
         self.rect.y += self.vel_y
         self.rect.x += self.vel_x
+
         if self.startjump != -1:
-            self.gravedad(1)
-            if self.rect.y > self.startjump:
-                self.rect.y = self.startjump
+            if self.rect.bottom > self.startjump:
+                self.vel_x = 0
+                self.rect.bottom = self.startjump
                 self.startjump = -1
+                self.vel_y = 0
+                self.finished = True
+                if self.dir=='L':
+                    self.accion = 0
+                    self.indice = 0
+                else:
+                    self.accion = 1
+                    self.indice = 0
+            else:
+                self.gravedad(5)
+        '''
         if self.rect.x + self.rect.width > RESOLUTION[0] - bglimit:
             self.rect.x = RESOLUTION[0] - bglimit - self.rect.width
         elif self.rect.x < bglimit:
@@ -361,6 +377,7 @@ class Jugador(pygame.sprite.Sprite):
             self.rect.y = RESOLUTION[1] - bglimit- self.rect.height
         elif self.rect.y < bglimit:
             self.rect.y = bglimit
+        '''
         if self.updatemove:
             self.soltartecla()
 
@@ -412,6 +429,7 @@ class Jugador(pygame.sprite.Sprite):
             self.accion=3
             self.vel_x=0
 
+    '''
     def saltar(self):
         self.salto=True
         self.indice=0
@@ -421,7 +439,7 @@ class Jugador(pygame.sprite.Sprite):
         if self.dir=='L':
             self.accion=5
         self.salto=True
-
+    '''
     def ataquedebil(self):
         self.indice=0
         if self.dir=='R':
@@ -438,9 +456,12 @@ class Jugador(pygame.sprite.Sprite):
 
     def soltartecla(self):
         self.still = True
+        if self.accion in [4,5]:
+            if self.prevkey in self.validmoves[0:3]:
+                self.vel_x = 0
         if self.prevkey in self.validmoves[0:4]:
             self.interrupt = True
-        if (self.finished and self.updatemove) or self.interrupt:
+        if (self.finished and self.updatemove and self.accion not in [4,5]) or self.interrupt:
             self.indice=0
             if self.accion==2 or self.accion==3:
                 if self.dir=='R':
@@ -450,7 +471,7 @@ class Jugador(pygame.sprite.Sprite):
                 self.vel_x=0
                 self.vel_y=0
 
-            if self.accion==4 or self.accion==5 or self.accion==6 or self.accion==7 or self.accion==8 or self.accion==9:
+            if self.accion==6 or self.accion==7 or self.accion==8 or self.accion==9:
                 if self.dir=='R':
                     self.accion=0
                 if self.dir=='L':
