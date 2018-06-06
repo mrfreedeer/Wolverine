@@ -173,6 +173,167 @@ class reptiles(pygame.sprite.Sprite):
                     self.varx=0
                     self.i=0
 
+class Boss(pygame.sprite.Sprite):
+    def __init__(self, matriz,groupbarras, vector, pos):
+        pygame.sprite.Sprite.__init__(self)
+        self.m=matriz
+        self.image=self.m[0][0]
+        self.rect=self.image.get_rect()
+        self.rect.x=pos[0]
+        self.rect.y=pos[1]
+        self.varx=0
+        self.vary=0
+        self.distancia=0
+        self.i=0
+        self.golpe=False
+        self.accion=0
+        self.mov=True
+        self.barra=barravida_enemigo(vector, self.rect.midtop)
+        groupbarras.add(self.barra)
+        self.derecha=True
+        self.izquierda=False
+        #self.Tespera=random.randrange(100,200)
+        self.salud=100
+        self.Tmuerte=5
+
+    def update(self):
+        self.rect.x=self.rect.x+self.varx
+        self.rect.y=self.rect.y+self.vary
+        self.barra.update(self.rect.midtop)
+        self.image=self.m[self.accion][self.i]
+        self.i+=1
+        if(self.Tespera>0):
+            self.Tespera-=1
+        if self.i>=len(self.m[self.accion]):
+            self.i=0
+            if self.derecha:
+                self.i=0
+                self.accion=0
+                self.varx=0
+            if self.izquierda:
+                self.i=0
+                self.accion=9
+                self.varx=0
+        if self.salud<=0:
+            self.Tmuerte-=1
+
+
+    def left(self):
+        self.izquierda=True
+        self.derecha=False
+        self.accion=6
+        self.varx=-10
+
+
+    def right(self):
+        self.derecha=True
+        self.izquierda=False
+        self.accion=1
+        self.varx=10
+
+    def golpear(self):
+        if self.derecha:
+                #if(self.Tespera<=0):
+                    self.accion=3
+                    self.golpe=True
+                    #self.Tespera=random.randrange(100,200)
+                    self.varx=0
+                    self.i=0
+
+        if self.izquierda:
+                #if(self.Tespera<=0):
+                    self.accion=12
+                    self.golpe=True
+                    #self.Tespera=random.randrange(100,200)
+                    self.varx=0
+                    self.i=0
+
+    def acercar(self):
+        if self.derecha:
+                #if(self.Tespera<=0):
+                    self.accion=2
+                    #self.golpe=True
+                    #self.Tespera=random.randrange(100,200)
+                    self.varx=10
+                    self.i=0
+
+        if self.izquierda:
+                #if(self.Tespera<=0):
+                    self.accion=11
+                    #self.golpe=True
+                    #self.Tespera=random.randrange(100,200)
+                    self.varx=-10
+                    self.i=0
+
+    def correr(self):
+        if self.derecha:
+                #if(self.Tespera<=0):
+                    self.accion=5
+                    #self.golpe=True
+                    #self.Tespera=random.randrange(100,200)
+                    self.varx=20
+                    self.i=0
+
+        if self.izquierda:
+                #if(self.Tespera<=0):
+                    self.accion=14
+                    #self.golpe=True
+                    #self.Tespera=random.randrange(100,200)
+                    self.varx=-20
+                    self.i=0
+
+    def salto(self):
+        if self.derecha:
+                if(self.Tespera<=0):
+                    self.accion=6
+                    #self.golpe=True
+                    #self.Tespera=random.randrange(100,200)
+                    self.varx=0
+                    self.i=0
+
+        if self.izquierda:
+                if(self.Tespera<=0):
+                    self.accion=15
+                    #self.golpe=True
+                    #self.Tespera=random.randrange(100,200)
+                    self.varx=0 #las acciones son en base a los sprites del boss y pues asi yo manejaba la derecha e izquierda
+                    #si algo lo acomodan a como uds lo hacen... alejo para que acomode el salto tal como el wolverine
+                    self.i=0
+                    
+
+    def ataquekatana(self):
+        if self.derecha:
+                #if(self.Tespera<=0):
+                    self.accion=7
+                    #self.golpe=True
+                    #self.Tespera=random.randrange(100,200)
+                    self.varx=0
+                    self.i=0
+
+        if self.izquierda:
+                #if(self.Tespera<=0):
+                    self.accion=16
+                    #self.golpe=True
+                    #self.Tespera=random.randrange(100,200)
+                    self.varx=0
+                    self.i=0
+
+    def lanzadardo(self):
+        if self.derecha:
+                #if(self.Tespera<=0):
+                    self.accion=1
+                    #self.golpe=True
+                    #self.Tespera=random.randrange(100,200)
+                    self.varx=0
+                    self.i=0
+
+        if self.izquierda:
+                #if(self.Tespera<=0):
+                    self.accion=10
+                    #self.golpe=True
+                    #self.Tespera=random.randrange(100,200)
+                    self.varx=0
+                    self.i=0
 
 class ninjas(pygame.sprite.Sprite):
     def __init__(self, matriz, groupbarras, vector, pos):
