@@ -299,7 +299,7 @@ class Boss(pygame.sprite.Sprite):
                     self.varx=0 #las acciones son en base a los sprites del boss y pues asi yo manejaba la derecha e izquierda
                     #si algo lo acomodan a como uds lo hacen... alejo para que acomode el salto tal como el wolverine
                     self.i=0
-                    
+
 
     def ataquekatana(self):
         if self.derecha:

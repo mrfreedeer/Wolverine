@@ -80,7 +80,7 @@ def main():
     platform = pygame.image.load('platform.png').convert_alpha()
     platform = pygame.transform.scale(platform, (75,20))
 
-    menuoptions = ["1 Jugador", "Instrucciones", "Salir"]
+    menuoptions = ["Nivel 1", "Nivel 2", "Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
 
     pauserender = bob.buildtxtrender("PAUSE", 1, white)
@@ -133,7 +133,7 @@ def main():
     reloj=pygame.time.Clock()
     generator1=True
     generator2=True
-    numberOfMovingEnemies=8
+    numberOfMovingEnemies=4
     numberOfStillEnemies=2
     canGenerate=True
     allDead=False
@@ -213,7 +213,7 @@ def main():
                     modifiers.add(m)
                     everyone.add(m)
 
-            elif state == menuoptions[0]:
+            elif state == menuoptions[0] or menuoptions[1]:
 
                 pygame.mixer.music.set_volume(0)
                 channel1.set_volume(0.3)
@@ -301,10 +301,10 @@ def main():
                 todos.add(jugador)
 
 
-        #1 jugador1
+        #Primer nivel
         if state == menuoptions[0]:
             pygame.display.flip()
-            #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
+            print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
             if moves != [] and jugador.prevkey == None:
                 jugador.move(moves[0])
             if genscore >= endscore and numberOfDeaths>=35 and fac.posbg[0]<=-1010 and numberOfStillEnemies==0 and numberOfMovingEnemies==0:
@@ -394,14 +394,14 @@ def main():
                     fac.resetposbg()
                     gameover = False
             elif not fac.pause:
-                if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==10) or (fac.posbg[0]<=-320 and numberOfDeaths==20) or (fac.posbg[0]<=-520 and numberOfDeaths==30) or (fac.posbg[0]<=-660 and numberOfDeaths==40) or (fac.posbg[0]<=-990 and numberOfDeaths==50):
+                if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==6) or (fac.posbg[0]<=-320 and numberOfDeaths==12) or (fac.posbg[0]<=-520 and numberOfDeaths==18) or (fac.posbg[0]<=-660 and numberOfDeaths==24) or (fac.posbg[0]<=-990 and numberOfDeaths==30):
                     canGenerate=True
                 if canGenerate:
                     lasttime2 = pygame.time.get_ticks()
                     time4 = pygame.time.get_ticks()
                     if numberOfMovingEnemies<=0:
                         generator2=True
-                        numberOfMovingEnemies=8
+                        numberOfMovingEnemies=4
                     if numberOfStillEnemies<=0:
                         generator1=True
                         numberOfStillEnemies=2
@@ -728,8 +728,11 @@ def main():
                         x.kill()
                     mouseclick = False
                     fac.pause = False
-
+        #Segundo nivel------------------------------------------------
         elif state == menuoptions[1]:
+
+        #Instrucciones------------------------------------------------
+        elif state == menuoptions[2]:
             newbckpos =   [850, 650]
             screen.fill([0,0,0])
             fac.display_bkg()
