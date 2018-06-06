@@ -115,7 +115,7 @@ def recortar(archivo):
     #Attack 1 R-L
     for x in range(3):
         cuadro=fondo.subsurface(attack1[x])
-        cuadro=pygame.transform.scale(cuadro, (125, 179))
+        cuadro=pygame.transform.scale(cuadro, (125, 125))
         cuadro2=pygame.transform.flip(cuadro, True, False)
         cuadro2=pygame.transform.scale(cuadro2, (125, 125))
         attack1R.append(cuadro)
