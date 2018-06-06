@@ -301,7 +301,7 @@ def main():
                 todos.add(jugador)
 
 
-
+        #1 jugador1
         if state == menuoptions[0]:
             pygame.display.flip()
             #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
@@ -724,9 +724,8 @@ def main():
                         x.kill()
                     mouseclick = False
                     fac.pause = False
-
-        #Opcion no jugable
-        elif state == menuoptions[2]:
+    
+        elif state == menuoptions[1]:
             newbckpos =   [850, 650]
             screen.fill([0,0,0])
             fac.display_bkg()
@@ -764,6 +763,7 @@ def main():
 
             #screen.blit(x,[750, 350])
             #select = fac.checkmousepause(mousepos)
+
         elif state == 'Salir':
             end = True
         pygame.display.flip()
