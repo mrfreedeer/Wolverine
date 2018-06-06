@@ -482,15 +482,20 @@ class fuego(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.m=matriz
         self.image=self.m[0][0]
-        self.rect=self.image.rect_rect()
+        self.rect=self.image.get_rect()
         self.i=0
         self.rect.x=self.rect.x+300
         self.rect.y=self.rect.y-30
-        self.retardo=100
+        self.retardo=20
     def update(self):
         if self.retardo<=0:
-            i+=1
-            self.image=self.m[0][i]
+            self.i+=1
+            if self.i<9:
+                self.image=self.m[0][self.i]
+            else:
+                self.i=0
+                self.image=self.m[0][0]
+                self.retardo=20
         else:
             self.retardo-=1
 
