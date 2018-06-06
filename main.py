@@ -1,6 +1,7 @@
 import pygame
 import time
 import random
+import ConfigParser
 from wolvbasics import *
 from jugador import *
 from enemigo import *
@@ -35,6 +36,23 @@ def printkey(key):
         print "Left"
     elif key == pygame.K_RIGHT:
         print "Right"
+def readmapplatforms():
+    interpreter = ConfigParser.ConfigParser()
+    interpreter.read('map.map')
+    map = interpreter.get('level1','map')
+    map = map.split('\n')
+    posx = 0
+    posy = 0
+    platforms = []
+    for x in range(len(map)):
+        posx = 0
+        for y in map[x]:
+            if y == 'p':
+                platforms.append([posx,posy])
+            posx += 75
+        posy += 20
+    return platforms
+
 
 def main():
 
@@ -58,8 +76,13 @@ def main():
     enemyface = pygame.transform.scale(enemyface, (40,40))
     wolvieface = pygame.image.load('WolverineFace.png').convert_alpha()
     wolvieface = pygame.transform.scale(wolvieface, (40,40))
+
+    platform = pygame.image.load('platform.png').convert_alpha()
+    platform = pygame.transform.scale(platform, (75,20))
+
     menuoptions = ["1 Jugador", "Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
+
     pauserender = bob.buildtxtrender("PAUSE", 1, white)
     pauseoptionrenders = bob.buildtxtrenders(pauseoptions, 0, white)
     menurenders = bob.buildtxtrenders(menuoptions)
@@ -87,6 +110,8 @@ def main():
     state = 'menu'
     backtomenured = bob.buildtxtrender("Back to Menu", 0, red)
 
+
+
     wolverine=pygame.image.load('wolverine_sprites.png').convert_alpha()
     infoWolverine=wolverine.get_rect()
 
@@ -95,6 +120,8 @@ def main():
     enemigos=pygame.sprite.Group()
     enemigos2=pygame.sprite.Group()
     balas=pygame.sprite.Group()
+    plataformas = pygame.sprite.Group()
+
     matrizJugador=[]
     #matrizJugador2=[]
     matrizJugador=recortar('wolverine_sprites.png')
@@ -187,6 +214,7 @@ def main():
                     everyone.add(m)
 
             elif state == menuoptions[0]:
+
                 pygame.mixer.music.set_volume(0)
                 channel1.set_volume(0.3)
 
@@ -258,6 +286,15 @@ def main():
             everyone.draw(screen)
             #1 Player
             if state == menuoptions[0]:
+
+
+                platforms = readmapplatforms()
+                for p in platforms:
+                    x = Platform(platform)
+                    plataformas.add(x)
+                    x.rect.x = p[0]
+                    x.rect.y = p[1]
+                    todos.add(x)
                 genscore=0
                 jugador=Jugador(matrizJugador,allowedmoves)
                 jugadores.add(jugador)
@@ -266,6 +303,7 @@ def main():
 
 
         if state == menuoptions[0]:
+            pygame.display.flip()
             #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
             if moves != [] and jugador.prevkey == None:
                 jugador.move(moves[0])
@@ -571,6 +609,9 @@ def main():
                         m.rect.x -= fac.prevposbg[0]
                         m.rect.y -= fac.prevposbg[1]
                     for x in balas:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
+                    for x in plataformas:
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
                     fac.prevposbg = fac.posbg[:]

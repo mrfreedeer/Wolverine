@@ -16,6 +16,13 @@ class Modifier(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.type = type
         self.blink = True
+
+class Platform(pygame.sprite.Sprite):
+    def __init__(self, image):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = image
+        self.rect = self.image.get_rect()
+
 class Facade(object):
     def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos, wolvface, enemyface, enemyface1):
         self._normalrenders = menurenders[:]

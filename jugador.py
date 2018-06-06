@@ -442,9 +442,9 @@ class Jugador(pygame.sprite.Sprite):
             self.damagedealtmultiplier =  2
         elif modid == 3:
             self.vel_multiplier = 2
-        elif modid == 4:
-            self._health += 20
         elif modid == 5:
+            self._health += 20
+        elif modid == 4:
             self._health += 50
         if self._health > 100:
             self._health = 100
