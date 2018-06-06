@@ -186,13 +186,18 @@ class Boss(pygame.sprite.Sprite):
         self.distancia=0
         self.i=0
         self.golpe=False
+        self.golpekatana=False
+        self.golpeshuriken=False
         self.accion=0
         self.mov=True
-        self.barra=barravida_enemigo(vector, self.rect.midtop)
+        self.barra=barravida_enemigo(vector, self.rect.midtop) #juan para que si puede 
         groupbarras.add(self.barra)
+
         self.derecha=True
         self.izquierda=False
-        #self.Tespera=random.randrange(100,200)
+        self.Tespera=random.randrange(100,200)
+        self.Tesperakatana=random.randrange(300,350)
+        self.Tesperashuriken=random.randrange(400,450)
         self.salud=100
         self.Tmuerte=5
 
@@ -233,105 +238,97 @@ class Boss(pygame.sprite.Sprite):
 
     def golpear(self):
         if self.derecha:
-                #if(self.Tespera<=0):
+                if(self.Tespera<=0):
                     self.accion=3
                     self.golpe=True
-                    #self.Tespera=random.randrange(100,200)
+                    self.Tespera=random.randrange(100,200)
                     self.varx=0
                     self.i=0
 
         if self.izquierda:
-                #if(self.Tespera<=0):
+                if(self.Tespera<=0):
                     self.accion=12
                     self.golpe=True
-                    #self.Tespera=random.randrange(100,200)
+                    self.Tespera=random.randrange(100,200)
                     self.varx=0
                     self.i=0
 
     def acercar(self):
         if self.derecha:
-                #if(self.Tespera<=0):
+                if(self.Tespera<=0):
                     self.accion=2
-                    #self.golpe=True
-                    #self.Tespera=random.randrange(100,200)
                     self.varx=10
                     self.i=0
 
         if self.izquierda:
-                #if(self.Tespera<=0):
+                if(self.Tespera<=0):
                     self.accion=11
-                    #self.golpe=True
-                    #self.Tespera=random.randrange(100,200)
                     self.varx=-10
                     self.i=0
 
     def correr(self):
         if self.derecha:
-                #if(self.Tespera<=0):
+                if(self.Tespera<=0):
                     self.accion=5
-                    #self.golpe=True
-                    #self.Tespera=random.randrange(100,200)
                     self.varx=20
                     self.i=0
 
         if self.izquierda:
-                #if(self.Tespera<=0):
+                if(self.Tespera<=0):
                     self.accion=14
-                    #self.golpe=True
-                    #self.Tespera=random.randrange(100,200)
                     self.varx=-20
                     self.i=0
 
-    def salto(self):
-        if self.derecha:
-                if(self.Tespera<=0):
-                    self.accion=6
-                    #self.golpe=True
-                    #self.Tespera=random.randrange(100,200)
-                    self.varx=0
-                    self.i=0
-
-        if self.izquierda:
-                if(self.Tespera<=0):
-                    self.accion=15
-                    #self.golpe=True
-                    #self.Tespera=random.randrange(100,200)
-                    self.varx=0 #las acciones son en base a los sprites del boss y pues asi yo manejaba la derecha e izquierda
-                    #si algo lo acomodan a como uds lo hacen... alejo para que acomode el salto tal como el wolverine
-                    self.i=0
-
+    """def salto(self):
+                    if self.derecha:
+                            if(self.Tespera<=0):
+                                self.accion=6
+                                #self.golpe=True
+                                #self.Tespera=random.randrange(100,200)
+                                self.varx=0
+                                self.i=0
+            
+                    if self.izquierda:
+                            if(self.Tespera<=0):
+                                self.accion=15
+                                #self.golpe=True
+                                #self.Tespera=random.randrange(100,200)
+                                self.varx=0 #las acciones son en base a los sprites del boss y pues asi yo manejaba la derecha e izquierda
+                                #si algo lo acomodan a como uds lo hacen... alejo para que acomode el salto tal como el wolverine
+                                self.i=0"""
+                    
 
     def ataquekatana(self):
         if self.derecha:
-                #if(self.Tespera<=0):
+                if(self.Tesperakatana<=0):
                     self.accion=7
-                    #self.golpe=True
-                    #self.Tespera=random.randrange(100,200)
+                    self.golpekatana=True
+                    self.Tesperakatana=random.randrange(100,200)
                     self.varx=0
                     self.i=0
 
         if self.izquierda:
-                #if(self.Tespera<=0):
+                if(self.Tesperakatana<=0):
                     self.accion=16
-                    #self.golpe=True
-                    #self.Tespera=random.randrange(100,200)
+                    self.golpekatana=True
+                    self.Tesperakatana=random.randrange(100,200)
                     self.varx=0
                     self.i=0
 
-    def lanzadardo(self):
+    def lanzashuriken(self):
         if self.derecha:
-                #if(self.Tespera<=0):
+                if(self.Tesperashuriken<=0):
                     self.accion=1
-                    #self.golpe=True
-                    #self.Tespera=random.randrange(100,200)
+                    self.golpeshuriken=True
+                    self.Tesperashuriken=random.randrange(100,200)
                     self.varx=0
                     self.i=0
 
         if self.izquierda:
-                #if(self.Tespera<=0):
+                if(self.Tesperashuriken<=0):
                     self.accion=10
-                    #self.golpe=True
-                    #self.Tespera=random.randrange(100,200)
+                    self.golpeshuriken=True
+                    self.Tesperashuriken=random.randrange(100,200)
                     self.varx=0
                     self.i=0
 
