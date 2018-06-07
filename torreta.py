@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+import enemigo
 random.seed(pygame.time.get_ticks())
 
 ALTO=1000
@@ -8,6 +9,7 @@ ANCHO=1000
 pygame.mixer.init(44100, -16, 2, 2048)
 channel5 = pygame.mixer.Channel(4)
 disparo=pygame.mixer.Sound('disparo.ogg')
+blast=pygame.mixer.Sound('blast.ogg')
 disparo.set_volume(0.3)
 
 #screensize = pygame.display.Info()
@@ -79,39 +81,48 @@ class Turret(pygame.sprite.Sprite):
         self.shoot = False
         self.incremento=1
         self.spawned=False
+        self.hide=True
 
     def getHealth(self):
         return self._health
 
     def die(self):
         #ouch.play()
-        channel4.play(blast)
 
+        channel5.play(blast)
+
+
+    def shooting(self, posPlayer):
+        if posPlayer[0]-self.rect.x<=400:
+            self.hide=False
+        if not self.hide:
+            self.shoottimer -= 1
+            if self.shoottimer < 0:
+                self.shoot = True
+                self.shoottimer = random.randrange(20,50)
+            if self.spawned:
+                if self.shoot:
+                    channel5.play(disparo)
+                    self.accion=1
+                    #self.rect.x-=17
+                else:
+                    #self.rect.x+=17
+                    self.accion=0
+                    self.indice=8
     def update(self):
         #Idle L
 
-        self.shoottimer -= 1
-        if self.shoottimer < 0:
-            self.shoot = True
-            self.shoottimer = random.randrange(20,50)
-        if self.spawned:
-            if self.shoot:
-                channel5.play(disparo)
-                self.accion=1
-                #self.rect.x-=17
-            else:
-                #self.rect.x+=17
-                self.accion=0
-                self.indice=8
-
         if self.accion==0:
-            self.image = self.f[self.accion][self.indice]
-            self.indice += self.incremento
+            if self.hide:
+                self.image = self.f[self.accion][0]
+            else:
+                self.image = self.f[self.accion][self.indice]
+                self.indice += self.incremento
 
-            if self.indice >=8:
-                self.incremento=0
-                self.indice+=self.incremento
-                self.spawned=True
+                if self.indice >=8:
+                    self.incremento=0
+                    self.indice+=self.incremento
+                    self.spawned=True
 
 
         #1
@@ -134,8 +145,8 @@ class BalaT(pygame.sprite.Sprite):
         self.rect=self.image.get_rect()
         self.rect.x=50
         self.rect.y=450
-        self.vel_x=15
-        self.dir = 'R'
+        self.vel_x=50
+        self.dir = 'L'
         self.lucky = random.randrange(0,2)
     def AIbullet(self, player, noplayers = 1, player2 = None):
         movedir = random.randrange(0,2)

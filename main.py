@@ -939,7 +939,7 @@ def main():
                     for i in range(numberOfMovingEnemies2):
                         if generator22:
                             #Modificar esto, aca va el otro enemigo
-                            enemy2Level2=reptiles(reptilm, [50, 50])
+                            enemy2Level2=reptiles(reptilm, [random.randrange(300, 900), 550])
                             #enemy2Level2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
                             #enemy2Level2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy2Level2.rect.height)
                             enemigos2n2.add(enemy2Level2)
@@ -949,8 +949,9 @@ def main():
                     for i in range(numberOfStillEnemies2):
                         if generator21:
                             enemyLevel2=Turret(matrizTorreta)
-                            enemyLevel2.rect.x = random.randrange(200,350)
-                            enemyLevel2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemyLevel2.rect.height)
+                            enemyLevel2.rect.x = random.randrange(700,750)
+                            enemyLevel2.rect.y=550
+                            #random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemyLevel2.rect.height)
                             enemigos2n.add(enemyLevel2)
                             todos.add(enemyLevel2)
                     generator21=False
@@ -1034,8 +1035,8 @@ def main():
                         blinkers = []
                 enemybar = []
                 enemybar1 = []
-                '''
-                for x in enemigos2n2:
+
+                for x in enemigos2n:
                     if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
                         x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
                     jugadorlscol=[]
@@ -1064,17 +1065,18 @@ def main():
                                 genscore += 75
 
                 for x in enemigos2n:
+                    x.shooting(jugador.rect)
                     if x.shoot:
                         x.shoot = False
                         #channel5.play(shoot)
-                        b = Bala(matrizBalaT)
+                        b = BalaT(matrizBalaT)
                         b.rect.x,b.rect.y = x.rect.x + 20,x.rect.y +50
                         balas.add(b)
                         todos.add(b)
                         #x.shoot = False
 
-
-                for x in enemigos2n:
+                '''
+                for x in enemigos2n2:
                     if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
                         x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
                     if x._health == 0:
@@ -1109,11 +1111,13 @@ def main():
                             else:
                                 y.score += 50
                                 genscore += 50
+
                 for x in jugadores:
-                    enemylscol = pygame.sprite.spritecollide(x, enemigos2, False)
+                    enemylscol = pygame.sprite.spritecollide(x, enemigos2n2, False)
                     for y in enemylscol:
                         if y.isAttacking():
                             x.dealDamage(0.5)
+                '''
                 tokillbullets =[]
                 for x in balas:
                     if x.lucky:
@@ -1123,7 +1127,7 @@ def main():
                         tokillbullets.append(x)
                 for b in tokillbullets:
                     b.kill()
-                '''
+
                 todos.update()
                 if fac.checklevel2abyss(jugador):
                     jugador.gravedad(100)
