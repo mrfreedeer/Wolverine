@@ -86,6 +86,7 @@ def main():
 
     reptilsprites='reptilfinal.png'
     reptilm=recortarRept(6, 10, reptilsprites, [5,6,5,6,6,5,6,5,6,6])
+    mreptil=recortarReptV2(reptilsprites)
     menuoptions = ["Nivel 1", "Nivel 2", "Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
 
@@ -553,6 +554,8 @@ def main():
                 enemybar = []
                 enemybar1 = []
 
+
+
                 for x in enemigos:
                     if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
                         x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
@@ -938,9 +941,11 @@ def main():
                     for i in range(numberOfMovingEnemies2):
                         if generator22:
                             #Modificar esto, aca va el otro enemigo
-                            enemy2Level2=reptiles(reptilm, [random.randrange(300, 900), 550])
-                            #enemy2Level2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
-                            #enemy2Level2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy2Level2.rect.height)
+                            #enemy2Level2=reptiles(reptilm, [random.randrange(300, 900), 550])
+                            #enemy2Level2=reptilesV2(reptilm)
+                            enemy2Level2=Reptil2(mreptil)
+                            enemy2Level2.rect.x=random.randrange(300, 900)
+                            enemy2Level2.rect.y=random.randrange(450, 600)
                             enemigos2n2.add(enemy2Level2)
                             todos.add(enemy2Level2)
                     generator22=False
@@ -1073,7 +1078,7 @@ def main():
                         todos.add(b)
                         #x.shoot = False
 
-                '''
+
                 for x in enemigos2n2:
                     if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
                         x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
@@ -1090,12 +1095,14 @@ def main():
 
                     jugadorlscol = []
                     jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
+                    '''
                     if jugadorlscol != []:
                         if len(enemybar) >2:
                             enemybar.pop()
                             enemybar.append(x)
                         else:
                             enemybar.append(x)
+                    '''       
                     for y in jugadorlscol:
                         damageinf = y.inflictDamage(x)
                         x._health -= damageinf
@@ -1115,7 +1122,7 @@ def main():
                     for y in enemylscol:
                         if y.isAttacking():
                             x.dealDamage(0.5)
-                '''
+
                 tokillbullets =[]
                 for x in balas:
                     if x.lucky:
