@@ -832,10 +832,10 @@ def main():
                     fac.pause = False
         #Segundo nivel------------------------------------------------
         elif state == menuoptions[1]:
-
+            print 'pos=', fac.posbg
             if moves != [] and jugador.prevkey == None:
                 jugador.move(moves[0])                                 #Acomodar esto
-            if genscore >= endscore and numberOfDeaths2>=30 and fac.posbg[0]<=-1010 and numberOfStillEnemies2==0 and numberOfMovingEnemies2==0:
+            if genscore >= endscore and numberOfDeaths2>=24 and fac.posbg[0]<=-1575 and numberOfStillEnemies2==0 and numberOfMovingEnemies2==0:
                 #for j in jugadores:
                 #    j.kill()
                 winrenderrect = winrender.get_rect()
@@ -866,9 +866,9 @@ def main():
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
-                    numberOfStillEnemies=0
-                    numberOfMovingEnemies=0
-                    numberOfDeaths=0
+                    numberOfStillEnemies2=0
+                    numberOfMovingEnemies2=0
+                    numberOfDeaths2=0
                     fac.posbg[0]=0
                     for j in jugadores:
                         j.kill()
@@ -927,17 +927,17 @@ def main():
                     fac.resetposbg()
                     gameover = False
             elif not fac.pause:
-                if (fac.posbg[0]==0 and numberOfDeaths2==0) or (fac.posbg[0]<=-220 and numberOfDeaths2==6) or (fac.posbg[0]<=-320 and numberOfDeaths2==12) or (fac.posbg[0]<=-520 and numberOfDeaths2==18) or (fac.posbg[0]<=-660 and numberOfDeaths2==24) or (fac.posbg[0]<=-990 and numberOfDeaths2==30):
+                if (fac.posbg[0]==0 and numberOfDeaths2==0) or (fac.posbg[0]<=-500 and numberOfDeaths2==6) or (fac.posbg[0]<=-870 and numberOfDeaths2==12) or (fac.posbg[0]<=-1095 and numberOfDeaths2==18) or (fac.posbg[0]<=-1335 and numberOfDeaths2==24):
                     canGenerate2=True
                 if canGenerate2:
                     lasttime2 = pygame.time.get_ticks()
                     time4 = pygame.time.get_ticks()
-                    if numberOfMovingEnemies<=0:
-                        generator2=True
-                        numberOfMovingEnemies=4
-                    if numberOfStillEnemies<=0:
+                    if numberOfMovingEnemies2<=0:
+                        generator22=True
+                        numberOfMovingEnemies2=4
+                    if numberOfStillEnemies2<=0:
                         generator21=True
-                        numberOfStillEnemies=2
+                        numberOfStillEnemies2=2
                     for i in range(numberOfMovingEnemies2):
                         if generator22:
                             #Modificar esto, aca va el otro enemigo
@@ -1102,7 +1102,7 @@ def main():
                             enemybar.append(x)
                         else:
                             enemybar.append(x)
-                    '''       
+                    '''
                     for y in jugadorlscol:
                         damageinf = y.inflictDamage(x)
                         x._health -= damageinf
