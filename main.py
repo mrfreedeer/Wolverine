@@ -6,7 +6,7 @@ from wolvbasics import *
 from jugador import *
 from enemigo import *
 from operator import attrgetter
-from torreta import*
+from torreta import *
 
 red = (255,0,0)         #rgb(255,0,0)
 green = (0,255,0)       #rgb(0,255,0)
@@ -386,6 +386,8 @@ def main():
                         e.kill()
                     for e in enemigos2:
                         e.kill()
+                    for b in balas:
+                        b.kill()
                     state = 'menu'
                     fac.resetposbg()
             elif gameover:
@@ -428,6 +430,8 @@ def main():
                         e.kill()
                     for e in enemigos2:
                         e.kill()
+                    for b in balas:
+                        b.kill()
                     state = 'menu'
                     fac.resetposbg()
                     gameover = False
@@ -804,6 +808,8 @@ def main():
                         e.kill()
                     for e in enemigos2:
                         e.kill()
+                    for b in balas:
+                        b.kill()
                     state = 'menu'
                     fac.resetposbg()
                     for x in jugadores:
@@ -855,6 +861,8 @@ def main():
                         e.kill()
                     for e in enemigos2:
                         e.kill()
+                    for b in balas:
+                        b.kill()
                     state = 'menu'
                     fac.resetposbg()
             elif gameover:
@@ -897,6 +905,8 @@ def main():
                         e.kill()
                     for e in enemigos2:
                         e.kill()
+                    for b in balas:
+                        b.kill()
                     state = 'menu'
                     fac.resetposbg()
                     gameover = False
@@ -1199,6 +1209,8 @@ def main():
                         e.kill()
                     for e in enemigos2:
                         e.kill()
+                    for b in balas:
+                        b.kill()
                     state = 'menu'
                     fac.resetposbg()
                     for x in jugadores:
