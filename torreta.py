@@ -77,7 +77,7 @@ class Turret(pygame.sprite.Sprite):
         self.accion=0
         self.dir = 'L'
         self._health = 100
-        self.shoottimer = 50
+        self.shoottimer = 25
         self.shoot = False
         self.incremento=1
         self.spawned=False
@@ -132,7 +132,7 @@ class Turret(pygame.sprite.Sprite):
             self.image = self.f[self.accion][self.indice]
             shoot=BalaT(matrizBalaT)
             self.shoot=False
-            self.shoottimer=50
+            self.shoottimer=25
 
 
 
