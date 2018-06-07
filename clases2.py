@@ -356,13 +356,13 @@ class Reptil2(pygame.sprite.Sprite):
         #1
         #Attack R
         if self.accion==4:
-            if self.indice <=1:
-                self.image = self.f[self.accion][self.indice]
-                if self.indice==1:
-                    bite.play()
-                self.indice += 1
+            #if self.indice <=1:
+            self.image = self.f[self.accion][self.indice]
+            if self.indice==1:
+                bite.play()
+            self.indice += 1
 
-            if self.indice >4:
+            if self.indice >=4:
                 self.finished = True
                 self.indice=0
             self.vel_x = 0
@@ -370,13 +370,13 @@ class Reptil2(pygame.sprite.Sprite):
 
         #Attack L
         if self.accion==5:
-            if self.indice <=1:
-                self.image = self.f[self.accion][self.indice]
-                if self.indice==1:
-                    bite.play()
-                self.indice += 1
+            #if self.indice <=1:
+            self.image = self.f[self.accion][self.indice]
+            if self.indice==1:
+                bite.play()
+            self.indice += 1
 
-            if self.indice >4:
+            if self.indice >=4:
                 self.finished = True
                 self.indice=0
 
