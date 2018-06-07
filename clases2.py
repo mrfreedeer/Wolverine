@@ -115,7 +115,7 @@ class barravida_enemigo(pygame.sprite.Sprite):
         self.image=self.v[0][self.i]
 
 class reptiles(pygame.sprite.Sprite):
-    def __init__(self, matriz,groupbarras, vector, pos):
+    def __init__(self, matriz, pos):
         pygame.sprite.Sprite.__init__(self)
         self.m=matriz
         self.image=self.m[0][0]
@@ -141,7 +141,7 @@ class reptiles(pygame.sprite.Sprite):
     def update(self):
         self.rect.x=self.rect.x+self.varx
         self.rect.y=self.rect.y+self.vary
-        self.barra.update(self.rect.midtop)
+        #self.barra.update(self.rect.midtop)
         self.image=self.m[self.accion][self.i]
         self.i+=1
         if(self.Tespera>0):
@@ -156,7 +156,7 @@ class reptiles(pygame.sprite.Sprite):
                 self.i=0
                 self.accion=5
                 self.varx=0
-        if self.salud<=0:
+        if self._health<=0:
             self.Tmuerte-=1
 
 

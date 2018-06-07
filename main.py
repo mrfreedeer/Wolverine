@@ -936,7 +936,7 @@ def main():
                             enemy2Level2=reptiles(reptilm, [50, 50])
                             #enemy2Level2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
                             #enemy2Level2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy2Level2.rect.height)
-                            enemigos2n2.add(enemy2enemyLevel2)
+                            enemigos2n2.add(enemy2Level2)
                             todos.add(enemy2Level2)
                     generator22=False
 
