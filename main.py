@@ -242,7 +242,11 @@ def main():
                     if event.key in allowedmoves:
                         moves.insert(0,event.key)
                     if moves != []:
-                        jugador.move(moves[0])
+                        if not jugador.onplatform:
+                            jugador.move(moves[0])
+                        else:
+                            if moves[0] == pygame.K_UP:
+                                pass
 
                 if event.type == pygame.KEYUP:
                     if event.key in allowedmoves:
@@ -622,12 +626,32 @@ def main():
                 for b in tokillbullets:
                     b.kill()
 
+                lsplatcollide = pygame.sprite.spritecollide(jugador, plataformas, False)
+
+                for x in lsplatcollide:
+                    if jugador.rect.bottom>=x.rect.top and jugador.vel_y > 0:
+                        jugador.vel_y = 0
+                        jugador.stopjump()
+                        jugador.rect.bottom = x.rect.top
+                        jugador.onplatform = True
+                if jugador.onplatform and len(lsplatcollide)== 0:
+                    anytrue = False
+                    for x in plataformas:
+                        rect = jugador.rect.copy()
+                        rect.bottom += 10
+                        if x.rect.colliderect(rect):
+                            anytrue = True
+                    if not anytrue:
+                        jugador.gravedad(10)
                 todos.update()
 
 
-                if (jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]) and jugador.accion not in [4,5]:
+                if (jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]) and jugador.accion not in [4,5] and not jugador.onplatform:
                     jugador.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador.rect.height
                     #2 jugadores
+                if jugador.onplatform:
+                    if jugador.rect.y + jugador.rect.height >= fac.posbgfixedy + fac.posbg[1]:
+                        jugador.onplatform = False
                 if jugador.getHealth() <= 0:
                         gameover = True
                 if moves != []:
@@ -660,10 +684,13 @@ def main():
                     drawlist.append(x)
                 drawlist.sort(key = attrgetter('rect.y'))
                 drawgroup = pygame.sprite.Group()
+                plataformas.draw(screen)
                 for x in drawlist:
-                    drawgroup.add(x)
-                    drawgroup.draw(screen)
-                    drawgroup.remove(x)
+                    if x not in plataformas:
+                        drawgroup.add(x)
+                        drawgroup.draw(screen)
+                        drawgroup.remove(x)
+
                 #todos.draw(screen)
 
                 scorerender1 = bob.buildscorerender(str(jugador.score))
