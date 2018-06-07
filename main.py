@@ -7,6 +7,7 @@ from jugador import *
 from enemigo import *
 from operator import attrgetter
 from torreta import *
+from clases2 import *
 
 red = (255,0,0)         #rgb(255,0,0)
 green = (0,255,0)       #rgb(0,255,0)
@@ -83,6 +84,8 @@ def main():
     platform = pygame.image.load('platform.png').convert_alpha()
     platform = pygame.transform.scale(platform, (75,20))
 
+    reptilsprites='reptilfinal.png'
+    reptilm=recortarRept(6, 10, reptilsprites, [5,6,5,6,6,5,6,5,6,6])
     menuoptions = ["Nivel 1", "Nivel 2", "Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
 
@@ -128,6 +131,7 @@ def main():
     enemigos2n2=pygame.sprite.Group()
 
     balas=pygame.sprite.Group()
+    balasTorreta=pygame.sprite.Group()
     plataformas = pygame.sprite.Group()
 
     matrizJugador=[]
@@ -353,7 +357,7 @@ def main():
             #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
             if moves != [] and jugador.prevkey == None:
                 jugador.move(moves[0])
-            if genscore >= endscore and numberOfDeaths>=35 and fac.posbg[0]<=-1010 and numberOfStillEnemies==0 and numberOfMovingEnemies==0:
+            if genscore >= endscore and numberOfDeaths>=30 and fac.posbg[0]<=-1010 and numberOfStillEnemies==0 and numberOfMovingEnemies==0:
                 #for j in jugadores:
                 #    j.kill()
                 winrenderrect = winrender.get_rect()
@@ -828,8 +832,8 @@ def main():
         elif state == menuoptions[1]:
 
             if moves != [] and jugador.prevkey == None:
-                jugador.move(moves[0])
-            if genscore >= endscore and numberOfDeaths2>=35 and fac.posbg[0]<=-1010 and numberOfStillEnemies2==0 and numberOfMovingEnemies2==0:
+                jugador.move(moves[0])                                 #Acomodar esto
+            if genscore >= endscore and numberOfDeaths2>=30 and fac.posbg[0]<=-1010 and numberOfStillEnemies2==0 and numberOfMovingEnemies2==0:
                 #for j in jugadores:
                 #    j.kill()
                 winrenderrect = winrender.get_rect()
@@ -866,10 +870,11 @@ def main():
                     fac.posbg[0]=0
                     for j in jugadores:
                         j.kill()
-                    for e in enemigos:
+                    for e in enemigos2n:
                         e.kill()
-                    for e in enemigos2:
+                    for e in enemigos2n2:
                         e.kill()
+                    #Modificar esto
                     for b in balas:
                         b.kill()
                     state = 'menu'
@@ -904,15 +909,15 @@ def main():
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
-                    numberOfStillEnemies=0
-                    numberOfMovingEnemies=0
-                    numberOfDeaths=0
+                    numberOfStillEnemies2=0
+                    numberOfMovingEnemies2=0
+                    numberOfDeaths2=0
                     fac.posbg[0]=0
                     for j in jugadores:
                         j.kill()
-                    for e in enemigos:
+                    for e in enemigos2n:
                         e.kill()
-                    for e in enemigos2:
+                    for e in enemigos2n2:
                         e.kill()
                     for b in balas:
                         b.kill()
@@ -920,7 +925,7 @@ def main():
                     fac.resetposbg()
                     gameover = False
             elif not fac.pause:
-                '''
+
                 if (fac.posbg[0]==0 and numberOfDeaths2==0) or (fac.posbg[0]<=-220 and numberOfDeaths2==6) or (fac.posbg[0]<=-320 and numberOfDeaths2==12) or (fac.posbg[0]<=-520 and numberOfDeaths2==18) or (fac.posbg[0]<=-660 and numberOfDeaths2==24) or (fac.posbg[0]<=-990 and numberOfDeaths2==30):
                     canGenerate2=True
                 if canGenerate2:
@@ -933,24 +938,25 @@ def main():
                         generator21=True
                         numberOfStillEnemies=2
                     for i in range(numberOfMovingEnemies2):
-                        if generator2:
-                            enemy2Level2=Enemigo2(matrizEnemigos2)
-                            enemy2Level2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
-                            enemy2Level2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy2Level2.rect.height)
-                            enemigos2n2.add(enemy2enemyLevel2)
+                        if generator22:
+                            #Modificar esto, aca va el otro enemigo
+                            enemy2Level2=reptiles(reptilm, [50, 50])
+                            #enemy2Level2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
+                            #enemy2Level2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy2Level2.rect.height)
+                            enemigos2n2.add(enemy2Level2)
                             todos.add(enemy2Level2)
                     generator22=False
 
                     for i in range(numberOfStillEnemies2):
-                        if generator1:
+                        if generator21:
                             enemyLevel2=Turret(matrizTorreta)
-                            enemyLevel2.rect.x = random.randrange(0,20)
+                            enemyLevel2.rect.x = random.randrange(200,350)
                             enemyLevel2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemyLevel2.rect.height)
                             enemigos2n.add(enemyLevel2)
                             todos.add(enemyLevel2)
                     generator21=False
                     canGenerate2=False
-                '''
+
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
@@ -1030,7 +1036,7 @@ def main():
                 enemybar = []
                 enemybar1 = []
                 '''
-                for x in enemigos:
+                for x in enemigos2n2:
                     if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
                         x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
                     jugadorlscol=[]
@@ -1050,34 +1056,33 @@ def main():
                             if x._health == 0:
                                 y.score += 200
                                 genscore += 200
-                                numberOfStillEnemies-=1
-                                numberOfDeaths+=1
+                                numberOfStillEnemies2-=1
+                                numberOfDeaths2+=1
                                 x.die()
                                 x.kill()
                             else:
                                 y.score += 75
                                 genscore += 75
 
-                for x in enemigos:
+                for x in enemigos2n:
                     if x.shoot:
                         x.shoot = False
-                        channel5.play(shoot)
-                        b = Bala(matrizBala)
+                        #channel5.play(shoot)
+                        b = Bala(matrizBalaT)
                         b.rect.x,b.rect.y = x.rect.x + 20,x.rect.y +50
                         balas.add(b)
                         todos.add(b)
                         #x.shoot = False
 
 
-                for x in enemigos2:
+                for x in enemigos2n:
                     if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
                         x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
                     if x._health == 0:
-                        x.die()
-                    if x.canDie and x.finished:
                         x.kill()
-                        numberOfDeaths+=1
-                        numberOfMovingEnemies-=1
+                        numberOfDeaths2+=1
+                        numberOfMovingEnemies2-=1
+                    #Acomodar esto
                     if not x.canDie:
                         if state == menuoptions[1]:
                             x.AImove(jugador)
@@ -1208,15 +1213,15 @@ def main():
                     fac._pauserenders.insert(select,selectedrender)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select != -1:
-                    numberOfStillEnemies=0
-                    numberOfMovingEnemies=0
-                    numberOfDeaths=0
+                    numberOfStillEnemies2=0
+                    numberOfMovingEnemies2=0
+                    numberOfDeaths2=0
                     fac.posbg[0]=0
                     for j in jugadores:
                         j.kill()
-                    for e in enemigos:
+                    for e in enemigos2n:
                         e.kill()
-                    for e in enemigos2:
+                    for e in enemigos2n2:
                         e.kill()
                     for b in balas:
                         b.kill()

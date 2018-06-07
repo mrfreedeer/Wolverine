@@ -3,6 +3,23 @@ import random
 import math
 
 
+def recortarRept(max_x, max_y, archivo, vector):
+    imagen=pygame.image.load(archivo)
+    info=imagen.get_rect()
+    an_imagen=info[2]
+    al_imagen=info[3]
+    an_image_corte= an_imagen/max_x
+    al_image_corte= al_imagen/max_y
+    mapa=[]
+    for i in range(max_y):
+        mapis=[]
+        for j in range(vector[i]):
+            cuadro=imagen.subsurface(j*an_image_corte, i*al_image_corte, an_image_corte, al_image_corte)
+            mapis.append(cuadro)
+        mapa.append(mapis)
+    return mapa
+
+
 class fondo(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -98,7 +115,7 @@ class barravida_enemigo(pygame.sprite.Sprite):
         self.image=self.v[0][self.i]
 
 class reptiles(pygame.sprite.Sprite):
-    def __init__(self, matriz,groupbarras, vector, pos):
+    def __init__(self, matriz, pos):
         pygame.sprite.Sprite.__init__(self)
         self.m=matriz
         self.image=self.m[0][0]
@@ -112,19 +129,19 @@ class reptiles(pygame.sprite.Sprite):
         self.golpe=False
         self.accion=0
         self.mov=True
-        self.barra=barravida_enemigo(vector, self.rect.midtop)
-        groupbarras.add(self.barra)
+        #self.barra=barravida_enemigo(vector, self.rect.midtop)
+        #groupbarras.add(self.barra)
         self.derecha=True
         self.izquierda=False
         self.Tespera=random.randrange(100,200)
         self.donacion=random.randrange(-5,10)
-        self.salud=100
+        self._health = 100
         self.Tmuerte=5
 
     def update(self):
         self.rect.x=self.rect.x+self.varx
         self.rect.y=self.rect.y+self.vary
-        self.barra.update(self.rect.midtop)
+        #self.barra.update(self.rect.midtop)
         self.image=self.m[self.accion][self.i]
         self.i+=1
         if(self.Tespera>0):
@@ -139,7 +156,7 @@ class reptiles(pygame.sprite.Sprite):
                 self.i=0
                 self.accion=5
                 self.varx=0
-        if self.salud<=0:
+        if self._health<=0:
             self.Tmuerte-=1
 
 
@@ -190,7 +207,7 @@ class Boss(pygame.sprite.Sprite):
         self.golpeshuriken=False
         self.accion=0
         self.mov=True
-        self.barra=barravida_enemigo(vector, self.rect.midtop) #juan para que si puede 
+        self.barra=barravida_enemigo(vector, self.rect.midtop) #juan para que si puede
         groupbarras.add(self.barra)
 
         self.derecha=True
@@ -287,7 +304,7 @@ class Boss(pygame.sprite.Sprite):
                                 #self.Tespera=random.randrange(100,200)
                                 self.varx=0
                                 self.i=0
-            
+
                     if self.izquierda:
                             if(self.Tespera<=0):
                                 self.accion=15
@@ -296,7 +313,7 @@ class Boss(pygame.sprite.Sprite):
                                 self.varx=0 #las acciones son en base a los sprites del boss y pues asi yo manejaba la derecha e izquierda
                                 #si algo lo acomodan a como uds lo hacen... alejo para que acomode el salto tal como el wolverine
                                 self.i=0"""
-                    
+
 
     def ataquekatana(self):
         if self.derecha:
