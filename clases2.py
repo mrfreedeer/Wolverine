@@ -129,13 +129,13 @@ class reptiles(pygame.sprite.Sprite):
         self.golpe=False
         self.accion=0
         self.mov=True
-        self.barra=barravida_enemigo(vector, self.rect.midtop)
-        groupbarras.add(self.barra)
+        #self.barra=barravida_enemigo(vector, self.rect.midtop)
+        #groupbarras.add(self.barra)
         self.derecha=True
         self.izquierda=False
         self.Tespera=random.randrange(100,200)
         self.donacion=random.randrange(-5,10)
-        self.salud=100
+        self._health = 100
         self.Tmuerte=5
 
     def update(self):
