@@ -247,6 +247,8 @@ def main():
                         else:
                             if moves[0] == pygame.K_UP:
                                 pass
+                            else:
+                                jugador.move(moves[0])
 
                 if event.type == pygame.KEYUP:
                     if event.key in allowedmoves:
@@ -642,9 +644,9 @@ def main():
                         if x.rect.colliderect(rect):
                             anytrue = True
                     if not anytrue:
-                        jugador.gravedad(10)
+                        if jugador.accion not in [4,5]:
+                            jugador.gravedad(10)
                 todos.update()
-
 
                 if (jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]) and jugador.accion not in [4,5] and not jugador.onplatform:
                     jugador.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador.rect.height

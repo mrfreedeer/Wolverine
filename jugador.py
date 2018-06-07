@@ -165,6 +165,7 @@ class Jugador(pygame.sprite.Sprite):
         self.currentkey = None
         self.startjump = -1
         self.onplatform = False
+        self.interruptjump = False
     def printstats(self):
         print "--------------Stats-------------"
         print "Vel: ", self.vel_multiplier
@@ -192,10 +193,11 @@ class Jugador(pygame.sprite.Sprite):
         else:
             self.vel_y+=v
     def stopjump(self):
-        self.interrupt = True
+        self.interruptjump = True
         self.soltartecla()
 
     def move(self, key):
+
         checklist = self.validmoves[0:4]
         if self.still and self.finished:
             self.finished = False
@@ -217,11 +219,11 @@ class Jugador(pygame.sprite.Sprite):
                 self.saltar()
         else:
             if self.accion in [4,5]:
-                if self.dir =='R':
+                if key == self.validmoves[0]:
                     self.vel_x= self.vel_x_value * self.vel_multiplier
-                else:
+                elif key == self.validmoves[1]:
                     self.vel_x= -self.vel_x_value * self.vel_multiplier
-            if key != self.prevkey:
+            elif key != self.prevkey:
                 self.interrupt = True
                 self.soltartecla()
                 self.prevkey = key
@@ -386,6 +388,7 @@ class Jugador(pygame.sprite.Sprite):
         if self.updatemove:
             self.soltartecla()
 
+
     def derecha(self):
         if self.accion==4:
             pass
@@ -460,13 +463,12 @@ class Jugador(pygame.sprite.Sprite):
             self.accion=9
 
     def soltartecla(self):
-        self.still = True
         if self.accion in [4,5]:
             if self.prevkey in self.validmoves[0:3]:
                 self.vel_x = 0
-        if self.prevkey in self.validmoves[0:4]:
+        if self.prevkey in self.validmoves[0:4] and self.accion not in [4,5]:
             self.interrupt = True
-        if (self.finished and self.updatemove and self.accion not in [4,5]) or self.interrupt:
+        if ((self.finished and self.updatemove) or (self.interrupt and not self.onplatform)and self.accion not in [4,5]):
             self.indice=0
             if self.accion==2 or self.accion==3:
                 if self.dir=='R':
@@ -486,9 +488,24 @@ class Jugador(pygame.sprite.Sprite):
             self.prevkey = None
             self.interrupt = False
             self.finished = True
+            self.still = True
 
         else:
-            self.updatemove = True
+            if self.accion not in [4,5]:
+                self.updatemove = True
+        if self.interruptjump:
+            self.indice=0
+            self.interruptjump = False
+            if self.dir=='R':
+                self.accion=0
+            if self.dir=='L':
+                self.accion=1
+            self.vel_x=0
+            self.updatemove = False
+            self.prevkey = None
+            self.interrupt = False
+            self.finished = True
+            self.still = True
 
     def resetValue(self,modid):
         if modid == 0:
