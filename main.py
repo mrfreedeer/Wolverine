@@ -66,6 +66,7 @@ def main():
     bginfo = [gamebckg.get_rect()[2],gamebckg.get_rect()[3]]
     fondo = pygame.image.load('fondo.png').convert_alpha()
     fondo2 = pygame.image.load('harbor.png').convert_alpha()
+    bginfo2 =[fondo2.get_rect()[2],fondo2.get_rect()[3]]
     player1 = pygame.image.load('jugador1.png').convert_alpha()
     player1=pygame.transform.scale(player1, (750, 350))
     player2 = pygame.image.load('jugador2.png').convert_alpha()
@@ -281,6 +282,11 @@ def main():
                 #print "Menu Option Clicked: ", menuoptions[mouseonoption]
                 mouseclick = False
                 state = menuoptions[mouseonoption]
+                if state == menuoptions[0]:
+                    fac.setposbglevel1()
+                elif state == menuoptions[1]:
+                    fac.setposbglevel2()
+
                 if mouseonoption == 0:
                     modwait = 15000
                 else:
@@ -712,7 +718,7 @@ def main():
                                 enemybar1.remove(x)
                     if enemybar1 != []:
                         if jugador.inflictDamage(enemybar1[0]) > 0:
-                            fac.drawEnemy1Life(enemybar1[0])
+                            fac.drawEnemyLife(enemybar1[0])
 
 
                     if enemybar != []:
@@ -820,6 +826,7 @@ def main():
                     fac.pause = False
         #Segundo nivel------------------------------------------------
         elif state == menuoptions[1]:
+
             if moves != [] and jugador.prevkey == None:
                 jugador.move(moves[0])
             if genscore >= endscore and numberOfDeaths2>=35 and fac.posbg[0]<=-1010 and numberOfStillEnemies2==0 and numberOfMovingEnemies2==0:
@@ -1122,7 +1129,7 @@ def main():
                 if jugador.getHealth() <= 0:
                         gameover = True
                 if moves != []:
-                    fac.checklimits(moves[0],jugador, bginfo)
+                    fac.checklimits(moves[0],jugador, bginfo2)
                 if fac.prevposbg != fac.posbg:
                     fac.prevposbg[0] = fac.prevposbg[0] - fac.posbg[0]
                     fac.prevposbg[1] = fac.prevposbg[1] - fac.posbg[1]
