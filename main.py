@@ -122,8 +122,8 @@ def main():
     enemigos=pygame.sprite.Group()
     enemigos2=pygame.sprite.Group()
 
-    enemigos2=pygame.sprite.Group()
-    enemigos22=pygame.sprite.Group()
+    enemigos2n=pygame.sprite.Group()
+    enemigos2n2=pygame.sprite.Group()
 
     balas=pygame.sprite.Group()
     plataformas = pygame.sprite.Group()
@@ -151,7 +151,7 @@ def main():
     generator22=4
     numberOfMovingEnemies2=4
     numberOfStillEnemies2=2
-    canGenerate=True
+    canGenerate2=True
     allDead2=False
     numberOfDeaths2=0
 
@@ -901,34 +901,34 @@ def main():
             elif not fac.pause:
                 '''
                 if (fac.posbg[0]==0 and numberOfDeaths2==0) or (fac.posbg[0]<=-220 and numberOfDeaths2==6) or (fac.posbg[0]<=-320 and numberOfDeaths2==12) or (fac.posbg[0]<=-520 and numberOfDeaths2==18) or (fac.posbg[0]<=-660 and numberOfDeaths2==24) or (fac.posbg[0]<=-990 and numberOfDeaths2==30):
-                    canGenerate=True
-                if canGenerate:
+                    canGenerate2=True
+                if canGenerate2:
                     lasttime2 = pygame.time.get_ticks()
                     time4 = pygame.time.get_ticks()
                     if numberOfMovingEnemies<=0:
                         generator2=True
                         numberOfMovingEnemies=4
                     if numberOfStillEnemies<=0:
-                        generator1=True
+                        generator21=True
                         numberOfStillEnemies=2
                     for i in range(numberOfMovingEnemies):
                         if generator2:
-                            enemy2=Enemigo2(matrizEnemigos2)
-                            enemy2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
-                            enemy2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy2.rect.height)
-                            enemigos2.add(enemy2)
-                            todos.add(enemy2)
-                    generator2=False
+                            enemy2Level2=Enemigo2(matrizEnemigos2)
+                            enemy2Level2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
+                            enemy2Level2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy2Level2.rect.height)
+                            enemigos2n2.add(enemy2enemyLevel2)
+                            todos.add(enemy2Level2)
+                    generator22=False
 
                     for i in range(numberOfStillEnemies):
                         if generator1:
-                            enemy=Enemigo1(matrizEnemigos1)
-                            enemy.rect.x = random.randrange(0,20)
-                            enemy.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy.rect.height)
-                            enemigos.add(enemy)
-                            todos.add(enemy)
-                    generator1=False
-                    canGenerate=False
+                            enemyLevel2=Enemigo1(matrizEnemigos1)
+                            enemyLevel2.rect.x = random.randrange(0,20)
+                            enemyLevel2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemyLevel2.rect.height)
+                            enemigos2n.add(enemyLevel2)
+                            todos.add(enemyLevel2)
+                    generator21=False
+                    canGenerate2=False
                 '''
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
@@ -957,6 +957,9 @@ def main():
                             lsmod.kill()
                             if lsmod in modlist:
                                 modlist.remove(lsmod)
+                    '''
+                    Hay que modificar
+                    '''
                     lscolbullets = pygame.sprite.spritecollide(x, balas, True)
                     for z in lscolbullets:
                         if z.rect.y >= x.rect.y and z.rect.y <= x.rect.bottom -1:
@@ -1126,8 +1129,8 @@ def main():
                         x.rect.y -= fac.prevposbg[1]
                     fac.prevposbg = fac.posbg[:]
                 screen.fill([0,0,0])
-                screen.blit(fondo2,[0,-50])
-                #screen.blit(gamebckg, fac.posbg)
+                #screen.blit(fondo2,[0,-50])
+                screen.blit(fondo2, fac.posbg)
 
                 drawlist = []
                 for x in todos:
