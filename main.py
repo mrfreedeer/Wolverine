@@ -55,6 +55,23 @@ def readmapplatforms():
         posy += 20
     return platforms
 
+def readmapholes():
+    interpreter = ConfigParser.ConfigParser()
+    interpreter.read('map.map')
+    map = interpreter.get('level1','map')
+    map = map.split('\n')
+    posx = 0
+    posy = 0
+    holes = []
+    for x in range(len(map)):
+        posx = 0
+        for y in map[x]:
+            if y == 'h':
+                holes.append([posx,posy])
+            posx += 75
+        posy += 20
+    return holes
+
 
 def main():
 
@@ -87,8 +104,14 @@ def main():
     wolvieface = pygame.image.load('WolverineFace.png').convert_alpha()
     wolvieface = pygame.transform.scale(wolvieface, (40,40))
 
+    #Platform
     platform = pygame.image.load('platform.png').convert_alpha()
     platform = pygame.transform.scale(platform, (75,20))
+
+    #Hole
+    hole = pygame.image.load('vacio.png').convert_alpha()
+    hole = pygame.transform.scale(hole, (75,200))
+
 
     reptilsprites='reptilfinal.png'
     reptilm=recortarRept(6, 10, reptilsprites, [5,6,5,6,6,5,6,5,6,6])
@@ -117,6 +140,7 @@ def main():
     fac.setPauserenders(pauseoptionrenders)
     modifiers = pygame.sprite.Group()
     everyone = pygame.sprite.Group()
+    whatevers = pygame.sprite.Group()
     m = fac.getModifier(modi)
     modifiers.add(m)
     everyone.add(m)
@@ -140,6 +164,7 @@ def main():
     balas=pygame.sprite.Group()
     balasTorreta=pygame.sprite.Group()
     plataformas = pygame.sprite.Group()
+    vacios = pygame.sprite.Group()
 
     matrizJugador=[]
     #matrizJugador2=[]
@@ -330,14 +355,20 @@ def main():
             everyone.draw(screen)
             #1 Player
             if state == menuoptions[0]:
-
-
                 platforms = readmapplatforms()
                 for p in platforms:
                     x = Platform(platform)
                     plataformas.add(x)
                     x.rect.x = p[0]
                     x.rect.y = p[1]
+                    todos.add(x)
+                holes = readmapholes()
+                for h in holes:
+                    x = Whatever(hole)
+                    vacios.add(x)
+                    whatevers.add(x)
+                    x.rect.x = h[0]
+                    x.rect.y = h[1]
                     todos.add(x)
                 genscore=0
                 jugador=Jugador(matrizJugador,allowedmoves)
@@ -439,10 +470,17 @@ def main():
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
+                    poofsprite.kill()
                     numberOfStillEnemies=0
                     numberOfMovingEnemies=0
                     numberOfDeaths=0
                     fac.posbg[0]=0
+                    for x in vacios:
+                        x.kill()
+                    for x in plataformas:
+                        x.kill()
+                    for x in whatevers:
+                        x.kill()
                     for j in jugadores:
                         j.kill()
                     for e in enemigos:
@@ -660,6 +698,31 @@ def main():
                         jugador.stopjump()
                         jugador.rect.bottom = x.rect.top
                         jugador.onplatform = True
+
+                lsvaciocollide = pygame.sprite.spritecollide(jugador,vacios,False)
+                if len(lsvaciocollide) >= 1:
+                    for x in lsvaciocollide:
+                        vaciodie = False
+                        if jugador.rect.x >= x.rect.x + 10 and jugador.dir == 'R' and jugador.accion != 4 :
+                            if jugador.rect.bottom - jugador.rect.height >= x.rect.top:
+                                vaciodie = True
+
+                        if jugador.rect.x - 10 <= x.rect.x  and jugador.dir == 'L' and jugador.accion != 5 :
+                            if jugador.rect.bottom - jugador.rect.height >= x.rect.top:
+                                vaciodie = True
+                            print "die2"
+                        if vaciodie:
+                            jugador.gravedad(100)
+                            gameover = True
+                            poof = pygame.image.load("poof.png")
+                            poof = pygame.transform.scale(poof, [jugador.rect.width, jugador.rect.height])
+                            poofsprite = Whatever(poof)
+                            whatevers.add(poofsprite)
+                            poofsprite.rect.x=jugador.rect.x
+                            poofsprite.rect.y= jugador.rect.y
+                            todos.add(poofsprite)
+                            jugador.kill()
+
                 if jugador.onplatform and len(lsplatcollide)== 0:
                     anytrue = False
                     for x in plataformas:
@@ -700,6 +763,9 @@ def main():
                     for x in plataformas:
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
+                    for x in vacios:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
                     fac.prevposbg = fac.posbg[:]
                 screen.fill([0,0,0])
                 screen.blit(fondo,[0,-50])
@@ -711,6 +777,7 @@ def main():
                 drawlist.sort(key = attrgetter('rect.y'))
                 drawgroup = pygame.sprite.Group()
                 plataformas.draw(screen)
+                vacios.draw(screen)
                 for x in drawlist:
                     if x not in plataformas:
                         drawgroup.add(x)
@@ -740,50 +807,7 @@ def main():
                     if enemybar != []:
                         if jugador.inflictDamage(enemybar[0]) > 0:
                             fac.drawEnemyLife(enemybar[0])
-                elif state == menuoptions[1]:
-                    fac.drawLife(jugador.getHealth())
-                    fac.drawScore(scorerender1, scorerender = score)
-                    '''
-                    if enemybar1 != []:
-                        for x in enemybar1:
-                            if jugador.inflictDamage(x) == 0:
-                                enemybar1.remove(x)
-                    if enemybar1 != []:
-                        if jugador.inflictDamage(enemybar1[0]) > 0:
-                            fac.drawEnemy1Life(enemybar1[0])
 
-
-                    if enemybar != []:
-                        for x in enemybar:
-                            if jugador.inflictDamage(x) == 0:
-                                enemybar.remove(x)
-                    if enemybar != []:
-                        if jugador.inflictDamage(enemybar[0]) > 0:
-                            fac.drawEnemyLife(enemybar[0])
-                    '''
-                else:
-                    scorerender2 = bob.buildscorerender(str(jugador2.score))
-                    fac.drawScore(scorerender1, score, 2,scorerender2)
-                    fac.drawLife(jugador.getHealth(), 2, jugador2.getHealth())
-                    if enemybar1 != []:
-                        for x in enemybar1:
-                            if jugador.inflictDamage(x) == 0 and jugador2.inflictDamage(x) == 0:
-                                enemybar1.remove(x)
-                    if enemybar1 != []:
-                        if len(enemybar1) >= 2:
-                            fac.drawEnemy1Life(enemybar1[0], 2, enemybar1[1])
-                        else:
-                            fac.drawEnemy1Life(enemybar1[0])
-
-                    if enemybar != []:
-                        for x in enemybar:
-                            if jugador.inflictDamage(x) == 0 and jugador2.inflictDamage(x) == 0:
-                                enemybar.remove(x)
-                    if enemybar != []:
-                        if len(enemybar) >= 2:
-                            fac.drawEnemyLife(enemybar[0], 2, enemybar[1])
-                        else:
-                            fac.drawEnemyLife(enemybar[0])
 
                 pygame.display.flip()
                 reloj.tick(10)
@@ -830,10 +854,16 @@ def main():
                         e.kill()
                     for b in balas:
                         b.kill()
+                    for x in whatevers:
+                        x.kill()
+                    for x in plataformas:
+                        x.kill()
+                    for x in vacios:
+                        x.kill()
                     state = 'menu'
                     fac.resetposbg()
-                    for x in jugadores:
-                        x.kill()
+
+
                     mouseclick = False
                     fac.pause = False
         #Segundo nivel------------------------------------------------
@@ -917,10 +947,16 @@ def main():
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
+                    poofsprite.kill()
                     numberOfStillEnemies2=0
                     numberOfMovingEnemies2=0
                     numberOfDeaths2=0
                     fac.posbg[0]=0
+
+                    for x in vacios:
+                        x.kill()
+                    for x in plataformas:
+                        x.kill()
                     for j in jugadores:
                         j.kill()
                     for e in enemigos2n:
@@ -929,7 +965,10 @@ def main():
                         e.kill()
                     for b in balas:
                         b.kill()
+                    print len(vacios)
+                    print len(plataformas)
                     state = 'menu'
+                    screen.fill(black)
                     fac.resetposbg()
                     gameover = False
             elif not fac.pause:
@@ -1259,6 +1298,7 @@ def main():
                     for b in balas:
                         b.kill()
                     state = 'menu'
+
                     fac.resetposbg()
                     for x in jugadores:
                         x.kill()
