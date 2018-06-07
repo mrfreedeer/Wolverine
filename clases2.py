@@ -3,6 +3,23 @@ import random
 import math
 
 
+def recortar(max_x, max_y, archivo, vector):
+    imagen=pygame.image.load(archivo)
+    info=imagen.get_rect()
+    an_imagen=info[2]
+    al_imagen=info[3]
+    an_image_corte= an_imagen/max_x
+    al_image_corte= al_imagen/max_y
+    mapa=[]
+    for i in range(max_y):
+        mapis=[]
+        for j in range(vector[i]):
+            cuadro=imagen.subsurface(j*an_image_corte, i*al_image_corte, an_image_corte, al_image_corte)
+            mapis.append(cuadro)
+        mapa.append(mapis)
+    return mapa
+
+
 class fondo(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
