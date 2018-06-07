@@ -832,7 +832,7 @@ def main():
                     fac.pause = False
         #Segundo nivel------------------------------------------------
         elif state == menuoptions[1]:
-            print 'pos=', fac.posbg
+            #print 'pos=', fac.posbg
             if moves != [] and jugador.prevkey == None:
                 jugador.move(moves[0])                                 #Acomodar esto
             if genscore >= endscore and numberOfDeaths2>=24 and fac.posbg[0]<=-1575 and numberOfStillEnemies2==0 and numberOfMovingEnemies2==0:
