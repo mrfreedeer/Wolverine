@@ -925,7 +925,6 @@ def main():
                     fac.resetposbg()
                     gameover = False
             elif not fac.pause:
-
                 if (fac.posbg[0]==0 and numberOfDeaths2==0) or (fac.posbg[0]<=-220 and numberOfDeaths2==6) or (fac.posbg[0]<=-320 and numberOfDeaths2==12) or (fac.posbg[0]<=-520 and numberOfDeaths2==18) or (fac.posbg[0]<=-660 and numberOfDeaths2==24) or (fac.posbg[0]<=-990 and numberOfDeaths2==30):
                     canGenerate2=True
                 if canGenerate2:
@@ -1126,7 +1125,16 @@ def main():
                     b.kill()
                 '''
                 todos.update()
-
+                if fac.checklevel2abyss(jugador):
+                    jugador.gravedad(100)
+                    gameover = True
+                    poof = pygame.image.load("poof.png")
+                    poof = pygame.transform.scale(poof, [jugador.rect.width, jugador.rect.height])
+                    poofsprite = Whatever(poof)
+                    poofsprite.rect.x=jugador.rect.x
+                    poofsprite.rect.y= jugador.rect.y
+                    todos.add(poofsprite)
+                    jugador.kill()
 
                 if (jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]) and jugador.accion not in [4,5]:
                     jugador.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador.rect.height
@@ -1178,6 +1186,8 @@ def main():
                             enemybar.remove(x)
                     if jugador.inflictDamage(enemybar[0]) > 0:
                         fac.drawEnemyLife(enemybar[0])
+
+
 
 
                 pygame.display.flip()

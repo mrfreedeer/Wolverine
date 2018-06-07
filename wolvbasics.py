@@ -22,7 +22,11 @@ class Platform(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = image
         self.rect = self.image.get_rect()
-
+class Whatever(pygame.sprite.Sprite):
+    def __init__(self, image):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = image
+        self.rect = self.image.get_rect()
 class Facade(object):
     def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos, wolvface, enemyface, enemyface1):
         self._normalrenders = menurenders[:]
@@ -214,6 +218,13 @@ class Facade(object):
             return True
         if player.rect.y + player.rect.height < self.posbgfixedy + self.posbg[1] + limit and key == pygame.K_UP:
             return True
+    def checklevel2abyss(self, jugador):
+        print self.posbg[0] + 180, self.posbg[0] + 570
+        print jugador.rect.x, jugador.rect.y
+        if jugador.rect.x >= (self.posbg[0] + 180) and jugador.rect.x + jugador.rect.width <= (self.posbg[0] + 570):
+            if jugador.rect.bottom >= (self.posbg[1] + 508) and jugador.rect.bottom <= (self.posbg[1] + 616):
+                return True
+        return False
     def checklimits(self, key, player, bginfo):
         bglimit = 150
         if player.vel_multiplier > 1:
