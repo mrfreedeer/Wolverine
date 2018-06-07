@@ -6,6 +6,7 @@ from wolvbasics import *
 from jugador import *
 from enemigo import *
 from operator import attrgetter
+from torreta import*
 
 red = (255,0,0)         #rgb(255,0,0)
 green = (0,255,0)       #rgb(0,255,0)
@@ -135,6 +136,7 @@ def main():
     matrizEnemigos1=recortarEne1('enemy.png')
     matrizEnemigos2=recortarEne2('enemigoMovil.png')
     matrizBala=recortarBala('lasers.png')
+    matrizTorreta=recortarTorr('torreta.png')
 
     reloj=pygame.time.Clock()
     #Nivel 1
@@ -884,7 +886,7 @@ def main():
                     if numberOfStillEnemies<=0:
                         generator21=True
                         numberOfStillEnemies=2
-                    for i in range(numberOfMovingEnemies):
+                    for i in range(numberOfMovingEnemies2):
                         if generator2:
                             enemy2Level2=Enemigo2(matrizEnemigos2)
                             enemy2Level2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
@@ -893,9 +895,9 @@ def main():
                             todos.add(enemy2Level2)
                     generator22=False
 
-                    for i in range(numberOfStillEnemies):
+                    for i in range(numberOfStillEnemies2):
                         if generator1:
-                            enemyLevel2=Enemigo1(matrizEnemigos1)
+                            enemyLevel2=Turret(matrizTorreta)
                             enemyLevel2.rect.x = random.randrange(0,20)
                             enemyLevel2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemyLevel2.rect.height)
                             enemigos2n.add(enemyLevel2)
