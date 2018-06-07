@@ -3,7 +3,9 @@ import random
 import math
 
 bite=pygame.mixer.Sound('bite.ogg')
+cry=pygame.mixer.Sound('cry.ogg')
 
+channel6 = pygame.mixer.Channel(5)
 def recortarReptV2(archivo):
     fondo=pygame.image.load(archivo)
     infoFondo=fondo.get_rect()
@@ -386,8 +388,8 @@ class Reptil2(pygame.sprite.Sprite):
         #Die R
         if self.accion==6:
             if self.indice <2:
-                #if self.indice==0:
-                #    channel3.play(ouch)
+                if self.indice==0:
+                    channel6.play(cry)
                 self.image = self.f[self.accion][self.indice]
                 self.indice += 1
 
@@ -404,7 +406,7 @@ class Reptil2(pygame.sprite.Sprite):
         if self.accion==7:
             if self.indice <=2:
                 if self.indice==0:
-                    channel3.play(ouch)
+                    channel6.play(cry)
                 self.image = self.f[self.accion][self.indice]
 
                 self.indice += 1
