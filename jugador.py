@@ -164,6 +164,7 @@ class Jugador(pygame.sprite.Sprite):
         self.validmoves = validmoves
         self.currentkey = None
         self.startjump = -1
+        self.onplatform = False
     def printstats(self):
         print "--------------Stats-------------"
         print "Vel: ", self.vel_multiplier
@@ -190,6 +191,10 @@ class Jugador(pygame.sprite.Sprite):
             self.vel_y=1
         else:
             self.vel_y+=v
+    def stopjump(self):
+        self.interrupt = True
+        self.soltartecla()
+
     def move(self, key):
         checklist = self.validmoves[0:4]
         if self.still and self.finished:
@@ -231,7 +236,7 @@ class Jugador(pygame.sprite.Sprite):
             self.accion = 4
         else:
             self.accion = 5
-        self.vel_y = -25
+        self.vel_y = -40
     def update(self):
         '''
         if self.salto:
@@ -377,7 +382,7 @@ class Jugador(pygame.sprite.Sprite):
             self.rect.y = RESOLUTION[1] - bglimit- self.rect.height
         elif self.rect.y < bglimit:
             self.rect.y = bglimit
-        
+
         if self.updatemove:
             self.soltartecla()
 
@@ -471,7 +476,7 @@ class Jugador(pygame.sprite.Sprite):
                 self.vel_x=0
                 self.vel_y=0
 
-            if self.accion==6 or self.accion==7 or self.accion==8 or self.accion==9:
+            if self.accion in [4,5,6,7,8,9]:
                 if self.dir=='R':
                     self.accion=0
                 if self.dir=='L':
