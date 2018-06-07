@@ -481,8 +481,6 @@ def main():
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
-                        ylevel = math.fabs(lsmod.rect.y - x.rect.y)
-                    if lsmod != None and ylevel <= x.rect.height/3:
                         if not lsmod.blink:
                             if lsmod.type in playermodlist:
                                 playermodlist.pop(lsmod.type)
@@ -518,8 +516,9 @@ def main():
                     playermodlist.pop(x)
                 if (pygame.time.get_ticks() - time >= random.randrange(modwait,modwait*2) and (len(modlist)<=15)) or len(modlist) <= 3:
                     m = fac.getModifier(random.randrange(0,6))
-                    m.rect.x = random.randrange(fac.posbg[0],fac.posbg[0]+2100)
-                    m.rect.y = random.randrange((fac.posbg[1] + fac.posbgfixedy), fac._screensize[1]-100)
+                    platformrandom = random.randrange(0, len(platforms))
+                    m.rect.x = platforms[platformrandom][0]
+                    m.rect.y = platforms[platformrandom][1] - m .rect.height
                     blink = True
                     blinkers.append(m)
                     lasttime = pygame.time.get_ticks()
@@ -959,8 +958,6 @@ def main():
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
-                        ylevel = math.fabs(lsmod.rect.y - x.rect.y)
-                    if lsmod != None and ylevel <= x.rect.height/3:
                         if not lsmod.blink:
                             if lsmod.type in playermodlist:
                                 playermodlist.pop(lsmod.type)
@@ -999,8 +996,9 @@ def main():
                     playermodlist.pop(x)
                 if (pygame.time.get_ticks() - time >= random.randrange(modwait,modwait*2) and (len(modlist)<=15)) or len(modlist) <= 3:
                     m = fac.getModifier(random.randrange(0,6))
-                    m.rect.x = random.randrange(fac.posbg[0],fac.posbg[0]+2100)
-                    m.rect.y = random.randrange((fac.posbg[1] + fac.posbgfixedy), fac._screensize[1]-100)
+                    platformrandom = random.randrange(0, len(platforms))
+                    m.rect.x = platforms[platformrandom][0]
+                    m.rect.y = platforms[platformrandom][1] - m.rect.height
                     blink = True
                     blinkers.append(m)
                     lasttime = pygame.time.get_ticks()
