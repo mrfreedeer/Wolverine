@@ -1099,8 +1099,9 @@ def main():
                         x.rect.y -= fac.prevposbg[1]
                     fac.prevposbg = fac.posbg[:]
                 screen.fill([0,0,0])
-                screen.blit(fondo2,[0,-50])
-                #screen.blit(gamebckg, fac.posbg)
+                #screen.blit(fondo2,[0,-50])
+                
+                screen.blit(fondo2, fac.posbg)
 
                 drawlist = []
                 for x in todos:
