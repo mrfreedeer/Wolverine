@@ -948,8 +948,8 @@ def main():
                     for i in range(numberOfStillEnemies2):
                         if generator21:
                             enemyLevel2=Turret(matrizTorreta)
-                            enemyLevel2.rect.x = random.randrange(700,750)
-                            enemyLevel2.rect.y=550
+                            enemyLevel2.rect.x = random.randrange(700,1100)
+                            enemyLevel2.rect.y=random.randrange(550,575)
                             #random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemyLevel2.rect.height)
                             enemigos2n.add(enemyLevel2)
                             todos.add(enemyLevel2)
