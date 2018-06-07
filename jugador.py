@@ -12,6 +12,7 @@ step2=pygame.mixer.Sound('pasosJugador2.ogg')
 step2.set_volume(0.05)
 attack1=pygame.mixer.Sound('ataque1.ogg')
 attack2=pygame.mixer.Sound('ataque2.ogg')
+jump = pygame.mixer.Sound('jump.ogg')
 screensize = pygame.display.Info()
 RESOLUTION = [screensize.current_w, screensize.current_h]
 bglimit = 10
@@ -291,7 +292,10 @@ class Jugador(pygame.sprite.Sprite):
         if self.accion==4:
             if self.indice <4:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice in [0,1]:
+                    jump.play()
                 self.indice += 1
+
                 if self.startjump == -1:
                     self.startjump = self.rect.bottom
             #Es 7 normalmente
@@ -302,6 +306,8 @@ class Jugador(pygame.sprite.Sprite):
         if self.accion==5:
             if self.indice <4:
                 self.image = self.f[self.accion][self.indice]
+                if self.indice in [0,1]:
+                    jump.play()
                 self.indice += 1
                 if self.startjump == -1:
                     self.startjump = self.rect.bottom
