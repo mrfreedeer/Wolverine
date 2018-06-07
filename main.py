@@ -943,7 +943,7 @@ def main():
                     for i in range(numberOfStillEnemies2):
                         if generator21:
                             enemyLevel2=Turret(matrizTorreta)
-                            enemyLevel2.rect.x = random.randrange(0,20)
+                            enemyLevel2.rect.x = random.randrange(200,350)
                             enemyLevel2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemyLevel2.rect.height)
                             enemigos2n.add(enemyLevel2)
                             todos.add(enemyLevel2)
@@ -1029,7 +1029,7 @@ def main():
                 enemybar = []
                 enemybar1 = []
                 '''
-                for x in enemigos:
+                for x in enemigos2n2:
                     if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
                         x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
                     jugadorlscol=[]
@@ -1049,34 +1049,33 @@ def main():
                             if x._health == 0:
                                 y.score += 200
                                 genscore += 200
-                                numberOfStillEnemies-=1
-                                numberOfDeaths+=1
+                                numberOfStillEnemies2-=1
+                                numberOfDeaths2+=1
                                 x.die()
                                 x.kill()
                             else:
                                 y.score += 75
                                 genscore += 75
 
-                for x in enemigos:
+                for x in enemigos2n:
                     if x.shoot:
                         x.shoot = False
-                        channel5.play(shoot)
-                        b = Bala(matrizBala)
+                        #channel5.play(shoot)
+                        b = Bala(matrizBalaT)
                         b.rect.x,b.rect.y = x.rect.x + 20,x.rect.y +50
                         balas.add(b)
                         todos.add(b)
                         #x.shoot = False
 
 
-                for x in enemigos2:
+                for x in enemigos2n:
                     if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
                         x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
                     if x._health == 0:
-                        x.die()
-                    if x.canDie and x.finished:
                         x.kill()
-                        numberOfDeaths+=1
-                        numberOfMovingEnemies-=1
+                        numberOfDeaths2+=1
+                        numberOfMovingEnemies2-=1
+                    #Acomodar esto
                     if not x.canDie:
                         if state == menuoptions[1]:
                             x.AImove(jugador)
