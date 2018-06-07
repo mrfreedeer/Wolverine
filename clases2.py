@@ -3,7 +3,7 @@ import random
 import math
 
 
-def recortar(max_x, max_y, archivo, vector):
+def recortarRept(max_x, max_y, archivo, vector):
     imagen=pygame.image.load(archivo)
     info=imagen.get_rect()
     an_imagen=info[2]
@@ -207,7 +207,7 @@ class Boss(pygame.sprite.Sprite):
         self.golpeshuriken=False
         self.accion=0
         self.mov=True
-        self.barra=barravida_enemigo(vector, self.rect.midtop) #juan para que si puede 
+        self.barra=barravida_enemigo(vector, self.rect.midtop) #juan para que si puede
         groupbarras.add(self.barra)
 
         self.derecha=True
@@ -304,7 +304,7 @@ class Boss(pygame.sprite.Sprite):
                                 #self.Tespera=random.randrange(100,200)
                                 self.varx=0
                                 self.i=0
-            
+
                     if self.izquierda:
                             if(self.Tespera<=0):
                                 self.accion=15
@@ -313,7 +313,7 @@ class Boss(pygame.sprite.Sprite):
                                 self.varx=0 #las acciones son en base a los sprites del boss y pues asi yo manejaba la derecha e izquierda
                                 #si algo lo acomodan a como uds lo hacen... alejo para que acomode el salto tal como el wolverine
                                 self.i=0"""
-                    
+
 
     def ataquekatana(self):
         if self.derecha:

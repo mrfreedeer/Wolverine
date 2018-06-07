@@ -83,8 +83,8 @@ def main():
     platform = pygame.image.load('platform.png').convert_alpha()
     platform = pygame.transform.scale(platform, (75,20))
 
-    reptilsprites='reptilfinal2.png'
-    reptilm=recortar(6, 10, reptilsprites, [5,6,5,6,6,5,6,5,6,6])
+    reptilsprites='reptilfinal.png'
+    reptilm=recortarRept(6, 10, reptilsprites, [5,6,5,6,6,5,6,5,6,6])
     menuoptions = ["Nivel 1", "Nivel 2", "Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
 
@@ -933,7 +933,7 @@ def main():
                     for i in range(numberOfMovingEnemies2):
                         if generator22:
                             #Modificar esto, aca va el otro enemigo
-                            enemy2Level2=reptiles(reptilm, [random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50), random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy2Level2.rect.height)])
+                            enemy2Level2=reptiles(reptilm, [50, 50])
                             #enemy2Level2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
                             #enemy2Level2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy2Level2.rect.height)
                             enemigos2n2.add(enemy2enemyLevel2)
