@@ -118,6 +118,17 @@ def main():
     reptilsprites='reptilfinal.png'
     reptilm=recortarRept(6, 10, reptilsprites, [5,6,5,6,6,5,6,5,6,6])
     mreptil=recortarReptV2(reptilsprites)
+
+    #History
+    level1History = pygame.image.load('Level1History.png').convert_alpha()
+    level2History = pygame.image.load('Level2History.png').convert_alpha()
+    bossLevelHistory = pygame.image.load('BossLevelHistory.png').convert_alpha()
+    winningHistory = pygame.image.load('WinningHistory.png').convert_alpha()
+    flagH1 = False
+    flagH2 = False
+    flagBoss = False
+    flagEnd = False
+    
     menuoptions = ["Nivel 1", "Nivel 2", "Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
 
