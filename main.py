@@ -1054,7 +1054,6 @@ def main():
                             todos.add(enemyLevel2)
                     generator21=False
                     canGenerate2=False
-                print jugador.prevkey
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
@@ -1175,8 +1174,8 @@ def main():
 
 
                 for x in enemigos2n2:
-                    if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
-                        x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
+                    if (x.rect.y + x.rect.height -20< fac.posbgfixedy + fac.posbg[1]) :
+                        x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height + 20
                     if x._health == 0:
                         x.kill()
                         numberOfDeaths2+=1
@@ -1227,7 +1226,55 @@ def main():
                         tokillbullets.append(x)
                 for b in tokillbullets:
                     b.kill()
+                lsplatcollide = pygame.sprite.spritecollide(jugador, plataformas, False)
 
+                for x in lsplatcollide:
+                    if jugador.rect.bottom>=x.rect.top and jugador.vel_y > 0:
+                        jugador.vel_y = 0
+                        jugador.stopjump()
+                        jugador.rect.bottom = x.rect.top
+                        jugador.onplatform = True
+
+                lsvaciocollide = pygame.sprite.spritecollide(jugador,vacios,False)
+                if len(lsvaciocollide) >= 1:
+                    for x in lsvaciocollide:
+                        vaciodie = False
+                        if jugador.rect.x >= x.rect.x + 5 and jugador.dir == 'R' and jugador.accion != 4 :
+                            if jugador.rect.bottom - 50 >= x.rect.top:
+                                if x.rect.bottom >= jugador.rect.bottom:
+                                    vaciodie = True
+                                    #print "die1"
+                                    #print jugador.rect.x, jugador.rect.y, jugador.rect.bottom, "\n---", x.rect.x, x.rect.y, x.rect.top
+
+                        if jugador.rect.x - 10 <= x.rect.x  and jugador.dir == 'L' and jugador.accion != 5 :
+                            if jugador.rect.bottom - 50 >= x.rect.top:
+                                if x.rect.bottom >= jugador.rect.bottom:
+                                    vaciodie = True
+                                    #print jugador.rect.x, jugador.rect.y, jugador.rect.bottom, "\n---", x.rect.x, x.rect.y, x.rect.top
+                                    #print "die2"
+
+                        if vaciodie:
+                            jugador.gravedad(100)
+                            gameover = True
+                            poof = pygame.image.load("poof.png")
+                            poof = pygame.transform.scale(poof, [jugador.rect.width, jugador.rect.height])
+                            poofsprite = Whatever(poof)
+                            whatevers.add(poofsprite)
+                            poofsprite.rect.x=jugador.rect.x
+                            poofsprite.rect.y= jugador.rect.y
+                            todos.add(poofsprite)
+                            jugador.kill()
+
+                if jugador.onplatform and len(lsplatcollide)== 0:
+                    anytrue = False
+                    for x in plataformas:
+                        rect = jugador.rect.copy()
+                        rect.bottom += 10
+                        if x.rect.colliderect(rect):
+                            anytrue = True
+                    if not anytrue:
+                        if jugador.accion not in [4,5]:
+                            jugador.gravedad(10)
                 todos.update()
                 if fac.checklevel2abyss(jugador):
                     jugador.gravedad(100)
@@ -1240,9 +1287,12 @@ def main():
                     todos.add(poofsprite)
                     jugador.kill()
 
-                if (jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]) and jugador.accion not in [4,5]:
+                if (jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]) and jugador.accion not in [4,5] and not jugador.onplatform:
                     jugador.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador.rect.height
                     #2 jugadores
+                if jugador.onplatform:
+                    if jugador.rect.y + jugador.rect.height >= fac.posbgfixedy + fac.posbg[1]:
+                        jugador.onplatform = False
                 if jugador.getHealth() <= 0:
                         gameover = True
                 if moves != []:
@@ -1361,7 +1411,7 @@ def main():
             #screen.blit(gamebckg, fac.posbg)
         #Nivel boss
         elif state == menuoptions[2]:
-
+            pass
 
         #Instrucciones------------------------------------------------
         elif state == menuoptions[3]:
