@@ -3,7 +3,7 @@ import random
 import math
 random.seed(pygame.time.get_ticks())
 
-def recortarEne2(archivo):
+def recortarBoss(archivo):
     fondo=pygame.image.load(archivo)
     infoFondo=fondo.get_rect()
     matriz=[]
@@ -19,9 +19,9 @@ def recortarEne2(archivo):
 
 
 
-    idle=[[1, 11, 31, 67], [55, 11, 31, 67], [111, 11, 31, 67]]
+    idle=[[19, 9, 55, 77], [108, 9, 55, 77], [202, 9, 55, 77]]
 
-    walkRight=[[183, 11, 38, 67] , [251, 11, 31, 67], [310, 11, 31, 67], [364, 11, 37, 67], [428, 11, 30, 67],[485, 11, 30, 67]]
+    walkRight=[[14, 183, 73, 79] , [98, 183, 73, 79] , [193, 183, 73, 79] , [286, 183, 73, 79] , [374, 183, 73, 79] ,[461, 183, 73, 79] ]
 
     attack1=[[0,101,35,67], [49,101,55,67]]
 
