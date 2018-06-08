@@ -559,41 +559,60 @@ def main():
 
 
                 screen.blit(winrender, winrenderpos )
-                screen.blit(fac._pauserenders[0], newbckpos)
+                mousepos = pygame.mouse.get_pos()
 
-                select = fac.checkmousepause(mousepos, newbckpos)
+                i = 0
+                for x in fac._storyrenders:
+                    screen.blit(x,fac._storypostions[i])
+                    i += 1
+                select = fac.checkmousestory(mousepos)
+                if select != -1 and len(fac.getTurned())<1:
+                    beep.play()
 
                 if select != -1:
-                    txt = pauseoptions[select]
-                    fac._pauserenders.pop(select)
-                    fac._pauserenders.insert(select,backtomenured)
+                    txt = storyoptions[select]
+                    fac._storyrenders.pop(select)
+                    selectedrender = bob.buildtxtrender(txt, 0, red)
+                    fac._storyrenders.insert(select,selectedrender)
                     fac._turnedoptions.append(select)
-                if select != -1 and len(fac.getTurned())==1:
-                    beep.play()
+
                 elif select == -1 and fac.getTurned() != []:
-                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac._storyrenders = fac._normalstoryrenders[:]
                     fac.emptyTurned()
+
                 elif len(fac.getTurned())> 1:
-                    txt = pauseoptions[select]
-                    fac._pauserenders = fac._normalpauserenders[:]
-                    fac._pauserenders.pop(select)
-                    fac._pauserenders.insert(select,backtomenured)
+                    txt = storyoptions[select]
+                    fac._storyrenders = fac._normalstoryrenders[:]
+                    fac._storyrenders.pop(select)
+                    selectedrender = bob.buildtxtrender(txt, 0, red)
+                    fac._storyrenders.insert(select,selectedrender)
                     fac._turnedoptions.append(select)
-                if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
-                    numberOfStillEnemies=0
-                    numberOfMovingEnemies=0
-                    numberOfDeaths=0
-                    fac.posbg[0]=0
-                    for j in jugadores:
-                        j.kill()
-                    for e in enemigos:
-                        e.kill()
-                    for e in enemigos2:
-                        e.kill()
-                    for b in balas:
-                        b.kill()
+                if storyoptions[select] == "Back to Menu" and mouseclick and select != -1:
                     state = 'menu'
                     fac.resetposbg()
+                    mouseclick = False
+                elif storyoptions[select] == "Play" and mouseclick and select != -1:
+                    platforms = readmapplatforms('level2')
+                    for p in platforms:
+                        x = Platform(platform)
+                        plataformas.add(x)
+                        x.rect.x = p[0]
+                        x.rect.y = p[1]
+                        todos.add(x)
+                    holes = readmapholes('level2')
+                    for h in holes:
+                        x = Whatever(hole)
+                        vacios.add(x)
+                        whatevers.add(x)
+                        x.rect.x = h[0]
+                        x.rect.y = h[1]
+                        todos.add(x)
+                    genscore=0
+                    jugador=Jugador(matrizJugador,allowedmoves)
+                    jugadores.add(jugador)
+                    todos.add(jugador)
+                    fac.setposbglevel2()
+                    state= 'Level2History'
             elif gameover:
                 '''
                 if ohnoFlag:
@@ -1045,42 +1064,60 @@ def main():
 
 
                 screen.blit(winrender, winrenderpos )
-                screen.blit(fac._pauserenders[0], newbckpos)
+                mousepos = pygame.mouse.get_pos()
 
-                select = fac.checkmousepause(mousepos, newbckpos)
+                i = 0
+                for x in fac._storyrenders:
+                    screen.blit(x,fac._storypostions[i])
+                    i += 1
+                select = fac.checkmousestory(mousepos)
+                if select != -1 and len(fac.getTurned())<1:
+                    beep.play()
 
                 if select != -1:
-                    txt = pauseoptions[select]
-                    fac._pauserenders.pop(select)
-                    fac._pauserenders.insert(select,backtomenured)
+                    txt = storyoptions[select]
+                    fac._storyrenders.pop(select)
+                    selectedrender = bob.buildtxtrender(txt, 0, red)
+                    fac._storyrenders.insert(select,selectedrender)
                     fac._turnedoptions.append(select)
-                if select != -1 and len(fac.getTurned())==1:
-                    beep.play()
+
                 elif select == -1 and fac.getTurned() != []:
-                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac._storyrenders = fac._normalstoryrenders[:]
                     fac.emptyTurned()
+
                 elif len(fac.getTurned())> 1:
-                    txt = pauseoptions[select]
-                    fac._pauserenders = fac._normalpauserenders[:]
-                    fac._pauserenders.pop(select)
-                    fac._pauserenders.insert(select,backtomenured)
+                    txt = storyoptions[select]
+                    fac._storyrenders = fac._normalstoryrenders[:]
+                    fac._storyrenders.pop(select)
+                    selectedrender = bob.buildtxtrender(txt, 0, red)
+                    fac._storyrenders.insert(select,selectedrender)
                     fac._turnedoptions.append(select)
-                if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
-                    numberOfStillEnemies2=0
-                    numberOfMovingEnemies2=0
-                    numberOfDeaths2=0
-                    fac.posbg[0]=0
-                    for j in jugadores:
-                        j.kill()
-                    for e in enemigos2n:
-                        e.kill()
-                    for e in enemigos2n2:
-                        e.kill()
-                    #Modificar esto
-                    for b in balas:
-                        b.kill()
+                if storyoptions[select] == "Back to Menu" and mouseclick and select != -1:
                     state = 'menu'
                     fac.resetposbg()
+                    mouseclick = False
+                elif storyoptions[select] == "Play" and mouseclick and select != -1:
+                    platforms = readmapplatforms('level2')
+                    for p in platforms:
+                        x = Platform(platform)
+                        plataformas.add(x)
+                        x.rect.x = p[0]
+                        x.rect.y = p[1]
+                        todos.add(x)
+                    holes = readmapholes('level2')
+                    for h in holes:
+                        x = Whatever(hole)
+                        vacios.add(x)
+                        whatevers.add(x)
+                        x.rect.x = h[0]
+                        x.rect.y = h[1]
+                        todos.add(x)
+                    genscore=0
+                    jugador=Jugador(matrizJugador,allowedmoves)
+                    jugadores.add(jugador)
+                    todos.add(jugador)
+                    fac.setposbglevel2()
+                    state='BossLevelHistory'
             elif gameover:
                 '''
                 if ohnoFlag:
