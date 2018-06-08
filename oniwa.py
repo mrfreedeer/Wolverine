@@ -3,6 +3,10 @@ import random
 import math
 random.seed(pygame.time.get_ticks())
 
+sword=pygame.mixer.Sound('sword.ogg')
+scream=pygame.mixer.Sound('scream.ogg')
+channel7 = pygame.mixer.Channel(6)
+
 def recortarBoss(archivo):
     fondo=pygame.image.load(archivo)
     infoFondo=fondo.get_rect()
@@ -231,7 +235,7 @@ class Oniwa(pygame.sprite.Sprite):
         #1
         #Attack R
         if self.accion==4:
-        
+            channel7.play(sword)
             self.image = self.f[self.accion][self.indice]
             
             self.indice += 1
@@ -244,7 +248,7 @@ class Oniwa(pygame.sprite.Sprite):
 
         #Attack L
         if self.accion==5:
-        
+            channel7.play(sword)
             self.image = self.f[self.accion][self.indice]
             
             self.indice += 1
@@ -259,8 +263,8 @@ class Oniwa(pygame.sprite.Sprite):
         #Die R
         if self.accion==6:
             if self.indice <2:
-                #if self.indice==0:
-                #    channel3.play(ouch)
+                if self.indice==0:
+                    channel7.play(scream)
                 self.image = self.f[self.accion][self.indice]
                 self.indice += 1
 
@@ -276,8 +280,8 @@ class Oniwa(pygame.sprite.Sprite):
         #Die L
         if self.accion==7:
             if self.indice <=2:
-                #if self.indice==0:
-                #    channel3.play(ouch)
+                if self.indice==0:
+                    channel7.play(scream)
                 self.image = self.f[self.accion][self.indice]
 
                 self.indice += 1
