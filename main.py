@@ -168,6 +168,7 @@ def main():
     bossLevelHistory = pygame.image.load('BossLevelHistory.png').convert_alpha()
     bossLevelHistory = pygame.transform.scale(bossLevelHistory, [screensize.current_w, screensize.current_h-80])
     winningHistory = pygame.image.load('WinningHistory.png').convert_alpha()
+    winningHistory = pygame.transform.scale(winningHistory, [screensize.current_w, screensize.current_h-80])
     flagH1 = False
     flagH2 = False
     flagBoss = False
@@ -680,11 +681,11 @@ def main():
                 state=menuoptions[2]
         elif state == 'winningHistory':
             mousepos = pygame.mouse.get_pos()
-            screen.blit(BossLevelHistory,  [0,0])
+            screen.blit(winningHistory,  [0,0])
 
             i = 0
             for x in fac._storyrenders:
-                if x != fac_storyrenders[1]:
+                if x != fac._storyrenders[1]:
                     screen.blit(x,fac._storypostions[i])
                     i += 1
             select = fac.checkmousestory(mousepos)
@@ -1771,39 +1772,7 @@ def main():
                 screen.blit(winrender, winrenderpos )
                 screen.blit(fac._pauserenders[0], newbckpos)
 
-                select = fac.checkmousepause(mousepos, newbckpos)
-
-                if select != -1:
-                    txt = pauseoptions[select]
-                    fac._pauserenders.pop(select)
-                    fac._pauserenders.insert(select,backtomenured)
-                    fac._turnedoptions.append(select)
-                if select != -1 and len(fac.getTurned())==1:
-                    beep.play()
-                elif select == -1 and fac.getTurned() != []:
-                    fac._pauserenders = fac._normalpauserenders[:]
-                    fac.emptyTurned()
-                elif len(fac.getTurned())> 1:
-                    txt = pauseoptions[select]
-                    fac._pauserenders = fac._normalpauserenders[:]
-                    fac._pauserenders.pop(select)
-                    fac._pauserenders.insert(select,backtomenured)
-                    fac._turnedoptions.append(select)
-                if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
-                    numberOfStillEnemies=0
-                    numberOfMovingEnemies=0
-                    numberOfDeaths=0
-                    fac.posbg[0]=0
-                    for j in jugadores:
-                        j.kill()
-                    for e in enemigos:
-                        e.kill()
-                    for e in enemigos2:
-                        e.kill()
-                    for b in balas:
-                        b.kill()
-                    state = 'menu'
-                    fac.resetposbg()
+                state = 'winningHistory'
             elif gameover:
                 '''
                 if ohnoFlag:
@@ -1865,8 +1834,6 @@ def main():
                     fac.resetposbg()
                     gameover = False
             elif not fac.pause:
-                print fac.posbg
-                print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths
                 if (fac.posbg[0]==0 and numberOfDeaths==0):
                     canGenerate=True
                 if canGenerate:
@@ -1945,10 +1912,9 @@ def main():
 
                     generator1=False
                     canGenerate=False
-                
+
                 if (fac.posbg[0]==-405):
                     #Generate oniwa
-                    print 'ONIWA'
                     '''
                     bosi=Boss(bossrecorte, [405,700])
                     bossG.add(bosi)
@@ -1960,13 +1926,13 @@ def main():
                     bossG.add(bossi)
                     enemigos2.add(bossi)
                     todos.add(bossi)
-                    
+
 
                     #If kill oniwa, oniwaDead=True
                 for x in bossG:
                     if x._health<=0:
                         oniwaDead=True
-                           
+
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
@@ -2260,6 +2226,8 @@ def main():
                     if jugador.inflictDamage(enemybar[0]) > 0:
                         if type(enemybar[0]) == Enemigo2:
                             fac.drawEnemyLife(enemybar[0])
+                        elif type(enemybar[0])== Oniwa:
+                            pass
                         else:
                             fac.drawEnemy2Life(enemybar[0])
                 if enemybar1 != []:
@@ -2270,8 +2238,12 @@ def main():
                     if jugador.inflictDamage(enemybar1[0]) > 0:
                         if type(enemybar1[0]) == Enemigo1:
                             fac.drawEnemy1Life(enemybar1[0])
+                        elif type(enemybar1[0])== Oniwa:
+                            pass
                         else:
                             fac.drawEnemy3Life(enemybar1[0])
+                for x in bossG:
+                    fac.drawBossLife(x)
                 pygame.display.flip()
                 reloj.tick(10)
 
@@ -2330,7 +2302,7 @@ def main():
                     mouseclick = False
                     fac.pause = False
 
-                
+
 
 
         #Instrucciones------------------------------------------------
@@ -2385,7 +2357,7 @@ def main():
                     print("fist")
                     jugador1.salud-=20"""
 
-            
+
 
         elif state == 'Salir':
             end = True

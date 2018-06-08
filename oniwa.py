@@ -82,7 +82,7 @@ class Oniwa(pygame.sprite.Sprite):
         self.rect.y=500
         self.accion=0
         self.dir = 'R'
-        self._health = 1200
+        self._health = 12000
         self.finished = False
         self.canDie = False
         self.prevkey = None
@@ -214,7 +214,7 @@ class Oniwa(pygame.sprite.Sprite):
         if self.accion==2:
             if self.indice <=5:
                 self.image = self.f[self.accion][self.indice]
-                
+
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 5:
@@ -225,7 +225,7 @@ class Oniwa(pygame.sprite.Sprite):
         if self.accion==3:
             if self.indice <=5:
                 self.image = self.f[self.accion][self.indice]
-                
+
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 5:
@@ -237,7 +237,7 @@ class Oniwa(pygame.sprite.Sprite):
         if self.accion==4:
             channel7.play(sword)
             self.image = self.f[self.accion][self.indice]
-            
+
             self.indice += 1
 
             if self.indice > 5:
@@ -250,7 +250,7 @@ class Oniwa(pygame.sprite.Sprite):
         if self.accion==5:
             channel7.play(sword)
             self.image = self.f[self.accion][self.indice]
-            
+
             self.indice += 1
 
             if self.indice > 5:
