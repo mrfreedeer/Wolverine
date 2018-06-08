@@ -557,7 +557,7 @@ def recortarBoss(archivo):
 
     attack1=[[0,605,228,180], [282,554,228,227], [535,554,228,227], [820,554,228,227], [1108,605,192,180]]
 
-    die=[[262, 111, 55, 57], [328, 111, 67, 57], [404, 11 ,74, 57]]  #el tamaño del boss es de 90x90 
+    die=[[262, 111, 55, 57], [328, 111, 67, 57], [404, 11 ,74, 57]]  #el tamano del boss es de 90x90 
 
 
     #Idle R-L
@@ -733,7 +733,7 @@ class Boss(pygame.sprite.Sprite):
                 self.accion = 0
             self.prevkey = key
             self.indice = 0
-            
+
     def update(self):
         #Idle R
         if self.accion==0:
@@ -877,21 +877,21 @@ class Boss(pygame.sprite.Sprite):
                             self.varx=0
                     if self.salud<=0:
                         self.Tmuerte-=1
-            
-            
+
+
                 def left(self):
                     self.izquierda=True
                     self.derecha=False
                     self.accion=6
                     self.varx=-10
-            
-            
+
+
                 def right(self):
                     self.derecha=True
                     self.izquierda=False
                     self.accion=1
                     self.varx=10
-            
+
                 def golpear(self):
                     if self.derecha:
                             if(self.Tespera<=0):
@@ -900,7 +900,7 @@ class Boss(pygame.sprite.Sprite):
                                 self.Tespera=random.randrange(100,200)
                                 self.varx=0
                                 self.i=0
-            
+
                     if self.izquierda:
                             if(self.Tespera<=0):
                                 self.accion=12
@@ -908,27 +908,27 @@ class Boss(pygame.sprite.Sprite):
                                 self.Tespera=random.randrange(100,200)
                                 self.varx=0
                                 self.i=0
-            
+
                 def acercar(self):
                     if self.derecha:
                             if(self.Tespera<=0):
                                 self.accion=2
                                 self.varx=10
                                 self.i=0
-            
+
                     if self.izquierda:
                             if(self.Tespera<=0):
                                 self.accion=11
                                 self.varx=-10
                                 self.i=0
-            
+
                 def correr(self):
                     if self.derecha:
                             if(self.Tespera<=0):
                                 self.accion=5
                                 self.varx=20
                                 self.i=0
-            
+
                     if self.izquierda:
                             if(self.Tespera<=0):
                                 self.accion=14

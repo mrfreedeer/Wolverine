@@ -128,7 +128,7 @@ def main():
     flagH2 = False
     flagBoss = False
     flagEnd = False
-    
+
     menuoptions = ["Nivel 1", "Nivel 2", "Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
 
@@ -367,7 +367,19 @@ def main():
 
             everyone.draw(screen)
             #1 Player
-            if state == menuoptions[0]:
+            if state == 'Level1History':
+                #Mostrar imagen
+                state=menuoptions[0]
+            elif state == 'Level2History':
+                #Mostrar imagen
+                state=menuoptions[1]
+            elif state == 'BossLevelHistory':
+                #Mostrar imagen
+                pass
+            elif state == 'winningHistory':
+                #Mostrar imagen
+                pass
+            elif state == menuoptions[0]:
                 platforms = readmapplatforms()
                 for p in platforms:
                     x = Platform(platform)
@@ -388,7 +400,7 @@ def main():
                 jugadores.add(jugador)
                 todos.add(jugador)
 
-            if state == menuoptions[1]:
+            elif state == menuoptions[1]:
                 platforms = readmapplatforms()
                 for p in platforms:
                     x = Platform(platform)
@@ -403,7 +415,7 @@ def main():
 
 
         #Primer nivel
-        if state == menuoptions[0]:
+        elif state == menuoptions[0]:
             pygame.display.flip()
             #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
             if moves != [] and jugador.prevkey == None:
