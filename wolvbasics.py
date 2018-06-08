@@ -262,11 +262,10 @@ class Facade(object):
         if player.rect.y + player.rect.height < self.posbgfixedy + self.posbg[1] + limit and key == pygame.K_UP:
             return True
     def checklevel2abyss(self, jugador):
-        print self.posbg[0] + 180, self.posbg[0] + 570
-        print jugador.rect.x, jugador.rect.y
-        if jugador.rect.x >= (self.posbg[0] + 180) and jugador.rect.x + jugador.rect.width <= (self.posbg[0] + 570):
-            if jugador.rect.bottom >= (self.posbg[1] + 508) and jugador.rect.bottom <= (self.posbg[1] + 616):
-                return True
+        if jugador.accion not in [4,5]:
+            if jugador.rect.x >= (self.posbg[0] + 180) and jugador.rect.x + jugador.rect.width <= (self.posbg[0] + 570):
+                if jugador.rect.bottom >= (self.posbg[1] + 508) and jugador.rect.bottom <= (self.posbg[1] + 616):
+                    return True
         return False
     def checklimits(self, key, player, bginfo):
         bglimit = 150

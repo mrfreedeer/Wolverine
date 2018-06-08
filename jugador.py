@@ -222,8 +222,15 @@ class Jugador(pygame.sprite.Sprite):
             if self.accion in [4,5]:
                 if key == self.validmoves[0]:
                     self.vel_x= self.vel_x_value * self.vel_multiplier
+                    self.dir = 'R'
+                    self.indice = 0
+                    self.accion = 4
                 elif key == self.validmoves[1]:
+                    self.dir = 'L'
+                    self.indice = 0
+                    self.accion = 5
                     self.vel_x= -self.vel_x_value * self.vel_multiplier
+                self.currentkey = key
             elif key != self.prevkey:
                 self.interrupt = True
                 self.soltartecla()
@@ -300,7 +307,7 @@ class Jugador(pygame.sprite.Sprite):
                     self.startjump = self.rect.bottom
             #Es 7 normalmente
             if self.indice == 3:
-                pass
+                self.image = self.f[self.accion][self.indice]
 
         #Jump L
         if self.accion==5:
@@ -313,7 +320,7 @@ class Jugador(pygame.sprite.Sprite):
                     self.startjump = self.rect.bottom
             #Es 7 normalmente
             if self.indice == 3:
-                pass
+                self.image = self.f[self.accion][self.indice]
 
         #1
         #Attack R
@@ -373,13 +380,14 @@ class Jugador(pygame.sprite.Sprite):
                 self.startjump = -1
                 self.vel_y = 0
                 self.finished = True
-                if self.prevkey == None:
+                if self.currentkey not in [pygame.K_LEFT, pygame.K_RIGHT]:
                     if self.dir=='L':
-                        self.accion = 0
-                    else:
                         self.accion = 1
+                    else:
+                        self.accion = 0
                     self.indice = 0
                 else:
+                    self.currentkey = None
                     if self.dir=='L':
                         self.accion = 3
                         self.vel_x = -self.vel_x_value
@@ -477,6 +485,7 @@ class Jugador(pygame.sprite.Sprite):
 
     def soltartecla(self):
         if self.accion in [4,5]:
+            self.currentkey = None
             if self.prevkey in self.validmoves[0:3]:
                 self.vel_x = 0
         if self.prevkey in self.validmoves[0:4] and self.accion not in [4,5]:

@@ -40,10 +40,10 @@ def printkey(key):
         print "Left"
     elif key == pygame.K_RIGHT:
         print "Right"
-def readmapplatforms():
+def readmapplatforms(level):
     interpreter = ConfigParser.ConfigParser()
     interpreter.read('map.map')
-    map = interpreter.get('level1','map')
+    map = interpreter.get(level,'map')
     map = map.split('\n')
     posx = 0
     posy = 0
@@ -57,10 +57,10 @@ def readmapplatforms():
         posy += 20
     return platforms
 
-def readmapholes():
+def readmapholes(level):
     interpreter = ConfigParser.ConfigParser()
     interpreter.read('map.map')
-    map = interpreter.get('level1','map')
+    map = interpreter.get(level,'map')
     map = map.split('\n')
     posx = 0
     posy = 0
@@ -381,14 +381,14 @@ def main():
                 #Mostrar imagen
                 pass
             elif state == menuoptions[0]:
-                platforms = readmapplatforms()
+                platforms = readmapplatforms('level1')
                 for p in platforms:
                     x = Platform(platform)
                     plataformas.add(x)
                     x.rect.x = p[0]
                     x.rect.y = p[1]
                     todos.add(x)
-                holes = readmapholes()
+                holes = readmapholes('level1')
                 for h in holes:
                     x = Whatever(hole)
                     vacios.add(x)
@@ -402,12 +402,20 @@ def main():
                 todos.add(jugador)
 
             elif state == menuoptions[1]:
-                platforms = readmapplatforms()
+                platforms = readmapplatforms('level2')
                 for p in platforms:
                     x = Platform(platform)
                     plataformas.add(x)
                     x.rect.x = p[0]
                     x.rect.y = p[1]
+                    todos.add(x)
+                holes = readmapholes('level2')
+                for h in holes:
+                    x = Whatever(hole)
+                    vacios.add(x)
+                    whatevers.add(x)
+                    x.rect.x = h[0]
+                    x.rect.y = h[1]
                     todos.add(x)
                 genscore=0
                 jugador=Jugador(matrizJugador,allowedmoves)
@@ -586,17 +594,18 @@ def main():
                 for x in gottapop:
                     playermodlist.pop(x)
                 if (pygame.time.get_ticks() - time >= random.randrange(modwait,modwait*2) and (len(modlist)<=15)) or len(modlist) <= 3:
-                    m = fac.getModifier(random.randrange(0,6))
-                    platformrandom = random.randrange(0, len(platforms))
-                    m.rect.x = platforms[platformrandom][0]
-                    m.rect.y = platforms[platformrandom][1] - m .rect.height
-                    blink = True
-                    blinkers.append(m)
-                    lasttime = pygame.time.get_ticks()
-                    time = pygame.time.get_ticks()
-                    modifiers.add(m)
-                    todos.add(m)
-                    modlist.append(m)
+                    if len(platforms) > 0:
+                        m = fac.getModifier(random.randrange(0,6))
+                        platformrandom = random.randrange(0, len(platforms))
+                        m.rect.x = platforms[platformrandom][0]
+                        m.rect.y = platforms[platformrandom][1] - m .rect.height
+                        blink = True
+                        blinkers.append(m)
+                        lasttime = pygame.time.get_ticks()
+                        time = pygame.time.get_ticks()
+                        modifiers.add(m)
+                        todos.add(m)
+                        modlist.append(m)
                 elif pygame.time.get_ticks() - time2 >= 20000:
                     time2 = pygame.time.get_ticks()
                     if modlist != []:
@@ -732,15 +741,15 @@ def main():
                             if jugador.rect.bottom - 50 >= x.rect.top:
                                 if x.rect.bottom >= jugador.rect.bottom:
                                     vaciodie = True
-                                    print "die1"
-                                    print jugador.rect.x, jugador.rect.y, jugador.rect.bottom, "\n---", x.rect.x, x.rect.y, x.rect.top
+                                    #print "die1"
+                                    #print jugador.rect.x, jugador.rect.y, jugador.rect.bottom, "\n---", x.rect.x, x.rect.y, x.rect.top
 
                         if jugador.rect.x - 10 <= x.rect.x  and jugador.dir == 'L' and jugador.accion != 5 :
                             if jugador.rect.bottom - 50 >= x.rect.top:
                                 if x.rect.bottom >= jugador.rect.bottom:
                                     vaciodie = True
-                                    print jugador.rect.x, jugador.rect.y, jugador.rect.bottom, "\n---", x.rect.x, x.rect.y, x.rect.top
-                                    print "die2"
+                                    #print jugador.rect.x, jugador.rect.y, jugador.rect.bottom, "\n---", x.rect.x, x.rect.y, x.rect.top
+                                    #print "die2"
 
                         if vaciodie:
                             jugador.gravedad(100)
@@ -810,7 +819,7 @@ def main():
                 plataformas.draw(screen)
                 vacios.draw(screen)
                 for x in drawlist:
-                    if x not in plataformas:
+                    if x not in plataformas and x not in vacios:
                         drawgroup.add(x)
                         drawgroup.draw(screen)
                         drawgroup.remove(x)
@@ -996,8 +1005,7 @@ def main():
                         e.kill()
                     for b in balas:
                         b.kill()
-                    print len(vacios)
-                    print len(plataformas)
+
                     state = 'menu'
                     screen.fill(black)
                     fac.resetposbg()
@@ -1036,7 +1044,7 @@ def main():
                             todos.add(enemyLevel2)
                     generator21=False
                     canGenerate2=False
-
+                print jugador.prevkey
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
@@ -1077,17 +1085,18 @@ def main():
                 for x in gottapop:
                     playermodlist.pop(x)
                 if (pygame.time.get_ticks() - time >= random.randrange(modwait,modwait*2) and (len(modlist)<=15)) or len(modlist) <= 3:
-                    m = fac.getModifier(random.randrange(0,6))
-                    platformrandom = random.randrange(0, len(platforms))
-                    m.rect.x = platforms[platformrandom][0]
-                    m.rect.y = platforms[platformrandom][1] - m.rect.height
-                    blink = True
-                    blinkers.append(m)
-                    lasttime = pygame.time.get_ticks()
-                    time = pygame.time.get_ticks()
-                    modifiers.add(m)
-                    todos.add(m)
-                    modlist.append(m)
+                    if len(platforms) > 0:
+                        m = fac.getModifier(random.randrange(0,6))
+                        platformrandom = random.randrange(0, len(platforms))
+                        m.rect.x = platforms[platformrandom][0]
+                        m.rect.y = platforms[platformrandom][1] - m.rect.height
+                        blink = True
+                        blinkers.append(m)
+                        lasttime = pygame.time.get_ticks()
+                        time = pygame.time.get_ticks()
+                        modifiers.add(m)
+                        todos.add(m)
+                        modlist.append(m)
                 elif pygame.time.get_ticks() - time2 >= 20000:
                     time2 = pygame.time.get_ticks()
                     if modlist != []:
@@ -1231,10 +1240,10 @@ def main():
                 if fac.prevposbg != fac.posbg:
                     fac.prevposbg[0] = fac.prevposbg[0] - fac.posbg[0]
                     fac.prevposbg[1] = fac.prevposbg[1] - fac.posbg[1]
-                    for x in enemigos:
+                    for x in enemigos2n:
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
-                    for x in enemigos2:
+                    for x in enemigos2n2:
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
                     for m in modifiers:
@@ -1256,10 +1265,14 @@ def main():
                     drawlist.append(x)
                 drawlist.sort(key = attrgetter('rect.y'))
                 drawgroup = pygame.sprite.Group()
+                plataformas.draw(screen)
+                vacios.draw(screen)
+                enemigos2n.draw(screen)
                 for x in drawlist:
-                    drawgroup.add(x)
-                    drawgroup.draw(screen)
-                    drawgroup.remove(x)
+                    if x not in plataformas and x not in vacios and x not in enemigos2n:
+                        drawgroup.add(x)
+                        drawgroup.draw(screen)
+                        drawgroup.remove(x)
                 #todos.draw(screen)
 
                 scorerender1 = bob.buildscorerender(str(jugador.score))
