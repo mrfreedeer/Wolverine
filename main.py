@@ -80,6 +80,7 @@ def readmapholes(level):
 def main():
 
     pygame.init()
+    screensize = pygame.display.Info()
     pygame.font.init()
     bob = Builder(pygame.font.Font('WolverineFont.ttf', 40), pygame.font.Font('WolverineFont.ttf', 60), pygame.font.Font('WolverineFont.ttf', 15))
     screen = bob.buildscreen()
@@ -123,7 +124,9 @@ def main():
 
     #History
     level1History = pygame.image.load('Level1History.png').convert_alpha()
+    level1History = pygame.transform.scale(level1History, [screensize.current_w, screensize.current_h-80])
     level2History = pygame.image.load('Level2History.png').convert_alpha()
+    level2History = pygame.transform.scale(level2History, [screensize.current_w, screensize.current_h-80])
     bossLevelHistory = pygame.image.load('BossLevelHistory.png').convert_alpha()
     winningHistory = pygame.image.load('WinningHistory.png').convert_alpha()
     flagH1 = False
@@ -133,6 +136,7 @@ def main():
 
     menuoptions = ["Nivel 1", "Nivel 2", "Nivel Boss","Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
+    storyoptions = ["Back to Menu", "Play"]
 
     pauserender = bob.buildtxtrender("PAUSE", 1, white)
     pauseoptionrenders = bob.buildtxtrenders(pauseoptions, 0, white)
@@ -151,8 +155,9 @@ def main():
     fac.display_menu()
     fac.loadmodifiers('gamemodifiers.png', quantity=6)
     modi = 0
-
+    storyrenders = bob.buildtxtrenders(storyoptions)
     fac.setPauserenders(pauseoptionrenders)
+    fac.setStoryrenders(storyrenders)
     modifiers = pygame.sprite.Group()
     everyone = pygame.sprite.Group()
     whatevers = pygame.sprite.Group()
@@ -332,7 +337,13 @@ def main():
             if mouseonoption != -1 and mouseclick: #Detecting Option Clicked
                 #print "Menu Option Clicked: ", menuoptions[mouseonoption]
                 mouseclick = False
-                state = menuoptions[mouseonoption]
+
+                if menuoptions[mouseonoption] == "Nivel 1":
+                    state = 'Level1History'
+                elif menuoptions[mouseonoption] == "Nivel 2":
+                    state  = 'Level2History'
+                else:
+                    state = menuoptions[mouseonoption]
                 if state == menuoptions[0]:
                     fac.setposbglevel1()
                 elif state == menuoptions[1]:
@@ -369,20 +380,8 @@ def main():
 
             everyone.draw(screen)
             #1 Player
-            if state == 'Level1History':
-                #Mostrar imagen
-                state=menuoptions[0]
-            elif state == 'Level2History':
-                #Mostrar imagen
-                state=menuoptions[1]
-            elif state == 'BossLevelHistory':
-                #Mostrar imagen
-                state == menuoptions[2]
-                pass
-            elif state == 'winningHistory':
-                #Mostrar imagen
-                pass
-            elif state == menuoptions[0]:
+
+            if state == menuoptions[0]:
                 platforms = readmapplatforms('level1')
                 for p in platforms:
                     x = Platform(platform)
@@ -424,7 +423,125 @@ def main():
                 jugadores.add(jugador)
                 todos.add(jugador)
 
+        if state == 'Level1History':
+            mousepos = pygame.mouse.get_pos()
+            screen.blit(level1History,  [0,0])
 
+            i = 0
+            for x in fac._storyrenders:
+                screen.blit(x,fac._storypostions[i])
+                i += 1
+            select = fac.checkmousestory(mousepos)
+            if select != -1 and len(fac.getTurned())<1:
+                beep.play()
+
+            if select != -1:
+                txt = storyoptions[select]
+                fac._storyrenders.pop(select)
+                selectedrender = bob.buildtxtrender(txt, 0, red)
+                fac._storyrenders.insert(select,selectedrender)
+                fac._turnedoptions.append(select)
+
+            elif select == -1 and fac.getTurned() != []:
+                fac._storyrenders = fac._normalstoryrenders[:]
+                fac.emptyTurned()
+
+            elif len(fac.getTurned())> 1:
+                txt = storyoptions[select]
+                fac._storyrenders = fac._normalstoryrenders[:]
+                fac._storyrenders.pop(select)
+                selectedrender = bob.buildtxtrender(txt, 0, red)
+                fac._storyrenders.insert(select,selectedrender)
+                fac._turnedoptions.append(select)
+            if storyoptions[select] == "Back to Menu" and mouseclick and select != -1:
+                state = 'menu'
+                fac.resetposbg()
+                mouseclick = False
+            elif storyoptions[select] == "Play" and mouseclick and select != -1:
+                platforms = readmapplatforms('level1')
+                for p in platforms:
+                    x = Platform(platform)
+                    plataformas.add(x)
+                    x.rect.x = p[0]
+                    x.rect.y = p[1]
+                    todos.add(x)
+                holes = readmapholes('level1')
+                for h in holes:
+                    x = Whatever(hole)
+                    vacios.add(x)
+                    whatevers.add(x)
+                    x.rect.x = h[0]
+                    x.rect.y = h[1]
+                    todos.add(x)
+                genscore=0
+                jugador=Jugador(matrizJugador,allowedmoves)
+                jugadores.add(jugador)
+                todos.add(jugador)
+                fac.setposbglevel1()
+                state=menuoptions[0]
+        elif state == 'Level2History':
+            mousepos = pygame.mouse.get_pos()
+            screen.blit(level2History,  [0,0])
+
+            i = 0
+            for x in fac._storyrenders:
+                screen.blit(x,fac._storypostions[i])
+                i += 1
+            select = fac.checkmousestory(mousepos)
+            if select != -1 and len(fac.getTurned())<1:
+                beep.play()
+
+            if select != -1:
+                txt = storyoptions[select]
+                fac._storyrenders.pop(select)
+                selectedrender = bob.buildtxtrender(txt, 0, red)
+                fac._storyrenders.insert(select,selectedrender)
+                fac._turnedoptions.append(select)
+
+            elif select == -1 and fac.getTurned() != []:
+                fac._storyrenders = fac._normalstoryrenders[:]
+                fac.emptyTurned()
+
+            elif len(fac.getTurned())> 1:
+                txt = storyoptions[select]
+                fac._storyrenders = fac._normalstoryrenders[:]
+                fac._storyrenders.pop(select)
+                selectedrender = bob.buildtxtrender(txt, 0, red)
+                fac._storyrenders.insert(select,selectedrender)
+                fac._turnedoptions.append(select)
+            if storyoptions[select] == "Back to Menu" and mouseclick and select != -1:
+                state = 'menu'
+                fac.resetposbg()
+                mouseclick = False
+            elif storyoptions[select] == "Play" and mouseclick and select != -1:
+                platforms = readmapplatforms('level2')
+                for p in platforms:
+                    x = Platform(platform)
+                    plataformas.add(x)
+                    x.rect.x = p[0]
+                    x.rect.y = p[1]
+                    todos.add(x)
+                holes = readmapholes('level2')
+                for h in holes:
+                    x = Whatever(hole)
+                    vacios.add(x)
+                    whatevers.add(x)
+                    x.rect.x = h[0]
+                    x.rect.y = h[1]
+                    todos.add(x)
+                genscore=0
+                jugador=Jugador(matrizJugador,allowedmoves)
+                jugadores.add(jugador)
+                todos.add(jugador)
+                fac.setposbglevel2()
+                state=menuoptions[1]
+        elif state == 'BossLevelHistory':
+            #Mostrar imagen
+            state == menuoptions[2]
+            pass
+        elif state == 'winningHistory':
+            #Mostrar imagen
+            pass
         #Primer nivel
         elif state == menuoptions[0]:
             pygame.display.flip()

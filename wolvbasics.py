@@ -46,6 +46,8 @@ class Facade(object):
         self._enemy1lifepos = [self._screensize.current_w - 50,80]
         self._healthheight = 20
         self._pauserenders = []
+        self._storyrenders = []
+        self._storypostions = [[25, self._screensize.current_h-75],[25, self._screensize.current_h-125]]
         self._normalpauserenders = []
         self.pausepositions = []
         self.wolvface = wolvface
@@ -194,6 +196,9 @@ class Facade(object):
     def setPauserenders(self, pauserenders):
         self._pauserenders = pauserenders
         self._normalpauserenders = pauserenders[:]
+    def setStoryrenders(self,storyrenders):
+        self._storyrenders = storyrenders
+        self._normalstoryrenders = storyrenders[:]
     def getModifier(self, i):
         if i < len(self._modifiers):
             m = Modifier(self._modifiers[i], i)
@@ -245,6 +250,18 @@ class Facade(object):
             i += 1
             if rect.collidepoint(mousepos):
                 return self._pauserenders.index(x)
+        return -1
+    def checkmousestory(self,mousepos, overwrite = None):
+        i = 0
+        for x in self._storyrenders:
+            rect = x.get_rect()
+            if overwrite == None:
+                rect.x, rect.y = self._storypostions[i][0], self._storypostions[i][1]
+            else:
+                rect.x, rect.y = overwrite[0], overwrite[1]
+            i += 1
+            if rect.collidepoint(mousepos):
+                return self._storyrenders.index(x)
         return -1
 
     def display_bkg(self):
