@@ -830,4 +830,160 @@ class Reptil2(pygame.sprite.Sprite):
         #elif self.rect.x < bglimit:
         #    self.rect.x = bglimit
 
+class Boss(pygame.sprite.Sprite):
+    def __init__(self, matriz, pos):
+            pygame.sprite.Sprite.__init__(self)
+            self.m=matriz
+            self.image=self.m[0][0]
+            self.rect=self.image.get_rect()
+            self._health = 100
+            self.rect.x=pos[0]
+            self.rect.y=pos[1]
+            self.varx=0
+            self.vary=0
+            self.distancia=0
+            self.i=0
+            self.golpe=False
+            self.golpekatana=False
+            self.golpeshuriken=False
+            self.accion=0
+            self.mov=True
+            self.derecha=True
+            self.izquierda=False
+            self.Tespera=random.randrange(100,200)
+            self.Tesperakatana=random.randrange(300,350)
+            self.Tesperashuriken=random.randrange(400,450)
+            self.salud=100
+            self.Tmuerte=5
+
+    def update(self):
+            self.rect.x=self.rect.x+self.varx
+            self.rect.y=self.rect.y+self.vary
+            self.image=self.m[self.accion][self.i]
+            self.i=1
+
+            if(self.Tespera>0):
+                self.Tespera-=1
+            if self.i>=len(self.m[self.accion]):
+                self.i=0
+            if self.derecha:
+                self.i=0
+                self.accion=0
+                self.varx=0
+            if self.izquierda:
+                self.i=0
+                self.accion=9
+                self.varx=0
+            if self.salud<=0:
+                self.Tmuerte-=1
+    def left(self):
+        self.izquierda=True
+        self.derecha=False
+        self.accion=6
+        self.varx=-10       
+            
+            
+    def right(self):
+        self.derecha=True
+        self.izquierda=False
+        self.accion=1
+        self.varx=10
+            
+    def golpear(self):
+        if self.derecha:
+            if(self.Tespera<=0):
+                self.accion=3
+                self.golpe=True
+                self.Tespera=random.randrange(100,200)
+                self.varx=0
+                self.i=0
+            
+        if self.izquierda:
+            if(self.Tespera<=0):
+                self.accion=12
+                self.golpe=True
+                self.Tespera=random.randrange(100,200)
+                self.varx=0
+                self.i=0
+        
+            
+    def acercar(self):
+        if self.derecha:
+            if(self.Tespera<=0):
+                self.accion=2
+                self.varx=10
+                self.i=0
+            
+        if self.izquierda:
+            if(self.Tespera<=0):
+                self.accion=11
+                self.varx=-10
+                self.i=0
+            
+    def correr(self):
+        if self.derecha:
+            if(self.Tespera<=0):
+                self.accion=5
+                self.varx=20
+                self.i=0
+            
+        if self.izquierda:
+            if(self.Tespera<=0):
+                self.accion=14
+                self.varx=-20
+                self.i=0
+            
+    """def salto(self):
+                    if self.derecha:
+                            if(self.Tespera<=0):
+                                self.accion=6
+                                #self.golpe=True
+                                #self.Tespera=random.randrange(100,200)
+                                self.varx=0
+                                self.i=0
+
+                    if self.izquierda:
+                            if(self.Tespera<=0):
+                                self.accion=15
+                                #self.golpe=True
+                                #self.Tespera=random.randrange(100,200)
+                                self.varx=0 #las acciones son en base a los sprites del boss y pues asi yo manejaba la derecha e izquierda
+                                #si algo lo acomodan a como uds lo hacen... alejo para que acomode el salto tal como el wolverine
+                                self.i=0"""
+
+
+    def ataquekatana(self):
+        if self.derecha:
+                if(self.Tesperakatana<=0):
+                    self.accion=7
+                    self.golpekatana=True
+                    self.Tesperakatana=random.randrange(100,200)
+                    self.varx=0
+                    self.i=0
+
+        if self.izquierda:
+                if(self.Tesperakatana<=0):
+                    self.accion=16
+                    self.golpekatana=True
+                    self.Tesperakatana=random.randrange(100,200)
+                    self.varx=0
+                    self.i=0
+
+    def lanzashuriken(self):
+        if self.derecha:
+                if(self.Tesperashuriken<=0):
+                    self.accion=1
+                    self.golpeshuriken=True
+                    self.Tesperashuriken=random.randrange(100,200)
+                    self.varx=0
+                    self.i=0
+
+        if self.izquierda:
+                if(self.Tesperashuriken<=0):
+                    self.accion=10
+                    self.golpeshuriken=True
+                    self.Tesperashuriken=random.randrange(100,200)
+                    self.varx=0
+                    self.i=0
+
             
