@@ -1852,13 +1852,13 @@ def main():
                     time4 = pygame.time.get_ticks()
                     if numberOfMovingEnemies<=0:
                         generator2=True
-                        numberOfMovingEnemies=4
+                        numberOfMovingEnemies=7
                     if numberOfStillEnemies<=0:
                         generator1=True
-                        numberOfStillEnemies=2
+                        numberOfStillEnemies=4
                     ntype = 0
 
-                    for i in range(numberOfMovingEnemies*2):
+                    for i in range(numberOfMovingEnemies):
                         if generator2:
                             if ntype == 0:
                                 enemy2=Enemigo2(matrizEnemigos2)
@@ -1888,7 +1888,7 @@ def main():
                                     todos.add(enemy2Level2)
                     generator2=False
                     ntype = 0
-                    for i in range(numberOfStillEnemies*2):
+                    for i in range(numberOfStillEnemies):
                         if generator1:
                             if ntype == 0:
                                 enemy=Enemigo1(matrizEnemigos1)
