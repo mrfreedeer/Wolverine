@@ -987,3 +987,8 @@ class Boss(pygame.sprite.Sprite):
                     self.i=0
 
             
+    """boss1='boss.png'
+    bossrecorte=recortar(9,18, boss1, [4,8,6,6,6,6,8,6,9,4,8,6,6,6,6,8,6,9])
+    bosi=Boss(bossrecorte, [x,y])
+    enemigos.add(bosi)
+    todos.add(bosi)"""
