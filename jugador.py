@@ -373,11 +373,19 @@ class Jugador(pygame.sprite.Sprite):
                 self.startjump = -1
                 self.vel_y = 0
                 self.finished = True
-                if self.dir=='L':
-                    self.accion = 0
+                if self.prevkey == None:
+                    if self.dir=='L':
+                        self.accion = 0
+                    else:
+                        self.accion = 1
                     self.indice = 0
                 else:
-                    self.accion = 1
+                    if self.dir=='L':
+                        self.accion = 3
+                        self.vel_x = -self.vel_x_value
+                    else:
+                        self.accion = 2
+                        self.vel_x = self.vel_x_value
                     self.indice = 0
             else:
                 self.gravedad(5)
@@ -388,8 +396,7 @@ class Jugador(pygame.sprite.Sprite):
             self.rect.x = bglimit
         if self.rect.y  + self.rect.height > RESOLUTION[1] - bglimit:
             self.rect.y = RESOLUTION[1] - bglimit- self.rect.height
-        elif self.rect.y < bglimit:
-            self.rect.y = bglimit
+
 
         if self.updatemove:
             self.soltartecla()
@@ -502,10 +509,17 @@ class Jugador(pygame.sprite.Sprite):
         if self.interruptjump:
             self.indice=0
             self.interruptjump = False
-            if self.dir=='R':
-                self.accion=0
-            if self.dir=='L':
-                self.accion=1
+            if self.prevkey == None:
+                if self.dir=='R':
+                    self.accion=0
+                if self.dir=='L':
+                    self.accion=1
+            else:
+                if self.dir=='R':
+                    self.accion=2
+                if self.dir=='L':
+                    self.accion=3
+
             self.vel_x=0
             self.updatemove = False
             self.prevkey = None

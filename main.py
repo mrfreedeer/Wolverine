@@ -33,6 +33,8 @@ pygame.mixer.music.play()
 channel1 = pygame.mixer.Channel(0)
 channel1.set_volume(0)
 channel1.play(level1, -1)
+mouseonoption = -1
+
 def printkey(key):
     if key == pygame.K_LEFT:
         print "Left"
@@ -110,7 +112,7 @@ def main():
 
     #Hole
     hole = pygame.image.load('vacio.png').convert_alpha()
-    hole = pygame.transform.scale(hole, (75,200))
+    hole = pygame.transform.scale(hole, (75,100))
 
 
     reptilsprites='reptilfinal.png'
@@ -650,9 +652,8 @@ def main():
                         numberOfMovingEnemies-=1
                     if not x.canDie:
                         if state == menuoptions[0]:
+
                             x.AImove(jugador)
-                        else:
-                            x.AImove(jugador, jugador2,2)
 
                     jugadorlscol = []
                     jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
@@ -703,14 +704,20 @@ def main():
                 if len(lsvaciocollide) >= 1:
                     for x in lsvaciocollide:
                         vaciodie = False
-                        if jugador.rect.x >= x.rect.x + 10 and jugador.dir == 'R' and jugador.accion != 4 :
-                            if jugador.rect.bottom - jugador.rect.height >= x.rect.top:
-                                vaciodie = True
+                        if jugador.rect.x >= x.rect.x + 5 and jugador.dir == 'R' and jugador.accion != 4 :
+                            if jugador.rect.bottom - 50 >= x.rect.top:
+                                if x.rect.bottom >= jugador.rect.bottom:
+                                    vaciodie = True
+                                    print "die1"
+                                    print jugador.rect.x, jugador.rect.y, jugador.rect.bottom, "\n---", x.rect.x, x.rect.y, x.rect.top
 
                         if jugador.rect.x - 10 <= x.rect.x  and jugador.dir == 'L' and jugador.accion != 5 :
-                            if jugador.rect.bottom - jugador.rect.height >= x.rect.top:
-                                vaciodie = True
-                            print "die2"
+                            if jugador.rect.bottom - 50 >= x.rect.top:
+                                if x.rect.bottom >= jugador.rect.bottom:
+                                    vaciodie = True
+                                    print jugador.rect.x, jugador.rect.y, jugador.rect.bottom, "\n---", x.rect.x, x.rect.y, x.rect.top
+                                    print "die2"
+
                         if vaciodie:
                             jugador.gravedad(100)
                             gameover = True
