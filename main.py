@@ -129,7 +129,7 @@ def main():
     flagBoss = False
     flagEnd = False
 
-    menuoptions = ["Nivel 1", "Nivel 2", "Instrucciones", "Salir"]
+    menuoptions = ["Nivel 1", "Nivel 2", "Nivel Boss","Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
 
     pauserender = bob.buildtxtrender("PAUSE", 1, white)
@@ -375,6 +375,7 @@ def main():
                 state=menuoptions[1]
             elif state == 'BossLevelHistory':
                 #Mostrar imagen
+                state == menuoptions[2]
                 pass
             elif state == 'winningHistory':
                 #Mostrar imagen
@@ -1338,7 +1339,7 @@ def main():
 
 
         #Instrucciones------------------------------------------------
-        elif state == menuoptions[2]:
+        elif state == menuoptions[3]:
             newbckpos =   [850, 650]
             screen.fill([0,0,0])
             fac.display_bkg()
