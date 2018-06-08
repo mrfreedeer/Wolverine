@@ -1926,8 +1926,11 @@ def main():
 
                     generator1=False
                     canGenerate=False
-                if (fac.posbg[0]==-400 and numberofDeaths==10):
-                    pass
+                
+                if (fac.posbg[0]==-405):
+                    #Generate oniwa
+                    print 'ONIWA'
+                    #oniwa=
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
