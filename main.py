@@ -1742,7 +1742,7 @@ def main():
             #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
             if moves != [] and jugador.prevkey == None:
                 jugador.move(moves[0])
-            if genscore >= endscore and numberOfDeaths>=5 and numberOfStillEnemies==0 and numberOfMovingEnemies==0:
+            if oniwaDead == True and numberOfDeaths>=5:
                 #for j in jugadores:
                 #    j.kill()
                 winrenderrect = winrender.get_rect()
