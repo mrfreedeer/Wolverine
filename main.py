@@ -1903,6 +1903,7 @@ def main():
                                 enemyLevel2.rect.y=random.randrange(550,575)
                                 #random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemyLevel2.rect.height)
                                 enemigos.add(enemyLevel2)
+                                enemigos2n.add(enemyLevel2)
                                 todos.add(enemyLevel2)
                                 ntype += 1
                             else:
@@ -1919,6 +1920,7 @@ def main():
                                     enemyLevel2.rect.y=random.randrange(550,575)
                                     #random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemyLevel2.rect.height)
                                     enemigos.add(enemyLevel2)
+                                    enemigos2n.add(enemyLevel2)
                                     todos.add(enemyLevel2)
 
                     generator1=False
@@ -2032,14 +2034,24 @@ def main():
 
                 for x in enemigos:
                     if x.shoot:
-                        x.shoot = False
+                        #x.shoot = False
                         channel5.play(shoot)
                         b = Bala(matrizBala)
                         b.rect.x,b.rect.y = x.rect.x + 20,x.rect.y +50
                         balas.add(b)
                         todos.add(b)
+                        x.shoot = False
+                        
+                for x in enemigos2n:
+                    x.shooting(jugador.rect)
+                    if x.shoot:
+                        x.shoot = False
+                        #channel5.play(shoot)
+                        b = BalaT(matrizBalaT)
+                        b.rect.x,b.rect.y = x.rect.x + 20,x.rect.y + 25
+                        balas.add(b)
+                        todos.add(b)
                         #x.shoot = False
-
 
                 for x in enemigos2:
                     if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
