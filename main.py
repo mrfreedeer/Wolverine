@@ -120,7 +120,7 @@ def main():
 
 
     reptilsprites='reptilfinal.png'
-    reptilm=recortarRept(6, 10, reptilsprites, [5,6,5,6,6,5,6,5,6,6])
+    #reptilm=recortarRept(6, 10, reptilsprites, [5,6,5,6,6,5,6,5,6,6])
     mreptil=recortarReptV2(reptilsprites)
 
     #History
@@ -2014,7 +2014,7 @@ def main():
 
                     mouseclick = False
                     fac.pause = False
-        
+
 
         #Instrucciones------------------------------------------------
         elif state == menuoptions[3]:
