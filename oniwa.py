@@ -78,7 +78,7 @@ class Enemigo2(pygame.sprite.Sprite):
         self.rect.y=500
         self.accion=0
         self.dir = 'R'
-        self._health = 100
+        self._health = 1200
         self.finished = False
         self.canDie = False
         self.prevkey = None
@@ -310,4 +310,3 @@ class Enemigo2(pygame.sprite.Sprite):
         #    self.rect.x = RESOLUTION[0] - bglimit - self.rect.width
         #elif self.rect.x < bglimit:
         #    self.rect.x = bglimit
-

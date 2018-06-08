@@ -42,7 +42,7 @@ def recortarRept(max_x, max_y, archivo, vector):
             mapis.append(cuadro)
         mapa.append(mapis)
     return mapa
-    
+
 def recortarEne1(archivo):
     fondo=pygame.image.load(archivo)
     infoFondo=fondo.get_rect()
@@ -851,7 +851,7 @@ class Boss(pygame.sprite.Sprite):
             self.m=matriz
             self.image=self.m[0][0]
             self.rect=self.image.get_rect()
-            self._health = 100
+            self._health = 1200
             self.rect.x=pos[0]
             self.rect.y=pos[1]
             self.varx=0
@@ -895,15 +895,15 @@ class Boss(pygame.sprite.Sprite):
         self.izquierda=True
         self.derecha=False
         self.accion=6
-        self.varx=-10       
-            
-            
+        self.varx=-10
+
+
     def right(self):
         self.derecha=True
         self.izquierda=False
         self.accion=1
         self.varx=10
-            
+
     def golpear(self):
         if self.derecha:
             if(self.Tespera<=0):
@@ -912,7 +912,7 @@ class Boss(pygame.sprite.Sprite):
                 self.Tespera=random.randrange(100,200)
                 self.varx=0
                 self.i=0
-            
+
         if self.izquierda:
             if(self.Tespera<=0):
                 self.accion=12
@@ -920,34 +920,34 @@ class Boss(pygame.sprite.Sprite):
                 self.Tespera=random.randrange(100,200)
                 self.varx=0
                 self.i=0
-        
-            
+
+
     def acercar(self):
         if self.derecha:
             if(self.Tespera<=0):
                 self.accion=2
                 self.varx=10
                 self.i=0
-            
+
         if self.izquierda:
             if(self.Tespera<=0):
                 self.accion=11
                 self.varx=-10
                 self.i=0
-            
+
     def correr(self):
         if self.derecha:
             if(self.Tespera<=0):
                 self.accion=5
                 self.varx=20
                 self.i=0
-            
+
         if self.izquierda:
             if(self.Tespera<=0):
                 self.accion=14
                 self.varx=-20
                 self.i=0
-            
+
     """def salto(self):
                     if self.derecha:
                             if(self.Tespera<=0):
@@ -1001,7 +1001,7 @@ class Boss(pygame.sprite.Sprite):
                     self.varx=0
                     self.i=0
 
-            
+
     """boss1='boss.png'
     bossrecorte=recortar(9,18, boss1, [4,8,6,6,6,6,8,6,9,4,8,6,6,6,6,8,6,9])
     bosi=Boss(bossrecorte, [x,y])

@@ -44,7 +44,7 @@ class Facade(object):
         self._lifepos = [100, 30]
         self._enemylifepos = [self._screensize.current_w - 50,30]
         self._enemy1lifepos = [self._screensize.current_w - 50,80]
-        self._bosslifepos = [self._screensize.current_w - 150,130]
+        self._bosslifepos = [self._screensize.current_w - 50,30]
         self._healthheight = 20
         self._pauserenders = []
         self._storyrenders = []
@@ -183,7 +183,7 @@ class Facade(object):
             health = enemy._health
             self._screen.blit(self.bossface, [self._bosslifepos[0] - 452, self._bosslifepos[1]-15])
             rect = [self._bosslifepos[0] - 402, self._bosslifepos[1], 402 , self._healthheight]
-            rect2 = [self._bosslifepos[0] -401, self._bosslifepos[1] + 1, health, self._healthheight-2]
+            rect2 = [self._bosslifepos[0] -401, self._bosslifepos[1] + 1, health/3, self._healthheight-2]
             pygame.draw.rect(self._screen, red,rect, 1)
             pygame.draw.rect(self._screen, yellow,rect2)
 

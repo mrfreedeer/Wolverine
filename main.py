@@ -2242,6 +2242,8 @@ def main():
                             fac.drawEnemy1Life(enemybar1[0])
                         else:
                             fac.drawEnemy3Life(enemybar1[0])
+                for x in bossG:
+                    fac.drawBossLife(x)
                 pygame.display.flip()
                 reloj.tick(10)
 
