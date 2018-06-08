@@ -1026,7 +1026,8 @@ def main():
                         jugador.onplatform = True
                 lsspikecollide = pygame.sprite.spritecollide(jugador,pinchos, False)
                 for x in lsspikecollide:
-                    jugador.dealDamage(0.5)
+                    if jugador.rect.bottom < x.rect.bottom:
+                        jugador.dealDamage(0.5)
 
                 lsvaciocollide = pygame.sprite.spritecollide(jugador,vacios,False)
                 if len(lsvaciocollide) >= 1:
@@ -1546,7 +1547,9 @@ def main():
                         jugador.onplatform = True
                 lsspikecollide = pygame.sprite.spritecollide(jugador,pinchos, False)
                 for x in lsspikecollide:
-                    jugador.dealDamage(1)
+                    if jugador.rect.bottom < x.rect.bottom:
+                        jugador.dealDamage(0.5)
+
                 lsvaciocollide = pygame.sprite.spritecollide(jugador,vacios,False)
                 if len(lsvaciocollide) >= 1:
                     for x in lsvaciocollide:
@@ -1625,6 +1628,9 @@ def main():
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
                     for x in plataformas:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
+                    for x in pinchos:
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
                     fac.prevposbg = fac.posbg[:]
@@ -2106,6 +2112,9 @@ def main():
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
                     for x in vacios:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
+                    for x in pinchos:
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
                     fac.prevposbg = fac.posbg[:]
