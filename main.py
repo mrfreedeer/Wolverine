@@ -2126,7 +2126,6 @@ def main():
                     fac.prevposbg = fac.posbg[:]
                 screen.fill([0,0,0])
                 #screen.blit(fondo3,[0,-50])
-                fac.posbg[1]=-500
                 screen.blit(fondo3, fac.posbg)
 
                 drawlist = []

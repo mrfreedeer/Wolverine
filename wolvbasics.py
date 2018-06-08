@@ -75,7 +75,7 @@ class Facade(object):
         self.posbg = posbg[:]
         self.prevposbg = posbg[:]
         self.defaultposbg = posbg[:]
-        self.posbgfixedy = 850
+        self.posbgfixedy = 950
     def drawLife(self, health, noplayers = 1, health2=0):
         self._screen.blit(self.wolvface, (self._lifepos[0] - 75, self._lifepos[1]/2 - 5))
         rect = [self._lifepos[0], self._lifepos[1], 302 , self._healthheight]
@@ -310,6 +310,12 @@ class Facade(object):
         if player.rect.y + player.rect.height < self.posbgfixedy + self.posbg[1] + limit and key == pygame.K_UP:
             if self.posbg[1] + self.posbgfixedy + limit < self._screensize[1] - 200:
                     self.posbg[1] += limit
+        if player.rect.y  < 0 + limit and key == pygame.K_UP:
+            if self.posbg[1] + limit < 0:
+                    self.posbg[1] += limit
+        if player.rect.y > self._screensize[1] - bglimit:
+            if self.posbg[1] - limit > 0:
+                    self.posbg[1] -= limit
     def resetposbg(self):
         self.posbg = self.defaultposbg[:]
 
