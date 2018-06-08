@@ -7,6 +7,7 @@ from jugador import *
 from enemigo import *
 from operator import attrgetter
 from torreta import *
+from oniwa import *
 #from clases2 import *
 
 red = (255,0,0)         #rgb(255,0,0)
@@ -174,6 +175,7 @@ def main():
     oniwaDead = False
     boss1='boss.png'
     bossrecorte=recortarRept(9,18, boss1, [4,8,6,6,6,6,8,6,9,4,8,6,6,6,6,8,6,9])
+    mBoss=recortarBoss(boss1)
 
     menuoptions = ["Nivel 1", "Nivel 2", "Nivel Boss","Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
@@ -1947,12 +1949,24 @@ def main():
                 if (fac.posbg[0]==-405):
                     #Generate oniwa
                     print 'ONIWA'
-                    bosi=Boss(bossrecorte, [-405,200])
+                    '''
+                    bosi=Boss(bossrecorte, [405,700])
                     bossG.add(bosi)
                     todos.add(bosi)
+                    '''
+                    bossi=Oniwa(mBoss)
+                    bossi.rect.x=405
+                    bossi.rect.y=500
+                    bossG.add(bossi)
+                    enemigos2.add(bossi)
+                    todos.add(bossi)
                     
 
                     #If kill oniwa, oniwaDead=True
+                for x in bossG:
+                    if x._health<=0:
+                        oniwaDead=True
+                           
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:

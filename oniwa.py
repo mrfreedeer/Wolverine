@@ -67,7 +67,7 @@ def recortarBoss(archivo):
 
     return idleR, idleL, walkR, walkL, attack1R, attack1L, dieR, dieL
 
-class Boss(pygame.sprite.Sprite):
+class Oniwa(pygame.sprite.Sprite):
     def __init__(self, matriz):
         pygame.sprite.Sprite.__init__(self)
         self.f=matriz
@@ -200,7 +200,7 @@ class Boss(pygame.sprite.Sprite):
             self.image = self.f[self.accion][self.indice]
             self.indice += 1
 
-            if self.indice > :
+            if self.indice > 2:
                 self.finished = True
                 self.indice=0
             self.vel_x = 0
