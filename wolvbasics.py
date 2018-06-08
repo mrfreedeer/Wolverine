@@ -28,7 +28,7 @@ class Whatever(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
 class Facade(object):
-    def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos, wolvface, enemyface, enemyface1, enemyface2, enemyface3):
+    def __init__(self, screen, menurenders, Wolverine, initialposition, bckg, bckgpos, wolvface, enemyface, enemyface1, enemyface2, enemyface3, bossface):
         self._normalrenders = menurenders[:]
         self._menurenders = menurenders
         self._Wolverine = Wolverine
@@ -44,6 +44,7 @@ class Facade(object):
         self._lifepos = [100, 30]
         self._enemylifepos = [self._screensize.current_w - 50,30]
         self._enemy1lifepos = [self._screensize.current_w - 50,80]
+        self._bosslifepos = [self._screensize.current_w - 150,130]
         self._healthheight = 20
         self._pauserenders = []
         self._storyrenders = []
@@ -55,6 +56,7 @@ class Facade(object):
         self.enemy1face = enemyface1
         self.enemy2face = enemyface2
         self.enemy3face = enemyface3
+        self.bossface = bossface
     def setposbglevel1(self):
         posbg = [0, -840]
         posbg[1] += self._screensize[1]-200
@@ -177,6 +179,13 @@ class Facade(object):
                 rectW22 = [self._enemy1lifepos[0] -301, wolviebottom - self._healthheight + 1, health2*3, self._healthheight-2]
                 pygame.draw.rect(self._screen, green,rectW2, 1)
                 pygame.draw.rect(self._screen, blue,rectW22)
+    def drawBossLife(self, enemy):
+            health = enemy._health
+            self._screen.blit(self.bossface, [self._bosslifepos[0] - 452, self._bosslifepos[1]-15])
+            rect = [self._bosslifepos[0] - 402, self._bosslifepos[1], 402 , self._healthheight]
+            rect2 = [self._bosslifepos[0] -401, self._bosslifepos[1] + 1, health, self._healthheight-2]
+            pygame.draw.rect(self._screen, red,rect, 1)
+            pygame.draw.rect(self._screen, yellow,rect2)
 
     def drawScore(self, score1, scorerender, noplayers = 1 , score2 = 0, ):
         score1pos = [self._lifepos[0] + 352, self._lifepos[1]]
@@ -313,7 +322,7 @@ class Facade(object):
         if player.rect.y  < 0 + limit and key == pygame.K_UP:
             if self.posbg[1] + limit < 0:
                     self.posbg[1] += limit
-    
+
     def resetposbg(self):
         self.posbg = self.defaultposbg[:]
 

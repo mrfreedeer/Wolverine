@@ -117,6 +117,8 @@ def main():
     im0 = pygame.transform.scale(im0, (700, 125))
     bginfo3 =[fondo3.get_rect()[2],fondo3.get_rect()[3]]
     #EnemyFace
+    bossface = pygame.image.load('bossface.png').convert_alpha()
+    bossface = pygame.transform.scale(bossface, (40,40))
     enemyface3 = pygame.image.load('enemyFace3.png').convert_alpha()
     enemyface3 = pygame.transform.scale(enemyface3, (40,40))
     enemyface2 = pygame.image.load('enemyFace2.png').convert_alpha()
@@ -166,7 +168,7 @@ def main():
     menurenders = bob.buildtxtrenders(menuoptions)
     WolverineTitle = bob.buildtxtrender("Wolverine", 1)
     end = False
-    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0], wolvieface, enemyface, enemyface1, enemyface2, enemyface3)
+    fac = Facade(screen, menurenders, WolverineTitle, [250,200], menubckg, [-550,0], wolvieface, enemyface, enemyface1, enemyface2, enemyface3, bossface)
     fac._screensize = bob.buildresolution()
     posbg[1] += fac._screensize[1]-200
     fac.posbg = posbg[:]
