@@ -1844,7 +1844,7 @@ def main():
                     fac.resetposbg()
                     gameover = False
             elif not fac.pause:
-                '''
+
                 if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==6) or (fac.posbg[0]<=-320 and numberOfDeaths==12) or (fac.posbg[0]<=-520 and numberOfDeaths==18) or (fac.posbg[0]<=-660 and numberOfDeaths==24) or (fac.posbg[0]<=-990 and numberOfDeaths==30):
                     canGenerate=True
                 if canGenerate:
@@ -1856,25 +1856,72 @@ def main():
                     if numberOfStillEnemies<=0:
                         generator1=True
                         numberOfStillEnemies=2
-                    for i in range(numberOfMovingEnemies):
-                        if generator2:
-                            enemy2=Enemigo2(matrizEnemigos2)
-                            enemy2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
-                            enemy2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy2.rect.height)
-                            enemigos2.add(enemy2)
-                            todos.add(enemy2)
-                    generator2=False
+                    ntype = 0
 
-                    for i in range(numberOfStillEnemies):
+                    for i in range(numberOfMovingEnemies*2):
+                        if generator2:
+                            if ntype == 0:
+                                enemy2=Enemigo2(matrizEnemigos2)
+                                enemy2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
+                                enemy2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1]-200, fac._screensize[1] - enemy2.rect.height)
+                                enemigos2.add(enemy2)
+                                todos.add(enemy2)
+                                enemy2Level2=Reptil2(mreptil)
+                                enemy2Level2.rect.x=random.randrange(300, 900)
+                                enemy2Level2.rect.y=random.randrange(450, 600)
+                                enemigos2.add(enemy2Level2)
+                                todos.add(enemy2Level2)
+                                ntype += 1
+                            else:
+                                enemytype = random.randrange(0,50)
+                                if enemytype < 25:
+                                    enemy2=Enemigo2(matrizEnemigos2)
+                                    enemy2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
+                                    enemy2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1]-200, fac._screensize[1] - enemy2.rect.height)
+                                    enemigos2.add(enemy2)
+                                    todos.add(enemy2)
+                                else:
+                                    enemy2Level2=Reptil2(mreptil)
+                                    enemy2Level2.rect.x=random.randrange(300, 900)
+                                    enemy2Level2.rect.y=random.randrange(450, 600)
+                                    enemigos2.add(enemy2Level2)
+                                    todos.add(enemy2Level2)
+                    generator2=False
+                    ntype = 0
+                    for i in range(numberOfStillEnemies*2):
                         if generator1:
-                            enemy=Enemigo1(matrizEnemigos1)
-                            enemy.rect.x = random.randrange(0,20)
-                            enemy.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy.rect.height)
-                            enemigos.add(enemy)
-                            todos.add(enemy)
+                            if ntype == 0:
+                                enemy=Enemigo1(matrizEnemigos1)
+                                enemy.rect.x = random.randrange(0,20)
+                                enemy.rect.y=random.randrange( 100, 800)
+                                enemigos.add(enemy)
+                                todos.add(enemy)
+                                enemyLevel2=Turret(matrizTorreta)
+                                enemyLevel2.rect.x = random.randrange(700,1100)
+                                enemyLevel2.rect.y=random.randrange(550,575)
+                                #random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemyLevel2.rect.height)
+                                enemigos.add(enemyLevel2)
+                                todos.add(enemyLevel2)
+                                ntype += 1
+                            else:
+                                enemytype = random.randrange(0,50)
+                                if enemytype < 25:
+                                    enemy=Enemigo1(matrizEnemigos1)
+                                    enemy.rect.x = random.randrange(0,20)
+                                    enemy.rect.y=random.randrange( 100, 800)
+                                    enemigos.add(enemy)
+                                    todos.add(enemy)
+                                else:
+                                    enemyLevel2=Turret(matrizTorreta)
+                                    enemyLevel2.rect.x = random.randrange(700,1100)
+                                    enemyLevel2.rect.y=random.randrange(550,575)
+                                    #random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemyLevel2.rect.height)
+                                    enemigos.add(enemyLevel2)
+                                    todos.add(enemyLevel2)
+
                     generator1=False
                     canGenerate=False
-                '''
+
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
@@ -2002,9 +2049,7 @@ def main():
                         numberOfDeaths+=1
                         numberOfMovingEnemies-=1
                     if not x.canDie:
-                        if state == menuoptions[0]:
-
-                            x.AImove(jugador)
+                        x.AImove(jugador)
 
                     jugadorlscol = []
                     jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
