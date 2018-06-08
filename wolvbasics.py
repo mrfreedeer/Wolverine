@@ -69,6 +69,13 @@ class Facade(object):
         self.prevposbg = posbg[:]
         self.defaultposbg = posbg[:]
         self.posbgfixedy = 530
+    def setposbglevel3(self):
+        posbg = [0, -850]
+        posbg[1] += self._screensize[1]-200
+        self.posbg = posbg[:]
+        self.prevposbg = posbg[:]
+        self.defaultposbg = posbg[:]
+        self.posbgfixedy = 850
     def drawLife(self, health, noplayers = 1, health2=0):
         self._screen.blit(self.wolvface, (self._lifepos[0] - 75, self._lifepos[1]/2 - 5))
         rect = [self._lifepos[0], self._lifepos[1], 302 , self._healthheight]

@@ -107,6 +107,7 @@ def main():
     fondo = pygame.image.load('fondo.png').convert_alpha()
     fondo2 = pygame.image.load('harbor.png').convert_alpha()
     fondo3 = pygame.image.load('laboratory.png').convert_alpha()
+    fondo3 = pygame.transform.scale(fondo3, [2400, 1200])
     bginfo2 =[fondo2.get_rect()[2],fondo2.get_rect()[3]]
     player1 = pygame.image.load('jugador1.png').convert_alpha()
     player1=pygame.transform.scale(player1, (750, 350))
@@ -654,7 +655,7 @@ def main():
                 jugador=Jugador(matrizJugador,allowedmoves)
                 jugadores.add(jugador)
                 todos.add(jugador)
-                fac.setposbglevel2()
+                fac.setposbglevel3()
                 state=menuoptions[2]
         elif state == 'winningHistory':
             mousepos = pygame.mouse.get_pos()
