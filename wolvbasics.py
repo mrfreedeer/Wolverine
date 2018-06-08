@@ -313,9 +313,7 @@ class Facade(object):
         if player.rect.y  < 0 + limit and key == pygame.K_UP:
             if self.posbg[1] + limit < 0:
                     self.posbg[1] += limit
-        if player.rect.y > self._screensize[1] - bglimit:
-            if self.posbg[1] - limit > 0:
-                    self.posbg[1] -= limit
+    
     def resetposbg(self):
         self.posbg = self.defaultposbg[:]
 

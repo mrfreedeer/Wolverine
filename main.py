@@ -115,7 +115,7 @@ def main():
     player2=pygame.transform.scale(player2, (750, 350))
     im0 = pygame.image.load('instMods.png').convert_alpha()
     im0 = pygame.transform.scale(im0, (700, 125))
-
+    bginfo3 =[fondo3.get_rect()[2],fondo3.get_rect()[3]]
     #EnemyFace
     enemyface3 = pygame.image.load('enemyFace3.png').convert_alpha()
     enemyface3 = pygame.transform.scale(enemyface3, (40,40))
@@ -1020,7 +1020,7 @@ def main():
                 lsplatcollide = pygame.sprite.spritecollide(jugador, plataformas, False)
 
                 for x in lsplatcollide:
-                    if jugador.rect.bottom>=x.rect.top and jugador.vel_y > 0:
+                    if jugador.rect.bottom>=x.rect.top and jugador.accion and jugador.vel_y > 0:
                         jugador.vel_y = 0
                         jugador.stopjump()
                         jugador.rect.bottom = x.rect.top
@@ -1148,7 +1148,9 @@ def main():
                         if jugador.inflictDamage(enemybar[0]) > 0:
                             fac.drawEnemyLife(enemybar[0])
 
-
+                if (jugador.rect.bottom> fac._screensize[1] - 30) and jugador.accion in [0,1,2,3,4,5]:
+                    if bginfo[1] + fac.posbg[1] - fac._screensize[1]  - 30 >0 and fac.posbg[1]>-200:
+                            fac.posbg[1] -= 30
                 pygame.display.flip()
                 reloj.tick(10)
 
@@ -1674,7 +1676,9 @@ def main():
 
 
 
-
+                if (jugador.rect.bottom> fac._screensize[1] - 30) and jugador.accion in [0,1,2,3,4,5]:
+                    if bginfo2[1] + fac.posbg[1] - fac._screensize[1]  - 30 >0 and fac.posbg[1]>-200:
+                            fac.posbg[1] -= 30
                 pygame.display.flip()
                 reloj.tick(10)
 
@@ -2098,7 +2102,7 @@ def main():
                 if jugador.getHealth() <= 0:
                         gameover = True
                 if moves != []:
-                    fac.checklimits(moves[0],jugador, bginfo)
+                    fac.checklimits(moves[0],jugador, bginfo3)
                 if fac.prevposbg != fac.posbg:
                     fac.prevposbg[0] = fac.prevposbg[0] - fac.posbg[0]
                     fac.prevposbg[1] = fac.prevposbg[1] - fac.posbg[1]
@@ -2142,29 +2146,12 @@ def main():
                         drawgroup.remove(x)
 
                 #todos.draw(screen)
-
                 scorerender1 = bob.buildscorerender(str(jugador.score))
-                if state == menuoptions[0]:
-                    fac.drawLife(jugador.getHealth())
-                    fac.drawScore(scorerender1, scorerender = score)
-
-                    if enemybar1 != []:
-                        for x in enemybar1:
-                            if jugador.inflictDamage(x) == 0:
-                                enemybar1.remove(x)
-                    if enemybar1 != []:
-                        if jugador.inflictDamage(enemybar1[0]) > 0:
-                            fac.drawEnemy1Life(enemybar1[0])
-
-
-                    if enemybar != []:
-                        for x in enemybar:
-                            if jugador.inflictDamage(x) == 0:
-                                enemybar.remove(x)
-                    if enemybar != []:
-                        if jugador.inflictDamage(enemybar[0]) > 0:
-                            fac.drawEnemyLife(enemybar[0])
-
+                fac.drawLife(jugador.getHealth())
+                fac.drawScore(scorerender1, scorerender = score)
+                if (jugador.rect.bottom> fac._screensize[1] - 30) and jugador.accion in [0,1,2,3,4,5]:
+                    if bginfo3[1] + fac.posbg[1] - fac._screensize[1]  - 30 >0 and fac.posbg[1]>-200:
+                            fac.posbg[1] -= 30
 
                 pygame.display.flip()
                 reloj.tick(10)
