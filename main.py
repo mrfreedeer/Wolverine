@@ -312,7 +312,7 @@ def main():
                     modifiers.add(m)
                     everyone.add(m)
             #Nivel 1
-            elif state == menuoptions[0] or state == menuoptions[1]:
+            elif state == menuoptions[0] or state == menuoptions[1] or state == menuoptions[2]:
 
                 pygame.mixer.music.set_volume(0)
                 channel1.set_volume(0.3)
@@ -1823,12 +1823,17 @@ def main():
                         e.kill()
                     for e in enemigos2:
                         e.kill()
+                    for e in enemigos2n:
+                        e.kill()
+                    for e in enemigos2n2:
+                        e.kill()
                     for b in balas:
                         b.kill()
                     state = 'menu'
                     fac.resetposbg()
                     gameover = False
             elif not fac.pause:
+                '''
                 if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==6) or (fac.posbg[0]<=-320 and numberOfDeaths==12) or (fac.posbg[0]<=-520 and numberOfDeaths==18) or (fac.posbg[0]<=-660 and numberOfDeaths==24) or (fac.posbg[0]<=-990 and numberOfDeaths==30):
                     canGenerate=True
                 if canGenerate:
@@ -1858,7 +1863,7 @@ def main():
                             todos.add(enemy)
                     generator1=False
                     canGenerate=False
-
+                '''
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
@@ -2110,8 +2115,9 @@ def main():
                         x.rect.y -= fac.prevposbg[1]
                     fac.prevposbg = fac.posbg[:]
                 screen.fill([0,0,0])
-                screen.blit(fondo,[0,-50])
-                screen.blit(gamebckg, fac.posbg)
+                #screen.blit(fondo3,[0,-50])
+                fac.posbg[1]=-500
+                screen.blit(fondo3, fac.posbg)
 
                 drawlist = []
                 for x in todos:
