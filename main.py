@@ -19,6 +19,8 @@ black = (0,0,0)         #rgb(0,0,0)
 pink = (255,200,200) #rgb(255,200,200)
 posbg = [0, -840]
 
+ohno=pygame.mixer.Sound('ohno.ogg')
+ohnoFlag=False
 beep=pygame.mixer.Sound('beep.ogg')
 channel2=pygame.mixer.Channel(1)
 powerup=pygame.mixer.Sound('powerup.ogg')
@@ -467,6 +469,10 @@ def main():
                     state = 'menu'
                     fac.resetposbg()
             elif gameover:
+                '''
+                if ohnoFlag:
+                    ohno.play()
+                '''
                 loserenderrect = loserender.get_rect()
                 loserenderpos = [RESOLUTION[0]/2 - loserenderrect.width/2,RESOLUTION[1]/2 - loserenderrect.height]
                 newbckpos = [RESOLUTION[0]/2 - fac._pauserenders[0].get_rect().width/2]
@@ -949,6 +955,10 @@ def main():
                     state = 'menu'
                     fac.resetposbg()
             elif gameover:
+                '''
+                if ohnoFlag:
+                    ohno.play()
+                '''
                 loserenderrect = loserender.get_rect()
                 loserenderpos = [RESOLUTION[0]/2 - loserenderrect.width/2,RESOLUTION[1]/2 - loserenderrect.height]
                 newbckpos = [RESOLUTION[0]/2 - fac._pauserenders[0].get_rect().width/2]
@@ -1336,6 +1346,8 @@ def main():
                     mouseclick = False
                     fac.pause = False
             #screen.blit(gamebckg, fac.posbg)
+        #Nivel boss
+        elif state == menuoptions[2]:
 
 
         #Instrucciones------------------------------------------------
