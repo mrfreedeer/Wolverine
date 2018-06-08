@@ -557,7 +557,7 @@ def recortarBoss(archivo):
 
     attack1=[[0,605,228,180], [282,554,228,227], [535,554,228,227], [820,554,228,227], [1108,605,192,180]]
 
-    die=[[262, 111, 55, 57], [328, 111, 67, 57], [404, 11 ,74, 57]]  #el tamano del boss es de 90x90
+    die=[[262, 111, 55, 57], [328, 111, 67, 57], [404, 11 ,74, 57]]  #el tamaño del boss es de 90x90 
 
 
     #Idle R-L
@@ -626,10 +626,9 @@ class Boss(pygame.sprite.Sprite):
         self.golpeshuriken=False
         self.accion=0
         self.mov=True
-        """
-        self.barra=barravida_enemigo(vector, self.rect.midtop) #juan para que si puede
-                                groupbarras.add(self.barra)
-        """
+        """self.barra=barravida_enemigo(vector, self.rect.midtop) #juan para que si puede
+                                groupbarras.add(self.barra)"""
+
         self.derecha=True
         self.izquierda=False
         self.Tespera=random.randrange(100,200)
@@ -640,15 +639,14 @@ class Boss(pygame.sprite.Sprite):
 
     def getHealth(self):
         return self._health
-
     def getSlope(self, posJugador):
         point1 = [self.rect.x, self.rect.y]
         if self.rect.x == posJugador[0]:
             return False
         m = float(posJugador[1] -  point1[1])/(posJugador[0] - point1[0])
         b = posJugador[1] - m*posJugador[0]
-	return [m, b]
-
+		return [m, b]
+		
     def isAttacking(self):
         if self.prevkey in ['AL', 'AR']:
             return True
@@ -859,8 +857,7 @@ class Boss(pygame.sprite.Sprite):
         self.rect.y += self.vel_y
         self.rect.x += self.vel_x
 
-    '''
-    def update(self):
+    """def update(self):
                     self.rect.x=self.rect.x+self.varx
                     self.rect.y=self.rect.y+self.vary
                     self.barra.update(self.rect.midtop)
@@ -880,21 +877,21 @@ class Boss(pygame.sprite.Sprite):
                             self.varx=0
                     if self.salud<=0:
                         self.Tmuerte-=1
-
-
+            
+            
                 def left(self):
                     self.izquierda=True
                     self.derecha=False
                     self.accion=6
                     self.varx=-10
-
-
+            
+            
                 def right(self):
                     self.derecha=True
                     self.izquierda=False
                     self.accion=1
                     self.varx=10
-
+            
                 def golpear(self):
                     if self.derecha:
                             if(self.Tespera<=0):
@@ -903,7 +900,7 @@ class Boss(pygame.sprite.Sprite):
                                 self.Tespera=random.randrange(100,200)
                                 self.varx=0
                                 self.i=0
-
+            
                     if self.izquierda:
                             if(self.Tespera<=0):
                                 self.accion=12
@@ -911,35 +908,34 @@ class Boss(pygame.sprite.Sprite):
                                 self.Tespera=random.randrange(100,200)
                                 self.varx=0
                                 self.i=0
-
+            
                 def acercar(self):
                     if self.derecha:
                             if(self.Tespera<=0):
                                 self.accion=2
                                 self.varx=10
                                 self.i=0
-
+            
                     if self.izquierda:
                             if(self.Tespera<=0):
                                 self.accion=11
                                 self.varx=-10
                                 self.i=0
-
+            
                 def correr(self):
                     if self.derecha:
                             if(self.Tespera<=0):
                                 self.accion=5
                                 self.varx=20
                                 self.i=0
-
+            
                     if self.izquierda:
                             if(self.Tespera<=0):
                                 self.accion=14
                                 self.varx=-20
                                 self.i=0
-
-
-    def salto(self):
+            """
+    """def salto(self):
                     if self.derecha:
                             if(self.Tespera<=0):
                                 self.accion=6
@@ -955,9 +951,8 @@ class Boss(pygame.sprite.Sprite):
                                 #self.Tespera=random.randrange(100,200)
                                 self.varx=0 #las acciones son en base a los sprites del boss y pues asi yo manejaba la derecha e izquierda
                                 #si algo lo acomodan a como uds lo hacen... alejo para que acomode el salto tal como el wolverine
-                                self.i=0
+                                self.i=0"""
 
-    '''
 
     def ataquekatana(self):
         if self.derecha:
