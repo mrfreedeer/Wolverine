@@ -159,6 +159,8 @@ def main():
     flagBoss = False
     flagEnd = False
     oniwaDead = False
+    boss1='boss.png'
+    bossrecorte=recortarRept(9,18, boss1, [4,8,6,6,6,6,8,6,9,4,8,6,6,6,6,8,6,9])
 
     menuoptions = ["Nivel 1", "Nivel 2", "Nivel Boss","Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
@@ -187,6 +189,7 @@ def main():
     modifiers = pygame.sprite.Group()
     everyone = pygame.sprite.Group()
     whatevers = pygame.sprite.Group()
+    bossG = pygame.sprite.Group()
     m = fac.getModifier(modi)
     modifiers.add(m)
     everyone.add(m)
@@ -1931,7 +1934,10 @@ def main():
                 if (fac.posbg[0]==-405):
                     #Generate oniwa
                     print 'ONIWA'
-                    #oniwa=
+                    bosi=Boss(bossrecorte, [-405,200])
+                    bossG.add(bosi)
+                    todos.add(bosi)
+                    
 
                     #If kill oniwa, oniwaDead=True
                 for x in jugadores:

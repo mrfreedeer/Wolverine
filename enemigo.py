@@ -27,7 +27,22 @@ screensize = pygame.display.Info()
 RESOLUTION = [screensize.current_w, screensize.current_h]
 bglimit = 10
 #Funciones
-
+def recortarRept(max_x, max_y, archivo, vector):
+    imagen=pygame.image.load(archivo)
+    info=imagen.get_rect()
+    an_imagen=info[2]
+    al_imagen=info[3]
+    an_image_corte= an_imagen/max_x
+    al_image_corte= al_imagen/max_y
+    mapa=[]
+    for i in range(max_y):
+        mapis=[]
+        for j in range(vector[i]):
+            cuadro=imagen.subsurface(j*an_image_corte, i*al_image_corte, an_image_corte, al_image_corte)
+            mapis.append(cuadro)
+        mapa.append(mapis)
+    return mapa
+    
 def recortarEne1(archivo):
     fondo=pygame.image.load(archivo)
     infoFondo=fondo.get_rect()
