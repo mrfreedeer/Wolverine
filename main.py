@@ -7,7 +7,7 @@ from jugador import *
 from enemigo import *
 from operator import attrgetter
 from torreta import *
-from clases2 import *
+#from clases2 import *
 
 red = (255,0,0)         #rgb(255,0,0)
 green = (0,255,0)       #rgb(0,255,0)
