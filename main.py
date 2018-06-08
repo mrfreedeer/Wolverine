@@ -2197,6 +2197,10 @@ def main():
                     for x in pinchos:
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
+                    for x in bossG:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
+
                     fac.prevposbg = fac.posbg[:]
                 screen.fill([0,0,0])
                 #screen.blit(fondo3,[0,-50])
