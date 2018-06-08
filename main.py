@@ -89,6 +89,7 @@ def main():
     bginfo = [gamebckg.get_rect()[2],gamebckg.get_rect()[3]]
     fondo = pygame.image.load('fondo.png').convert_alpha()
     fondo2 = pygame.image.load('harbor.png').convert_alpha()
+    fondo3 = pygame.image.load('laboratory.png').convert_alpha()
     bginfo2 =[fondo2.get_rect()[2],fondo2.get_rect()[3]]
     player1 = pygame.image.load('jugador1.png').convert_alpha()
     player1=pygame.transform.scale(player1, (750, 350))
@@ -1528,7 +1529,492 @@ def main():
             #screen.blit(gamebckg, fac.posbg)
         #Nivel boss
         elif state == menuoptions[2]:
-            pass
+            pygame.display.flip()
+            #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
+            if moves != [] and jugador.prevkey == None:
+                jugador.move(moves[0])
+            if genscore >= endscore and numberOfDeaths>=30 and fac.posbg[0]<=-1010 and numberOfStillEnemies==0 and numberOfMovingEnemies==0:
+                #for j in jugadores:
+                #    j.kill()
+                winrenderrect = winrender.get_rect()
+                winrenderpos = [RESOLUTION[0]/2 - winrenderrect.width/2,RESOLUTION[1]/2 - winrenderrect.height]
+                newbckpos = [RESOLUTION[0]/2 - fac._pauserenders[0].get_rect().width/2]
+                newbckpos.append(RESOLUTION[1]/2 + winrenderrect.height + 50)
+
+
+                screen.blit(winrender, winrenderpos )
+                screen.blit(fac._pauserenders[0], newbckpos)
+
+                select = fac.checkmousepause(mousepos, newbckpos)
+
+                if select != -1:
+                    txt = pauseoptions[select]
+                    fac._pauserenders.pop(select)
+                    fac._pauserenders.insert(select,backtomenured)
+                    fac._turnedoptions.append(select)
+                if select != -1 and len(fac.getTurned())==1:
+                    beep.play()
+                elif select == -1 and fac.getTurned() != []:
+                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac.emptyTurned()
+                elif len(fac.getTurned())> 1:
+                    txt = pauseoptions[select]
+                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac._pauserenders.pop(select)
+                    fac._pauserenders.insert(select,backtomenured)
+                    fac._turnedoptions.append(select)
+                if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
+                    numberOfStillEnemies=0
+                    numberOfMovingEnemies=0
+                    numberOfDeaths=0
+                    fac.posbg[0]=0
+                    for j in jugadores:
+                        j.kill()
+                    for e in enemigos:
+                        e.kill()
+                    for e in enemigos2:
+                        e.kill()
+                    for b in balas:
+                        b.kill()
+                    state = 'menu'
+                    fac.resetposbg()
+            elif gameover:
+                '''
+                if ohnoFlag:
+                    ohno.play()
+                '''
+                loserenderrect = loserender.get_rect()
+                loserenderpos = [RESOLUTION[0]/2 - loserenderrect.width/2,RESOLUTION[1]/2 - loserenderrect.height]
+                newbckpos = [RESOLUTION[0]/2 - fac._pauserenders[0].get_rect().width/2]
+                newbckpos.append(RESOLUTION[1]/2 + loserenderrect.height + 50)
+                genscore=0
+
+                screen.blit(loserender, loserenderpos )
+                screen.blit(fac._pauserenders[0], newbckpos)
+
+                select = fac.checkmousepause(mousepos, newbckpos)
+
+                if select != -1:
+                    txt = pauseoptions[select]
+                    fac._pauserenders.pop(select)
+                    fac._pauserenders.insert(select,backtomenured)
+                    fac._turnedoptions.append(select)
+                if select != -1 and len(fac.getTurned())==1:
+                    beep.play()
+
+                elif select == -1 and fac.getTurned() != []:
+                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac.emptyTurned()
+                elif len(fac.getTurned())> 1:
+                    txt = pauseoptions[select]
+                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac._pauserenders.pop(select)
+                    fac._pauserenders.insert(select,backtomenured)
+                    fac._turnedoptions.append(select)
+                if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
+                    poofsprite.kill()
+                    numberOfStillEnemies=0
+                    numberOfMovingEnemies=0
+                    numberOfDeaths=0
+                    fac.posbg[0]=0
+                    for x in vacios:
+                        x.kill()
+                    for x in plataformas:
+                        x.kill()
+                    for x in whatevers:
+                        x.kill()
+                    for j in jugadores:
+                        j.kill()
+                    for e in enemigos:
+                        e.kill()
+                    for e in enemigos2:
+                        e.kill()
+                    for b in balas:
+                        b.kill()
+                    state = 'menu'
+                    fac.resetposbg()
+                    gameover = False
+            elif not fac.pause:
+                if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==6) or (fac.posbg[0]<=-320 and numberOfDeaths==12) or (fac.posbg[0]<=-520 and numberOfDeaths==18) or (fac.posbg[0]<=-660 and numberOfDeaths==24) or (fac.posbg[0]<=-990 and numberOfDeaths==30):
+                    canGenerate=True
+                if canGenerate:
+                    lasttime2 = pygame.time.get_ticks()
+                    time4 = pygame.time.get_ticks()
+                    if numberOfMovingEnemies<=0:
+                        generator2=True
+                        numberOfMovingEnemies=4
+                    if numberOfStillEnemies<=0:
+                        generator1=True
+                        numberOfStillEnemies=2
+                    for i in range(numberOfMovingEnemies):
+                        if generator2:
+                            enemy2=Enemigo2(matrizEnemigos2)
+                            enemy2.rect.x=random.randrange(0, fac._screensize[0] - enemy2.rect.width, 50)
+                            enemy2.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy2.rect.height)
+                            enemigos2.add(enemy2)
+                            todos.add(enemy2)
+                    generator2=False
+
+                    for i in range(numberOfStillEnemies):
+                        if generator1:
+                            enemy=Enemigo1(matrizEnemigos1)
+                            enemy.rect.x = random.randrange(0,20)
+                            enemy.rect.y=random.randrange( fac.posbgfixedy+ fac.posbg[1], fac._screensize[1] - enemy.rect.height)
+                            enemigos.add(enemy)
+                            todos.add(enemy)
+                    generator1=False
+                    canGenerate=False
+
+                for x in jugadores:
+                    lsmod = pygame.sprite.spritecollideany(x, modifiers)
+                    if lsmod != None:
+                        if not lsmod.blink:
+                            if lsmod.type in playermodlist:
+                                playermodlist.pop(lsmod.type)
+                                playermodlist[lsmod.type] = [ pygame.time.get_ticks(), x]
+                            else:
+                                playermodlist[lsmod.type] = [ pygame.time.get_ticks(), x]
+                            x.dealtwithModifiers(lsmod.type)
+                            if lsmod.type in [1,5]:
+                                channel2.play(powerup)
+                                x.score += 100
+                                genscore += 100
+                            else:
+                                channel2.play(powerdown)
+                                x.score -= 100
+                                genscore -= 100
+                            if x.score < 0:
+                                x.score = 0
+                            if genscore < 0:
+                                genscore = 0
+                            lsmod.kill()
+                            if lsmod in modlist:
+                                modlist.remove(lsmod)
+                    lscolbullets = pygame.sprite.spritecollide(x, balas, True)
+                    for z in lscolbullets:
+                        if z.rect.y >= x.rect.y and z.rect.y <= x.rect.bottom -1:
+                            x.dealDamage(1)
+                gottapop = []
+                for x in playermodlist:
+                    if pygame.time.get_ticks() - playermodlist[x][0] >= 10000:
+                        playermodlist[x][1].resetValue(x)
+                        gottapop.append(x)
+                for x in gottapop:
+                    playermodlist.pop(x)
+                if (pygame.time.get_ticks() - time >= random.randrange(modwait,modwait*2) and (len(modlist)<=15)) or len(modlist) <= 3:
+                    if len(platforms) > 0:
+                        m = fac.getModifier(random.randrange(0,6))
+                        platformrandom = random.randrange(0, len(platforms))
+                        m.rect.x = platforms[platformrandom][0]
+                        m.rect.y = platforms[platformrandom][1] - m .rect.height
+                        blink = True
+                        blinkers.append(m)
+                        lasttime = pygame.time.get_ticks()
+                        time = pygame.time.get_ticks()
+                        modifiers.add(m)
+                        todos.add(m)
+                        modlist.append(m)
+                elif pygame.time.get_ticks() - time2 >= 20000:
+                    time2 = pygame.time.get_ticks()
+                    if modlist != []:
+                        modlist[0].kill()
+                        modlist.pop(0)
+
+                if blink:
+                    if pygame.time.get_ticks()-lasttime >= 200:
+                        turn = not turn
+                        lasttime = pygame.time.get_ticks()
+                        if turn:
+                            for x in blinkers:
+                                x.kill()
+                        else:
+                            for x in blinkers:
+                                modifiers.add(x)
+                                todos.add(x)
+                    if pygame.time.get_ticks() - time >= 2000:
+                        blink = not blink
+                        for x in blinkers:
+                            x.blink = False
+                            modifiers.add(x)
+                            todos.add(x)
+                        blinkers = []
+                enemybar = []
+                enemybar1 = []
+
+
+
+                for x in enemigos:
+                    if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
+                        x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
+                    jugadorlscol=[]
+                    jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
+                    if jugadorlscol != []:
+                        if len(enemybar1) >2:
+                            enemybar1.pop()
+                            enemybar1.append(x)
+                        else:
+                            enemybar1.append(x)
+                    for y in jugadorlscol:
+                        damageinf = y.inflictDamage(x)
+                        x._health -= damageinf
+                        if x._health <0:
+                            x._health = 0
+                        if damageinf > 0:
+                            if x._health == 0:
+                                y.score += 200
+                                genscore += 200
+                                numberOfStillEnemies-=1
+                                numberOfDeaths+=1
+                                x.die()
+                                x.kill()
+                            else:
+                                y.score += 75
+                                genscore += 75
+
+                for x in enemigos:
+                    if x.shoot:
+                        x.shoot = False
+                        channel5.play(shoot)
+                        b = Bala(matrizBala)
+                        b.rect.x,b.rect.y = x.rect.x + 20,x.rect.y +50
+                        balas.add(b)
+                        todos.add(b)
+                        #x.shoot = False
+
+
+                for x in enemigos2:
+                    if (x.rect.y + x.rect.height < fac.posbgfixedy + fac.posbg[1]) :
+                        x.rect.y = fac.posbgfixedy + fac.posbg[1] - x.rect.height
+                    if x._health == 0:
+                        x.die()
+                    if x.canDie and x.finished:
+                        x.kill()
+                        numberOfDeaths+=1
+                        numberOfMovingEnemies-=1
+                    if not x.canDie:
+                        if state == menuoptions[0]:
+
+                            x.AImove(jugador)
+
+                    jugadorlscol = []
+                    jugadorlscol = pygame.sprite.spritecollide(x, jugadores, False)
+                    if jugadorlscol != []:
+                        if len(enemybar) >2:
+                            enemybar.pop()
+                            enemybar.append(x)
+                        else:
+                            enemybar.append(x)
+                    for y in jugadorlscol:
+                        damageinf = y.inflictDamage(x)
+                        x._health -= damageinf
+                        if x._health < 0:
+                            x._health = 0
+                        if damageinf > 0:
+                            if x._health == 0:
+                                y.score += 200
+                                genscore += 200
+                                x.die()
+                            else:
+                                y.score += 50
+                                genscore += 50
+                for x in jugadores:
+                    enemylscol = pygame.sprite.spritecollide(x, enemigos2, False)
+                    for y in enemylscol:
+                        if y.isAttacking():
+                            x.dealDamage(0.5)
+                tokillbullets =[]
+                for x in balas:
+                    if x.lucky:
+                        if state == menuoptions[0]:
+                            x.AIbullet(jugador)
+                    if x.rect.x > fac.posbg[0] + 2400:
+                        tokillbullets.append(x)
+                for b in tokillbullets:
+                    b.kill()
+
+                lsplatcollide = pygame.sprite.spritecollide(jugador, plataformas, False)
+
+                for x in lsplatcollide:
+                    if jugador.rect.bottom>=x.rect.top and jugador.vel_y > 0:
+                        jugador.vel_y = 0
+                        jugador.stopjump()
+                        jugador.rect.bottom = x.rect.top
+                        jugador.onplatform = True
+
+                lsvaciocollide = pygame.sprite.spritecollide(jugador,vacios,False)
+                if len(lsvaciocollide) >= 1:
+                    for x in lsvaciocollide:
+                        vaciodie = False
+                        if jugador.rect.x >= x.rect.x + 5 and jugador.dir == 'R' and jugador.accion != 4 :
+                            if jugador.rect.bottom - 50 >= x.rect.top:
+                                if x.rect.bottom >= jugador.rect.bottom:
+                                    vaciodie = True
+                                    #print "die1"
+                                    #print jugador.rect.x, jugador.rect.y, jugador.rect.bottom, "\n---", x.rect.x, x.rect.y, x.rect.top
+
+                        if jugador.rect.x - 10 <= x.rect.x  and jugador.dir == 'L' and jugador.accion != 5 :
+                            if jugador.rect.bottom - 50 >= x.rect.top:
+                                if x.rect.bottom >= jugador.rect.bottom:
+                                    vaciodie = True
+                                    #print jugador.rect.x, jugador.rect.y, jugador.rect.bottom, "\n---", x.rect.x, x.rect.y, x.rect.top
+                                    #print "die2"
+
+                        if vaciodie:
+                            jugador.gravedad(100)
+                            gameover = True
+                            poof = pygame.image.load("poof.png")
+                            poof = pygame.transform.scale(poof, [jugador.rect.width, jugador.rect.height])
+                            poofsprite = Whatever(poof)
+                            whatevers.add(poofsprite)
+                            poofsprite.rect.x=jugador.rect.x
+                            poofsprite.rect.y= jugador.rect.y
+                            todos.add(poofsprite)
+                            jugador.kill()
+
+                if jugador.onplatform and len(lsplatcollide)== 0:
+                    anytrue = False
+                    for x in plataformas:
+                        rect = jugador.rect.copy()
+                        rect.bottom += 10
+                        if x.rect.colliderect(rect):
+                            anytrue = True
+                    if not anytrue:
+                        if jugador.accion not in [4,5]:
+                            jugador.gravedad(10)
+                todos.update()
+
+                if (jugador.rect.y + jugador.rect.height < fac.posbgfixedy + fac.posbg[1]) and jugador.accion not in [4,5] and not jugador.onplatform:
+                    jugador.rect.y = fac.posbgfixedy + fac.posbg[1] - jugador.rect.height
+                    #2 jugadores
+                if jugador.onplatform:
+                    if jugador.rect.y + jugador.rect.height >= fac.posbgfixedy + fac.posbg[1]:
+                        jugador.onplatform = False
+                if jugador.getHealth() <= 0:
+                        gameover = True
+                if moves != []:
+                    fac.checklimits(moves[0],jugador, bginfo)
+                if fac.prevposbg != fac.posbg:
+                    fac.prevposbg[0] = fac.prevposbg[0] - fac.posbg[0]
+                    fac.prevposbg[1] = fac.prevposbg[1] - fac.posbg[1]
+                    for x in enemigos:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
+                    for x in enemigos2:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
+                    for m in modifiers:
+                        m.rect.x -= fac.prevposbg[0]
+                        m.rect.y -= fac.prevposbg[1]
+                    for x in balas:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
+                    for x in plataformas:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
+                    for x in vacios:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
+                    fac.prevposbg = fac.posbg[:]
+                screen.fill([0,0,0])
+                screen.blit(fondo,[0,-50])
+                screen.blit(gamebckg, fac.posbg)
+
+                drawlist = []
+                for x in todos:
+                    drawlist.append(x)
+                drawlist.sort(key = attrgetter('rect.y'))
+                drawgroup = pygame.sprite.Group()
+                plataformas.draw(screen)
+                vacios.draw(screen)
+                for x in drawlist:
+                    if x not in plataformas and x not in vacios:
+                        drawgroup.add(x)
+                        drawgroup.draw(screen)
+                        drawgroup.remove(x)
+
+                #todos.draw(screen)
+
+                scorerender1 = bob.buildscorerender(str(jugador.score))
+                if state == menuoptions[0]:
+                    fac.drawLife(jugador.getHealth())
+                    fac.drawScore(scorerender1, scorerender = score)
+
+                    if enemybar1 != []:
+                        for x in enemybar1:
+                            if jugador.inflictDamage(x) == 0:
+                                enemybar1.remove(x)
+                    if enemybar1 != []:
+                        if jugador.inflictDamage(enemybar1[0]) > 0:
+                            fac.drawEnemy1Life(enemybar1[0])
+
+
+                    if enemybar != []:
+                        for x in enemybar:
+                            if jugador.inflictDamage(x) == 0:
+                                enemybar.remove(x)
+                    if enemybar != []:
+                        if jugador.inflictDamage(enemybar[0]) > 0:
+                            fac.drawEnemyLife(enemybar[0])
+
+
+                pygame.display.flip()
+                reloj.tick(10)
+
+            else:
+                screen.blit(pauserender, [pausexpos- pausewidth,pauseypos])
+                i = 0
+                for x in fac._pauserenders:
+                    screen.blit(x,fac.pausepositions[i])
+                    i += 1
+                select = fac.checkmousepause(mousepos)
+
+                if select != -1 and len(fac.getTurned())<1:
+                    beep.play()
+
+                if select != -1:
+                    txt = pauseoptions[select]
+                    fac._pauserenders.pop(select)
+                    selectedrender = bob.buildtxtrender(txt, 0, red)
+                    fac._pauserenders.insert(select,selectedrender)
+                    fac._turnedoptions.append(select)
+
+                elif select == -1 and fac.getTurned() != []:
+                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac.emptyTurned()
+
+                elif len(fac.getTurned())> 1:
+                    txt = pauseoptions[select]
+                    fac._pauserenders = fac._normalpauserenders[:]
+                    fac._pauserenders.pop(select)
+                    selectedrender = bob.buildtxtrender(txt, 0, red)
+                    fac._pauserenders.insert(select,selectedrender)
+                    fac._turnedoptions.append(select)
+                if pauseoptions[select] == "Back to Menu" and mouseclick and select != -1:
+                    numberOfStillEnemies=0
+                    numberOfMovingEnemies=0
+                    numberOfDeaths=0
+                    fac.posbg[0]=0
+                    for j in jugadores:
+                        j.kill()
+                    for e in enemigos:
+                        e.kill()
+                    for e in enemigos2:
+                        e.kill()
+                    for b in balas:
+                        b.kill()
+                    for x in whatevers:
+                        x.kill()
+                    for x in plataformas:
+                        x.kill()
+                    for x in vacios:
+                        x.kill()
+                    state = 'menu'
+                    fac.resetposbg()
+
+
+                    mouseclick = False
+                    fac.pause = False
+        
 
         #Instrucciones------------------------------------------------
         elif state == menuoptions[3]:

@@ -557,7 +557,7 @@ def recortarBoss(archivo):
 
     attack1=[[0,605,228,180], [282,554,228,227], [535,554,228,227], [820,554,228,227], [1108,605,192,180]]
 
-    die=[[262, 111, 55, 57], [328, 111, 67, 57], [404, 11 ,74, 57]]  #el tamano del boss es de 90x90
+    die=[[262, 111, 55, 57], [328, 111, 67, 57], [404, 11 ,74, 57]]  #el tamaño del boss es de 90x90 
 
 
     #Idle R-L
@@ -600,36 +600,23 @@ def recortarBoss(archivo):
     return idleR, idleL, walkR, walkL, attack1R, attack1L, dieR, dieL
 
 class Boss(pygame.sprite.Sprite):
-    def __init__(self, matriz,groupbarras, vector, pos):
+    def __init__(self, matriz, pos):
         pygame.sprite.Sprite.__init__(self)
         self.m=matriz
         self.image=self.m[0][0]
         self.rect=self.image.get_rect()
         self._health = 100
-        self.finished = False
-        self.canDie = False
-        self.prevkey = None
-        self.vel_y = 0
-        self.vel_x = 0
-        self.vel_x_value = 10
-        self.vel_y_value = 6
-        self.moverange = 50
-        self.movetime = random.randrange(0,100)
-        """self.rect.x=pos[0]
-                                self.rect.y=pos[1]
-                                self.varx=0
-                                self.vary=0
-                                self.distancia=0"""
+        self.rect.x=pos[0]
+        self.rect.y=pos[1]
+	    self.varx=0
+        self.vary=0
+        self.distancia=0
         self.i=0
         self.golpe=False
         self.golpekatana=False
         self.golpeshuriken=False
         self.accion=0
         self.mov=True
-        """
-        self.barra=barravida_enemigo(vector, self.rect.midtop) #juan para que si puede
-                                groupbarras.add(self.barra)
-        """
         self.derecha=True
         self.izquierda=False
         self.Tespera=random.randrange(100,200)
@@ -638,308 +625,85 @@ class Boss(pygame.sprite.Sprite):
         self.salud=100
         self.Tmuerte=5
 
-    def getHealth(self):
-        return self._health
-
-    def getSlope(self, posJugador):
-        point1 = [self.rect.x, self.rect.y]
-        if self.rect.x == posJugador[0]:
-            return False
-        m = float(posJugador[1] -  point1[1])/(posJugador[0] - point1[0])
-        b = posJugador[1] - m*posJugador[0]
-	return [m, b]
-
-    def isAttacking(self):
-        if self.prevkey in ['AL', 'AR']:
-            return True
-        else:
-            return False
-    def AImove(self, jugador1, jugador2 = None, noplayers = 1):
-        if self.accion not in[10,12,17]:
-            self.movetime -= 1
-            if self.movetime <= -50:
-                self.movetime = random.randrange(0,50)
-                self.move('I')
-            if self.movetime <= 0:
-                if noplayers == 1:
-                    selectplayer = jugador1
-                else:
-                    distanceplayer1 = math.fabs(jugador1.rect.x-self.rect.x)+math.fabs(jugador1.rect.y-self.rect.y)
-                    distanceplayer2 = math.fabs(jugador2.rect.x-self.rect.x)+math.fabs(jugador2.rect.y-self.rect.y)
-                    if distanceplayer1 > distanceplayer2:
-                        selectplayer = jugador2
-                    else:
-                        selectplayer = jugador1
-                if math.fabs(selectplayer.rect.x - self.rect.x) <= self.moverange and math.fabs(selectplayer.rect.y- self.rect.y) <= self.moverange/4:
-                    if selectplayer.rect.x - self.rect.x > 0:
-                        self.move('AR')
-                    else:
-                        self.move('AL')
-                else:
-                    movedir = random.randrange(0,2)
-                    discardedy = False
-                    if movedir:
-                        if selectplayer.rect.y - self.rect.y > self.moverange/4:
-                            self.vel_y = self.vel_y_value
-                            if selectplayer.rect.x - self.rect.x > 0:
-                                self.move('R')
-                            else:
-                                self.move('L')
-                        elif selectplayer.rect.y - self.rect.y < -self.moverange/4:
-                            self.vel_y = -self.vel_y_value
-                            if selectplayer.rect.x - self.rect.x > 0:
-                                self.move('R')
-                            else:
-                                self.move('L')
-                        else:
-                            discardedy = True
-                    elif discardedy or movedir == 0:
-                        if selectplayer.rect.x - self.rect.x > self.moverange:
-                            self.vel_x = self.vel_x_value
-                            if selectplayer.rect.x - self.rect.x > 0:
-                                self.move('R')
-                            else:
-                                self.move('L')
-                        elif selectplayer.rect.x - self.rect.x < -self.moverange:
-                            self.vel_x = -self.vel_x_value
-                            if selectplayer.rect.x - self.rect.x > 0:
-                                self.move('R')
-                            else:
-                                self.move('L')
-        random.seed(pygame.time.get_ticks())
-
-    def die(self):
-        if not self.accion in [1,3,8,10,12,17]:
-            if self.dir=='R' or self.move=='R' or self.move=='AR' or self.move=='I':
-                self.accion=4
-                self.finished = False
-
-            elif self.dir=='L' or self.move=='L' or self.move=='AL':
-                self.accion=13
-                self.finished = False
-        else:
-            pass
-
-    def move(self, key):
-        if (self.finished and self.prevkey in ['AL', 'AR']) or self.prevkey not in ['AL', 'AR'] :
-            self.finished = False
-            if key == 'R':
-                self.accion = 2
-            elif key == 'L':
-                self.accion = 11
-            elif key == 'AR':
-                self.accion = 3
-            elif key == 'AL':
-                self.accion = 12
-            elif key == 'I':
-                self.accion = 0
-            self.prevkey = key
-            self.indice = 0
-
     def update(self):
-        #Idle R
-        if self.accion==0:
-            self.image = self.f[self.accion][self.indice]
-            self.indice += 1
-
-            if self.indice >= 4:
-                self.indice=0
-            self.vel_x = 0
-            self.vel_y = 0
-        #Idle L
-        if self.accion==1:
-            self.image = self.f[self.accion][self.indice]
-            self.indice += 1
-
-            if self.indice >= 4:
-                self.finished = True
-                self.indice=0
-            self.vel_x = 0
-            self.vel_y = 0
-
-        #Walk R
-        if self.accion==2:
-            if self.indice <=5:
-                self.image = self.f[self.accion][self.indice]
-                '''
-                if self.indice==0:
-                    stepE.play()
-                if self.indice==3:
-                    stepE.play()
-                '''
-                self.indice += 1
-            #Es 7 normalmente
-            if self.indice > 5:
-                self.finished = True
-                self.indice=0
-
-        #Walk L
-        if self.accion==3:
-            if self.indice <=5:
-                self.image = self.f[self.accion][self.indice]
-                '''
-                if self.indice==0:
-                    stepE.play()
-                if self.indice==3:
-                    stepE.play()
-                '''
-                self.indice += 1
-            #Es 7 normalmente
-            if self.indice > 5:
-                self.finished = True
-                self.indice=0
-
-        #1
-        #Attack R
-        if self.accion==4:
-            #if self.indice <=1:
-            self.image = self.f[self.accion][self.indice]
-            if self.indice==1:
-                bite.play()
-            self.indice += 1
-
-            if self.indice >=4:
-                self.finished = True
-                self.indice=0
-            self.vel_x = 0
-            self.vel_y = 0
-
-        #Attack L
-        if self.accion==5:
-            #if self.indice <=1:
-            self.image = self.f[self.accion][self.indice]
-            if self.indice==1:
-                bite.play()
-            self.indice += 1
-
-            if self.indice >=4:
-                self.finished = True
-                self.indice=0
-
-            self.vel_x = 0
-            self.vel_y = 0
-
-        #Die R
-        if self.accion==6:
-            if self.indice <2:
-                if self.indice==0:
-                    channel6.play(cry)
-                self.image = self.f[self.accion][self.indice]
-                self.indice += 1
-
-            if self.indice >= 2:
-                self.indice = 0
-                self.finished = True
-
-
-
-
-            self.vel_x = 0
-            self.vel_y = 0
-        #Die L
-        if self.accion==7:
-            if self.indice <=2:
-                if self.indice==0:
-                    channel6.play(cry)
-                self.image = self.f[self.accion][self.indice]
-
-                self.indice += 1
-
-            if self.indice >= 2:
-                self.indice = 0
-                self.finished = True
-
-        if self.accion in [6,7] and self.finished:
-            self.canDie = True
-
-
-
-            self.vel_x = 0
-            self.vel_y = 0
-        self.rect.y += self.vel_y
-        self.rect.x += self.vel_x
-
-    '''
-    def update(self):
-                    self.rect.x=self.rect.x+self.varx
-                    self.rect.y=self.rect.y+self.vary
-                    self.barra.update(self.rect.midtop)
-                    self.image=self.m[self.accion][self.i]
-                    self.i+=1
-                    if(self.Tespera>0):
-                        self.Tespera-=1
-                    if self.i>=len(self.m[self.accion]):
-                        self.i=0
-                        if self.derecha:
-                            self.i=0
-                            self.accion=0
-                            self.varx=0
-                        if self.izquierda:
-                            self.i=0
-                            self.accion=9
-                            self.varx=0
-                    if self.salud<=0:
-                        self.Tmuerte-=1
-
-
-                def left(self):
-                    self.izquierda=True
-                    self.derecha=False
-                    self.accion=6
-                    self.varx=-10
-
-
-                def right(self):
-                    self.derecha=True
-                    self.izquierda=False
-                    self.accion=1
-                    self.varx=10
-
-                def golpear(self):
-                    if self.derecha:
-                            if(self.Tespera<=0):
-                                self.accion=3
-                                self.golpe=True
-                                self.Tespera=random.randrange(100,200)
-                                self.varx=0
-                                self.i=0
-
-                    if self.izquierda:
-                            if(self.Tespera<=0):
-                                self.accion=12
-                                self.golpe=True
-                                self.Tespera=random.randrange(100,200)
-                                self.varx=0
-                                self.i=0
-
-                def acercar(self):
-                    if self.derecha:
-                            if(self.Tespera<=0):
-                                self.accion=2
-                                self.varx=10
-                                self.i=0
-
-                    if self.izquierda:
-                            if(self.Tespera<=0):
-                                self.accion=11
-                                self.varx=-10
-                                self.i=0
-
-                def correr(self):
-                    if self.derecha:
-                            if(self.Tespera<=0):
-                                self.accion=5
-                                self.varx=20
-                                self.i=0
-
-                    if self.izquierda:
-                            if(self.Tespera<=0):
-                                self.accion=14
-                                self.varx=-20
-                                self.i=0
-
-
-    def salto(self):
+		self.rect.x=self.rect.x+self.varx
+		self.rect.y=self.rect.y+self.vary
+        self.barra.update(self.rect.midtop)
+		self.image=self.m[self.accion][self.i]
+        self.i+=1
+		if(self.Tespera>0):
+			self.Tespera-=1
+		if self.i>=len(self.m[self.accion]):
+			self.i=0
+	    if self.derecha:
+			self.i=0
+		    self.accion=0
+			self.varx=0
+		if self.izquierda:
+		    self.i=0
+			self.accion=9
+			self.varx=0
+		if self.salud<=0:
+			self.Tmuerte-=1
+            
+            
+	def left(self):
+		self.izquierda=True
+		self.derecha=False
+		self.accion=6
+        self.varx=-10
+            
+            
+	def right(self):
+		self.derecha=True
+		self.izquierda=False
+		self.accion=1
+        self.varx=10
+            
+    def golpear(self):
+		if self.derecha:
+			if(self.Tespera<=0):
+				self.accion=3
+				self.golpe=True
+				self.Tespera=random.randrange(100,200)
+				self.varx=0
+				self.i=0
+            
+        if self.izquierda:
+			if(self.Tespera<=0):
+				self.accion=12
+				self.golpe=True
+				self.Tespera=random.randrange(100,200)
+				self.varx=0
+				self.i=0
+            
+	def acercar(self):
+		if self.derecha:
+			if(self.Tespera<=0):
+				self.accion=2
+				self.varx=10
+                self.i=0
+            
+		if self.izquierda:
+			if(self.Tespera<=0):
+				self.accion=11
+				self.varx=-10
+				self.i=0
+            
+    def correr(self):
+		if self.derecha:
+			if(self.Tespera<=0):
+				self.accion=5
+				self.varx=20
+				self.i=0
+            
+		if self.izquierda:
+			if(self.Tespera<=0):
+				self.accion=14
+				self.varx=-20
+				self.i=0
+            
+    """def salto(self):
                     if self.derecha:
                             if(self.Tespera<=0):
                                 self.accion=6
@@ -955,9 +719,8 @@ class Boss(pygame.sprite.Sprite):
                                 #self.Tespera=random.randrange(100,200)
                                 self.varx=0 #las acciones son en base a los sprites del boss y pues asi yo manejaba la derecha e izquierda
                                 #si algo lo acomodan a como uds lo hacen... alejo para que acomode el salto tal como el wolverine
-                                self.i=0
+                                self.i=0"""
 
-    '''
 
     def ataquekatana(self):
         if self.derecha:
