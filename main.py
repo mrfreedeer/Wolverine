@@ -77,6 +77,23 @@ def readmapholes(level):
     return holes
 
 
+def readmapspikes(level):
+    interpreter = ConfigParser.ConfigParser()
+    interpreter.read('map.map')
+    map = interpreter.get(level,'map')
+    map = map.split('\n')
+    posx = 0
+    posy = 0
+    spikes = []
+    for x in range(len(map)):
+        posx = 0
+        for y in map[x]:
+            if y == 's':
+                spikes.append([posx,posy])
+            posx += 75
+        posy += 20
+    return spikes
+
 def main():
 
     pygame.init()
@@ -118,6 +135,9 @@ def main():
     hole = pygame.image.load('vacio.png').convert_alpha()
     hole = pygame.transform.scale(hole, (75,100))
 
+    spike = pygame.image.load('spikes.png').convert_alpha()
+    spike = pygame.transform.scale(spike, (100,75))
+
 
     reptilsprites='reptilfinal.png'
     #reptilm=recortarRept(6, 10, reptilsprites, [5,6,5,6,6,5,6,5,6,6])
@@ -129,6 +149,7 @@ def main():
     level2History = pygame.image.load('Level2History.png').convert_alpha()
     level2History = pygame.transform.scale(level2History, [screensize.current_w, screensize.current_h-80])
     bossLevelHistory = pygame.image.load('BossLevelHistory.png').convert_alpha()
+    bossLevelHistory = pygame.transform.scale(bossLevelHistory, [screensize.current_w, screensize.current_h-80])
     winningHistory = pygame.image.load('WinningHistory.png').convert_alpha()
     flagH1 = False
     flagH2 = False
@@ -186,6 +207,7 @@ def main():
     balasTorreta=pygame.sprite.Group()
     plataformas = pygame.sprite.Group()
     vacios = pygame.sprite.Group()
+    pinchos = pygame.sprite.Group()
 
     matrizJugador=[]
     #matrizJugador2=[]
@@ -343,6 +365,8 @@ def main():
                     state = 'Level1History'
                 elif menuoptions[mouseonoption] == "Nivel 2":
                     state  = 'Level2History'
+                elif menuoptions[mouseonoption] == "Nivel Boss":
+                    state  = 'BossLevelHistory'
                 else:
                     state = menuoptions[mouseonoption]
                 if state == menuoptions[0]:
@@ -398,6 +422,14 @@ def main():
                     x.rect.x = h[0]
                     x.rect.y = h[1]
                     todos.add(x)
+                spikes = readmapspikes('level1')
+                for s in spikes:
+                    x = Whatever(spike)
+                    pinchos.add(x)
+                    whatevers.add(x)
+                    x.rect.x = s[0]
+                    x.rect.y = s[1]
+                    todos.add(x)
                 genscore=0
                 jugador=Jugador(matrizJugador,allowedmoves)
                 jugadores.add(jugador)
@@ -418,6 +450,14 @@ def main():
                     whatevers.add(x)
                     x.rect.x = h[0]
                     x.rect.y = h[1]
+                    todos.add(x)
+                spikes = readmapspikes('level1')
+                for s in spikes:
+                    x = Whatever(spike)
+                    pinchos.add(x)
+                    whatevers.add(x)
+                    x.rect.x = s[0]
+                    x.rect.y = s[1]
                     todos.add(x)
                 genscore=0
                 jugador=Jugador(matrizJugador,allowedmoves)
@@ -473,6 +513,14 @@ def main():
                     whatevers.add(x)
                     x.rect.x = h[0]
                     x.rect.y = h[1]
+                    todos.add(x)
+                spikes = readmapspikes('level1')
+                for s in spikes:
+                    x = Whatever(spike)
+                    pinchos.add(x)
+                    whatevers.add(x)
+                    x.rect.x = s[0]
+                    x.rect.y = s[1]
                     todos.add(x)
                 genscore=0
                 jugador=Jugador(matrizJugador,allowedmoves)
@@ -530,6 +578,14 @@ def main():
                     x.rect.x = h[0]
                     x.rect.y = h[1]
                     todos.add(x)
+                spikes = readmapspikes('level2')
+                for s in spikes:
+                    x = Whatever(spike)
+                    pinchos.add(x)
+                    whatevers.add(x)
+                    x.rect.x = s[0]
+                    x.rect.y = s[1]
+                    todos.add(x)
                 genscore=0
                 jugador=Jugador(matrizJugador,allowedmoves)
                 jugadores.add(jugador)
@@ -537,12 +593,105 @@ def main():
                 fac.setposbglevel2()
                 state=menuoptions[1]
         elif state == 'BossLevelHistory':
-            #Mostrar imagen
-            state == menuoptions[2]
-            pass
+            mousepos = pygame.mouse.get_pos()
+            screen.blit(bossLevelHistory,  [0,0])
+
+            i = 0
+            for x in fac._storyrenders:
+                screen.blit(x,fac._storypostions[i])
+                i += 1
+            select = fac.checkmousestory(mousepos)
+            if select != -1 and len(fac.getTurned())<1:
+                beep.play()
+
+            if select != -1:
+                txt = storyoptions[select]
+                fac._storyrenders.pop(select)
+                selectedrender = bob.buildtxtrender(txt, 0, red)
+                fac._storyrenders.insert(select,selectedrender)
+                fac._turnedoptions.append(select)
+
+            elif select == -1 and fac.getTurned() != []:
+                fac._storyrenders = fac._normalstoryrenders[:]
+                fac.emptyTurned()
+
+            elif len(fac.getTurned())> 1:
+                txt = storyoptions[select]
+                fac._storyrenders = fac._normalstoryrenders[:]
+                fac._storyrenders.pop(select)
+                selectedrender = bob.buildtxtrender(txt, 0, red)
+                fac._storyrenders.insert(select,selectedrender)
+                fac._turnedoptions.append(select)
+            if storyoptions[select] == "Back to Menu" and mouseclick and select != -1:
+                state = 'menu'
+                fac.resetposbg()
+                mouseclick = False
+            elif storyoptions[select] == "Play" and mouseclick and select != -1:
+                platforms = readmapplatforms('boss')
+                for p in platforms:
+                    x = Platform(platform)
+                    plataformas.add(x)
+                    x.rect.x = p[0]
+                    x.rect.y = p[1]
+                    todos.add(x)
+                holes = readmapholes('boss')
+                for h in holes:
+                    x = Whatever(hole)
+                    vacios.add(x)
+                    whatevers.add(x)
+                    x.rect.x = h[0]
+                    x.rect.y = h[1]
+                    todos.add(x)
+                spikes = readmapspikes('boss')
+                for s in spikes:
+                    x = Whatever(spike)
+                    pinchos.add(x)
+                    whatevers.add(x)
+                    x.rect.x = s[0]
+                    x.rect.y = s[1]
+                    todos.add(x)
+                genscore=0
+                jugador=Jugador(matrizJugador,allowedmoves)
+                jugadores.add(jugador)
+                todos.add(jugador)
+                fac.setposbglevel2()
+                state=menuoptions[2]
         elif state == 'winningHistory':
-            #Mostrar imagen
-            pass
+            mousepos = pygame.mouse.get_pos()
+            screen.blit(BossLevelHistory,  [0,0])
+
+            i = 0
+            for x in fac._storyrenders:
+                if x != fac_storyrenders[1]:
+                    screen.blit(x,fac._storypostions[i])
+                    i += 1
+            select = fac.checkmousestory(mousepos)
+            if select != -1 and len(fac.getTurned())<1:
+                beep.play()
+
+            if select != -1:
+                txt = storyoptions[select]
+                fac._storyrenders.pop(select)
+                selectedrender = bob.buildtxtrender(txt, 0, red)
+                fac._storyrenders.insert(select,selectedrender)
+                fac._turnedoptions.append(select)
+
+            elif select == -1 and fac.getTurned() != []:
+                fac._storyrenders = fac._normalstoryrenders[:]
+                fac.emptyTurned()
+
+            elif len(fac.getTurned())> 1:
+                txt = storyoptions[select]
+                fac._storyrenders = fac._normalstoryrenders[:]
+                fac._storyrenders.pop(select)
+                selectedrender = bob.buildtxtrender(txt, 0, red)
+                fac._storyrenders.insert(select,selectedrender)
+                fac._turnedoptions.append(select)
+            if storyoptions[select] == "Back to Menu" and mouseclick and select != -1:
+                state = 'menu'
+                fac.resetposbg()
+                mouseclick = False
+
         #Primer nivel
         elif state == menuoptions[0]:
             pygame.display.flip()
@@ -875,6 +1024,9 @@ def main():
                         jugador.stopjump()
                         jugador.rect.bottom = x.rect.top
                         jugador.onplatform = True
+                lsspikecollide = pygame.sprite.spritecollide(jugador,pinchos, False)
+                for x in lsspikecollide:
+                    jugador.dealDamage(0.5)
 
                 lsvaciocollide = pygame.sprite.spritecollide(jugador,vacios,False)
                 if len(lsvaciocollide) >= 1:
@@ -947,6 +1099,9 @@ def main():
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
                     for x in vacios:
+                        x.rect.x -= fac.prevposbg[0]
+                        x.rect.y -= fac.prevposbg[1]
+                    for x in pinchos:
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
                     fac.prevposbg = fac.posbg[:]
@@ -1389,7 +1544,9 @@ def main():
                         jugador.stopjump()
                         jugador.rect.bottom = x.rect.top
                         jugador.onplatform = True
-
+                lsspikecollide = pygame.sprite.spritecollide(jugador,pinchos, False)
+                for x in lsspikecollide:
+                    jugador.dealDamage(1)
                 lsvaciocollide = pygame.sprite.spritecollide(jugador,vacios,False)
                 if len(lsvaciocollide) >= 1:
                     for x in lsvaciocollide:
