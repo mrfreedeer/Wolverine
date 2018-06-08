@@ -19,6 +19,19 @@ black = (0,0,0)         #rgb(0,0,0)
 pink = (255,200,200) #rgb(255,200,200)
 posbg = [0, -840]
 
+def distancia(p1,p2):
+    return math.sqrt((p1.rect.x -p2.rect.x)**2 +(p1.rect.y-p2.rect.y)**2)
+
+def acercar(dist, enemigo, jugador):
+    #print jugador.rect.x, enemigo.rect.x
+    if dist > 230 and not((enemigo.accion==3) or (enemigo.accion==8)):
+        if jugador.rect.x < enemigo.rect.x and enemigo.rect.x > 50:
+            enemigo.left()
+        elif jugador.rect.x > enemigo.rect.x and enemigo.rect.x < ANCHO -50:
+            enemigo.right()
+    else:
+        enemigo.golpear()
+
 ohno=pygame.mixer.Sound('ohno.ogg')
 ohnoFlag=False
 beep=pygame.mixer.Sound('beep.ogg')
@@ -803,6 +816,7 @@ def main():
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
+                    poofsprite.kill()
                     numberOfStillEnemies=0
                     numberOfMovingEnemies=0
                     numberOfDeaths=0
@@ -1316,6 +1330,7 @@ def main():
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
+                    poofsprite.kill()
                     numberOfStillEnemies2=0
                     numberOfMovingEnemies2=0
                     numberOfDeaths2=0
@@ -1821,6 +1836,7 @@ def main():
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
+                    poofsprite.kill()
                     numberOfStillEnemies=0
                     numberOfMovingEnemies=0
                     numberOfDeaths=0
@@ -1927,14 +1943,14 @@ def main():
 
                     generator1=False
                     canGenerate=False
-
+                
                 if (fac.posbg[0]==-405):
                     #Generate oniwa
                     print 'ONIWA'
-                    bosi=Boss(bossrecorte, [405,200])
+                    bosi=Boss(bossrecorte, [-405,200])
                     bossG.add(bosi)
                     todos.add(bosi)
-
+                    
 
                     #If kill oniwa, oniwaDead=True
                 for x in jugadores:
@@ -2197,10 +2213,6 @@ def main():
                     for x in pinchos:
                         x.rect.x -= fac.prevposbg[0]
                         x.rect.y -= fac.prevposbg[1]
-                    for x in bossG:
-                        x.rect.x -= fac.prevposbg[0]
-                        x.rect.y -= fac.prevposbg[1]
-
                     fac.prevposbg = fac.posbg[:]
                 screen.fill([0,0,0])
                 #screen.blit(fondo3,[0,-50])
@@ -2246,8 +2258,6 @@ def main():
                             fac.drawEnemy1Life(enemybar1[0])
                         else:
                             fac.drawEnemy3Life(enemybar1[0])
-                for x in bossG:
-                    fac.drawBossLife(x)
                 pygame.display.flip()
                 reloj.tick(10)
 
@@ -2306,6 +2316,8 @@ def main():
                     mouseclick = False
                     fac.pause = False
 
+                
+
 
         #Instrucciones------------------------------------------------
         elif state == menuoptions[3]:
@@ -2346,6 +2358,20 @@ def main():
 
             #screen.blit(x,[750, 350])
             #select = fac.checkmousepause(mousepos)
+
+
+            """for enemy in enemigos:
+            if enemy.golpe:
+                if enemy.derecha:
+                    punto=[enemy.rect.x+50,enemy.rect.y+50]
+                if enemy.izquierda:
+                    punto=[enemy.rect.x-50,enemy.rect.y+50]
+                golpe_protagonista=jugador1.rect.collidepoint(punto)
+                if golpe_protagonista:
+                    print("fist")
+                    jugador1.salud-=20"""
+
+            
 
         elif state == 'Salir':
             end = True
