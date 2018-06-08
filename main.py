@@ -2197,7 +2197,26 @@ def main():
                 if (jugador.rect.bottom> fac._screensize[1] - 30) and jugador.accion in [0,1,2,3,4,5]:
                     if bginfo3[1] + fac.posbg[1] - fac._screensize[1]  - 30 >0 and fac.posbg[1]>-200:
                             fac.posbg[1] -= 30
-
+                if enemybar != []:
+                    for x in enemybar:
+                        if jugador.inflictDamage(x) == 0:
+                            enemybar.remove(x)
+                if enemybar != []:
+                    if jugador.inflictDamage(enemybar[0]) > 0:
+                        if type(enemybar[0]) == Enemigo2:
+                            fac.drawEnemyLife(enemybar[0])
+                        else:
+                            fac.drawEnemy2Life(enemybar[0])
+                if enemybar1 != []:
+                    for x in enemybar1:
+                        if jugador.inflictDamage(x) == 0:
+                            enemybar1.remove(x)
+                if enemybar1 != []:
+                    if jugador.inflictDamage(enemybar1[0]) > 0:
+                        if type(enemybar1[0]) == Enemigo1:
+                            fac.drawEnemy1Life(enemybar1[0])
+                        else:
+                            fac.drawEnemy3Life(enemybar1[0])
                 pygame.display.flip()
                 reloj.tick(10)
 
