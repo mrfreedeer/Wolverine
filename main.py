@@ -158,6 +158,7 @@ def main():
     flagH2 = False
     flagBoss = False
     flagEnd = False
+    oniwaDead = False
 
     menuoptions = ["Nivel 1", "Nivel 2", "Nivel Boss","Instrucciones", "Salir"]
     pauseoptions = ["Back to Menu"]
@@ -1931,6 +1932,8 @@ def main():
                     #Generate oniwa
                     print 'ONIWA'
                     #oniwa=
+
+                    #If kill oniwa, oniwaDead=True
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
