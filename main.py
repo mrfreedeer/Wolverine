@@ -1125,7 +1125,7 @@ def main():
                         x.shoot = False
                         #channel5.play(shoot)
                         b = BalaT(matrizBalaT)
-                        b.rect.x,b.rect.y = x.rect.x + 20,x.rect.y +50
+                        b.rect.x,b.rect.y = x.rect.x + 20,x.rect.y + 25
                         balas.add(b)
                         todos.add(b)
                         #x.shoot = False
