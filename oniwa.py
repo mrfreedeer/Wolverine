@@ -23,9 +23,9 @@ def recortarBoss(archivo):
 
     walkRight=[[14, 183, 73, 79] , [98, 183, 73, 79] , [193, 183, 73, 79] , [286, 183, 73, 79] , [374, 183, 73, 79] ,[461, 183, 73, 79] ]
 
-    attack1=[[0,101,35,67], [49,101,55,67]]
+    attack1=[[10,629,82,79], [95,629,82,79], [187,629,82,79], [265,629,82,79], [366,629,82,79], [454,629,82,79]]
 
-    die=[[262, 111, 55, 57], [328, 111, 67, 57], [404, 11 ,74, 57]]
+    die=[[274, 361, 84, 75], [364, 361, 84, 75], [454, 361, 84, 75]]
 
 
     #Idle R-L
@@ -47,7 +47,7 @@ def recortarBoss(archivo):
         walkL.append(cuadro2)
 
     #Attack 1 R-L
-    for x in range(2):
+    for x in range(6):
         cuadro=fondo.subsurface(attack1[x])
         cuadro=pygame.transform.scale(cuadro, (100, 125))
         cuadro2=pygame.transform.flip(cuadro, True, False)
@@ -67,7 +67,7 @@ def recortarBoss(archivo):
 
     return idleR, idleL, walkR, walkL, attack1R, attack1L, dieR, dieL
 
-class Enemigo2(pygame.sprite.Sprite):
+class Boss(pygame.sprite.Sprite):
     def __init__(self, matriz):
         pygame.sprite.Sprite.__init__(self)
         self.f=matriz
@@ -200,7 +200,7 @@ class Enemigo2(pygame.sprite.Sprite):
             self.image = self.f[self.accion][self.indice]
             self.indice += 1
 
-            if self.indice > 2:
+            if self.indice > :
                 self.finished = True
                 self.indice=0
             self.vel_x = 0
@@ -210,10 +210,7 @@ class Enemigo2(pygame.sprite.Sprite):
         if self.accion==2:
             if self.indice <=5:
                 self.image = self.f[self.accion][self.indice]
-                if self.indice==0:
-                    stepE.play()
-                if self.indice==3:
-                    stepE.play()
+                
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 5:
@@ -224,10 +221,7 @@ class Enemigo2(pygame.sprite.Sprite):
         if self.accion==3:
             if self.indice <=5:
                 self.image = self.f[self.accion][self.indice]
-                if self.indice==0:
-                    stepE.play()
-                if self.indice==3:
-                    stepE.play()
+                
                 self.indice += 1
             #Es 7 normalmente
             if self.indice > 5:
@@ -237,13 +231,12 @@ class Enemigo2(pygame.sprite.Sprite):
         #1
         #Attack R
         if self.accion==4:
-            if self.indice <=1:
-                self.image = self.f[self.accion][self.indice]
-                if self.indice==1:
-                    punchE2.play()
-                self.indice += 1
+        
+            self.image = self.f[self.accion][self.indice]
+            
+            self.indice += 1
 
-            if self.indice > 1:
+            if self.indice > 5:
                 self.finished = True
                 self.indice=0
             self.vel_x = 0
@@ -251,13 +244,12 @@ class Enemigo2(pygame.sprite.Sprite):
 
         #Attack L
         if self.accion==5:
-            if self.indice <=1:
-                self.image = self.f[self.accion][self.indice]
-                if self.indice==1:
-                    punchE2.play()
-                self.indice += 1
+        
+            self.image = self.f[self.accion][self.indice]
+            
+            self.indice += 1
 
-            if self.indice > 1:
+            if self.indice > 5:
                 self.finished = True
                 self.indice=0
 
@@ -267,8 +259,8 @@ class Enemigo2(pygame.sprite.Sprite):
         #Die R
         if self.accion==6:
             if self.indice <2:
-                if self.indice==0:
-                    channel3.play(ouch)
+                #if self.indice==0:
+                #    channel3.play(ouch)
                 self.image = self.f[self.accion][self.indice]
                 self.indice += 1
 
@@ -284,8 +276,8 @@ class Enemigo2(pygame.sprite.Sprite):
         #Die L
         if self.accion==7:
             if self.indice <=2:
-                if self.indice==0:
-                    channel3.play(ouch)
+                #if self.indice==0:
+                #    channel3.play(ouch)
                 self.image = self.f[self.accion][self.indice]
 
                 self.indice += 1
