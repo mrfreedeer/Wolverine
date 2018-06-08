@@ -1740,7 +1740,7 @@ def main():
             #print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths, fac.posbg[0]
             if moves != [] and jugador.prevkey == None:
                 jugador.move(moves[0])
-            if genscore >= endscore and numberOfDeaths>=30 and fac.posbg[0]<=-1010 and numberOfStillEnemies==0 and numberOfMovingEnemies==0:
+            if genscore >= endscore and numberOfDeaths>=5 and numberOfStillEnemies==0 and numberOfMovingEnemies==0:
                 #for j in jugadores:
                 #    j.kill()
                 winrenderrect = winrender.get_rect()
@@ -1846,8 +1846,9 @@ def main():
                     fac.resetposbg()
                     gameover = False
             elif not fac.pause:
-
-                if (fac.posbg[0]==0 and numberOfDeaths==0) or (fac.posbg[0]<=-220 and numberOfDeaths==6) or (fac.posbg[0]<=-320 and numberOfDeaths==12) or (fac.posbg[0]<=-520 and numberOfDeaths==18) or (fac.posbg[0]<=-660 and numberOfDeaths==24) or (fac.posbg[0]<=-990 and numberOfDeaths==30):
+                print fac.posbg
+                print numberOfStillEnemies, numberOfMovingEnemies, numberOfDeaths
+                if (fac.posbg[0]==0 and numberOfDeaths==0):
                     canGenerate=True
                 if canGenerate:
                     lasttime2 = pygame.time.get_ticks()
@@ -1925,7 +1926,8 @@ def main():
 
                     generator1=False
                     canGenerate=False
-
+                if (fac.posbg[0]==-400 and numberofDeaths==10):
+                    pass
                 for x in jugadores:
                     lsmod = pygame.sprite.spritecollideany(x, modifiers)
                     if lsmod != None:
@@ -2041,7 +2043,7 @@ def main():
                         balas.add(b)
                         todos.add(b)
                         x.shoot = False
-                        
+
                 for x in enemigos2n:
                     x.shooting(jugador.rect)
                     if x.shoot:
