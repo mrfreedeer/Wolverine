@@ -803,7 +803,6 @@ def main():
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
-                    poofsprite.kill()
                     numberOfStillEnemies=0
                     numberOfMovingEnemies=0
                     numberOfDeaths=0
@@ -1317,7 +1316,6 @@ def main():
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
-                    poofsprite.kill()
                     numberOfStillEnemies2=0
                     numberOfMovingEnemies2=0
                     numberOfDeaths2=0
@@ -1823,7 +1821,6 @@ def main():
                     fac._pauserenders.insert(select,backtomenured)
                     fac._turnedoptions.append(select)
                 if pauseoptions[select] == "Back to Menu" and mouseclick and select!= -1:
-                    poofsprite.kill()
                     numberOfStillEnemies=0
                     numberOfMovingEnemies=0
                     numberOfDeaths=0
@@ -1930,14 +1927,14 @@ def main():
 
                     generator1=False
                     canGenerate=False
-                
+
                 if (fac.posbg[0]==-405):
                     #Generate oniwa
                     print 'ONIWA'
-                    bosi=Boss(bossrecorte, [-405,200])
+                    bosi=Boss(bossrecorte, [405,200])
                     bossG.add(bosi)
                     todos.add(bosi)
-                    
+
 
                     #If kill oniwa, oniwaDead=True
                 for x in jugadores:
